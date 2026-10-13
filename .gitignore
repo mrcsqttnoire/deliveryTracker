@@ -1,0 +1,71 @@
+# ==========================================
+# PYTHON / DJANGO
+# ==========================================
+# Environnements virtuels
+venv/
+env/
+.venv/
+
+# Fichiers compilés de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Fichiers de configuration et bases de données locales
+*.sqlite3
+*.db
+local_settings.py
+db.sqlite3-journal
+
+# Fichiers de log et de cache
+*.log
+local/
+media/
+staticfiles/
+
+# ==========================================
+# NODE.JS / REACT (VITE)
+# ==========================================
+# Dépendances
+node_modules/
+jspm_packages/
+
+# Fichiers de build / production
+dist/
+build/
+.next/
+out/
+
+# Journaux de debug npm/yarn/pnpm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-debug.log*
+
+# ==========================================
+# VARIABLES D'ENVIRONNEMENT & SÉCURITÉ
+# ==========================================
+# Fichiers .env (très important pour ne pas fuiter les mots de passe)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ==========================================
+# SYSTÈMES D'EXPLOITATION & IDE
+# ==========================================
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# VS Code (optionnel, mais propre)
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
