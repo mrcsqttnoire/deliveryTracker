@@ -6,14 +6,22 @@ from .models import Proprietaire, Livreur, Client
 User = get_user_model()
 # print(User)
 class UserSerializer(serializers.ModelSerializer):
+    nom = serializers.SerializerMethodField()
+    prenom = serializers.SerializerMethodField()
     role = serializers.SerializerMethodField()
+
+    def get_nom(self, obj):
+        return obj.proprietaire.nom if obj.is_proprietaire else obj.livreur.nom
+
+    def get_prenom(self, obj):
+        return obj.proprietaire.prenom if obj.is_proprietaire else obj.livreur.prenom
 
     def get_role(self, obj):
         return 'Propriétaire' if obj.is_proprietaire else 'Livreur'
     
     class Meta:
         model = User
-        fields = ['id', 'username', 'role', 'password']
+        fields = ['id', 'nom', 'prenom', 'username', 'role', 'password']
         extra_kwargs = {
             'password': {'write_only': True}
         }

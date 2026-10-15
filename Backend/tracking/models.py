@@ -9,7 +9,7 @@ class User(AbstractUser):
 
 class Proprietaire(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='proprietaire')
     nom = models.CharField(max_length=50)
     prenom = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -23,7 +23,7 @@ class Livreur(models.Model):
         OCCUPE = "occupe", "Occupé"
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='livreur')
     proprietaire = models.ForeignKey(Proprietaire, on_delete=models.CASCADE, related_name="livreurs")
     nom =models.CharField(max_length=50)
     prenom = models.CharField(max_length=100)
