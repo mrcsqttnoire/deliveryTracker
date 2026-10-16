@@ -49,3 +49,10 @@ class LivreurSerializer(serializers.ModelSerializer):
     class Meta:
         model = Proprietaire
         fields = ['id', 'nom', 'prenom', 'email', 'role']
+
+class ClientSerializer(serializers.ModelSerializer):
+    # proprietaire = ProprietaireSerializer()
+    # proprietaire = serializers.CharField(source='proprietaire.nom')
+    class Meta:
+        model = Client
+        fields = ['id', 'nom', 'prenom', 'telephone', 'proprietaire']
