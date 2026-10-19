@@ -23,7 +23,7 @@ def run_populate():
 
     print(" Création des propriétaires...")
     # Propriétaire 1
-    user_prop1 = User.objects.create_user(username="jean@gmail.com", password="password123")
+    user_prop1 = User.objects.create_user(username="jean@gmail.com", password="password123", telephone="0340806920")
     prop1 = Proprietaire.objects.create(
         user=user_prop1,
         nom="Dupont",
@@ -31,7 +31,7 @@ def run_populate():
     )
 
     # Propriétaire 2
-    user_prop2 = User.objects.create_user(username="sophie@gmail.com", password="password123")
+    user_prop2 = User.objects.create_user(username="sophie@gmail.com", password="password123", telephone="0320251230")
     prop2 = Proprietaire.objects.create(
         user=user_prop2,
         nom="Martin",

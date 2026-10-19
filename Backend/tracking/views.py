@@ -2,11 +2,13 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from rest_framework import generics
-from django.http import JsonResponse
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.views import APIView
+from tracking.permissions import IsProprietaire
 from tracking.models import Client, Proprietaire, Livreur
-from tracking.serializers import LivreurSerializer, ProprietaireSerializer, UserSerializer, ClientSerializer
+from tracking.serializers import LivreurSerializer, ProprietaireInscriptionSerializer, ProprietaireSerializer, UserSerializer, ClientSerializer
 # Create your views here.
 User = get_user_model()
 
@@ -17,24 +19,41 @@ def user_list(request):
     
     return Response(serializer.data)
 
-@api_view(["GET"])
-def proprietaire_list(request):
-    props = Proprietaire.objects.all()
-    serializer = ProprietaireSerializer(props, many=True)
+# class ProprietaireList(APIView):
+#     permission_classes = [IsAuthenticated, IsAdminUser]
 
-    return Response(serializer.data)
+#     def get(self, request):
+#         props = Proprietaire.objects.all()
+#         serializer = ProprietaireSerializer(props, many=True)
 
-@api_view(["GET"])
-def livreur_list(request):
-    livreur = Livreur.objects.all()
-    serializer = LivreurSerializer(livreur, many=True)
+#         return Response(serializer.data)
 
-    return Response(serializer.data)
+class ProprietaireCreateAPIView(generics.CreateAPIView):
+    Model = User
+    serializer_class = ProprietaireInscriptionSerializer
+    permission_classes = [AllowAny]
+
+
+# @api_view(["GET"])
+# def livreur_list(request):
+#     livreur = Livreur.objects.all()
+#     serializer = LivreurSerializer(livreur, many=True)
+
+#     return Response(serializer.data)
+
+class LivreurListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Livreur.objects.all()
+    serializer_class = LivreurSerializer
+    permission_classes = [IsAuthenticated, IsProprietaire]
+
+    def get_queryset(self):
+        return super().get_queryset().filter(proprietaire__user = self.request.user)
+
 
 class ClientListAPIView(generics.ListAPIView):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsProprietaire]
 
     def get_queryset(self):
         return super().get_queryset().filter(proprietaire__user = self.request.user)

@@ -1,0 +1,15 @@
+GET http://127.0.0.1:8000/livreurs/ HTTP/1.1
+
+###
+
+GET http://127.0.0.1:8000/proprietaires/ HTTP/1.1
+
+###
+POST http://127.0.0.1:8000/proprietaires/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "nom": "Rakoto",
+    "prenom": "be",
+    "email": "rakoto@gmail.com"
+}
