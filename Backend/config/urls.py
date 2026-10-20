@@ -4,6 +4,7 @@ from django.urls import include, path
 from django.conf import settings
 from tracking.views import *
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework.routers import DefaultRouter
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -11,11 +12,15 @@ urlpatterns = [
     path('tracking/api-token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
 
     path('proprietaires/inscription', ProprietaireCreateAPIView.as_view()),
-    path('livreurs/', LivreurListCreateAPIView.as_view()),
     path('users/', user_list),
     path('clients/', ClientListAPIView.as_view()),
     path('api-auth/', include('rest_framework.urls'))
 ]
+
+router = DefaultRouter()
+router.register('livreur', LivreurAPIViewSet)
+urlpatterns += router.urls
+
 
 # if settings.DEBUG:
 #     urlpatterns += [path("silk/", include('silk.urls', namespace='silk')),]

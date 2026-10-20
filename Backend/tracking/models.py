@@ -25,7 +25,7 @@ class Livreur(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='livreur')
-    proprietaire = models.ForeignKey(Proprietaire, on_delete=models.CASCADE, related_name="livreurs")
+    proprietaire = models.ForeignKey(Proprietaire, on_delete=models.CASCADE, related_name="livreurs", editable=False)
     nom =models.CharField(max_length=50)
     prenom = models.CharField(max_length=100)
     status = models.CharField(choices=Status.choices, default=Status.LIBRE, max_length=10)
@@ -36,7 +36,7 @@ class Livreur(models.Model):
 
 class Client(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
-    proprietaire = models.ForeignKey(Proprietaire, on_delete=models.CASCADE, related_name="clients")
+    proprietaire = models.ForeignKey(Proprietaire, on_delete=models.CASCADE, related_name="clients", editable=False)
     nom = models.CharField(max_length=50)
     prenom = models.CharField(max_length=100)
     telephone = models.CharField(max_length=20)

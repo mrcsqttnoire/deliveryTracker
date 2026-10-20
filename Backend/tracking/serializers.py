@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.db import transaction
 from rest_framework import serializers
 from .models import Proprietaire, Livreur, Client
 
@@ -71,27 +72,65 @@ class ProprietaireInscriptionSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         proprietaire_data = validated_data.pop('proprietaire')
-        user = User.objects.create_user(is_proprietaire=True, **validated_data)
-        Proprietaire.objects.create(user=user, **proprietaire_data)
+
+        with transaction.atomic():
+            user = User.objects.create_user(is_proprietaire=True, **validated_data)
+            Proprietaire.objects.create(user=user, **proprietaire_data)
 
         return user
 
+
 class LivreurSerializer(serializers.ModelSerializer):
     email = serializers.CharField(source='user.username')
-    role = serializers.SerializerMethodField()
+    telephone = serializers.CharField(source='user.telephone')
+    password = serializers.CharField(source='user.password', write_only=True)
+    # role = serializers.SerializerMethodField()
 
-    def get_role(self, obj):
-        return 'Propriétaire' if obj.user.is_proprietaire else 'Livreur'
+    # def get_role(self, obj):
+    #     return 'Propriétaire' if obj.user.is_proprietaire else 'Livreur'
 
     class Meta:
-        model = Proprietaire
+        model = Livreur
         fields = [
             'id',
             'nom',
-            'prenom', 
+            'prenom',
+            'telephone', 
             'email', 
-            'role'
+            'password'
         ]
+        read_only_fields = ["id"]
+
+    def create(self, validated_data):
+        user_data = validated_data.pop('user')
+
+        with transaction.atomic():
+            request = self.context['request']  
+            current_user = request.user if request else None
+            proprietaire = getattr(current_user, 'proprietaire')
+
+            user = User.objects.create_user(**user_data)
+            livreur = Livreur.objects.create(user=user, proprietaire=proprietaire, **validated_data)
+
+        return livreur
+
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop('user')
+
+        with transaction.atomic():
+            request = self.context['request']  
+            current_user = request.user if request else None
+            proprietaire = getattr(current_user, 'proprietaire')
+
+            instance = super().update(instance, validated_data)
+
+            if user_data:
+                instance.user.delete()
+
+                user = User.objects.create_user(**user_data)
+                livreur = Livreur.objects.create(user=user, proprietaire=proprietaire, **validated_data)
+
+        return livreur
 
 class ClientSerializer(serializers.ModelSerializer):
     # proprietaire = ProprietaireSerializer()

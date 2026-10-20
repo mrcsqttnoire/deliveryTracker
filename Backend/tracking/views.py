@@ -41,13 +41,22 @@ class ProprietaireCreateAPIView(generics.CreateAPIView):
 
 #     return Response(serializer.data)
 
-class LivreurListCreateAPIView(generics.ListCreateAPIView):
+class LivreurAPIViewSet(ModelViewSet):
     queryset = Livreur.objects.all()
     serializer_class = LivreurSerializer
     permission_classes = [IsAuthenticated, IsProprietaire]
 
     def get_queryset(self):
         return super().get_queryset().filter(proprietaire__user = self.request.user)
+
+
+# class LivreurListCreateAPIView(generics.ListCreateAPIView):
+#     queryset = Livreur.objects.all()
+#     serializer_class = LivreurSerializer
+#     permission_classes = [IsAuthenticated, IsProprietaire]
+
+#     def get_queryset(self):
+#         return super().get_queryset().filter(proprietaire__user = self.request.user)
 
 
 class ClientListAPIView(generics.ListAPIView):
