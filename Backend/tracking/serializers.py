@@ -83,7 +83,7 @@ class ProprietaireInscriptionSerializer(serializers.ModelSerializer):
 class LivreurSerializer(serializers.ModelSerializer):
     email = serializers.CharField(source='user.username')
     telephone = serializers.CharField(source='user.telephone')
-    password = serializers.CharField(source='user.password', write_only=True)
+    password = serializers.CharField(source='user.password', write_only=True, required=False)
     # role = serializers.SerializerMethodField()
 
     # def get_role(self, obj):
@@ -102,7 +102,7 @@ class LivreurSerializer(serializers.ModelSerializer):
         read_only_fields = ["id"]
 
     def create(self, validated_data):
-        user_data = validated_data.pop('user')
+        user_data = validated_data.pop('user', {})
 
         with transaction.atomic():
             request = self.context['request']  
@@ -120,17 +120,23 @@ class LivreurSerializer(serializers.ModelSerializer):
         with transaction.atomic():
             request = self.context['request']  
             current_user = request.user if request else None
-            proprietaire = getattr(current_user, 'proprietaire')
+            # proprietaire = getattr(current_user, 'proprietaire')
 
             instance = super().update(instance, validated_data)
 
             if user_data:
-                instance.user.delete()
+                user = instance.user
+                password_data = user_data.pop('password', None)
 
-                user = User.objects.create_user(**user_data)
-                livreur = Livreur.objects.create(user=user, proprietaire=proprietaire, **validated_data)
+                for attr, value in user_data.items():
+                    setattr(user, attr, value)
 
-        return livreur
+                if password_data :
+                    user.set_password(password_data)
+
+                user.save()
+
+        return instance
 
 class ClientSerializer(serializers.ModelSerializer):
     # proprietaire = ProprietaireSerializer()
