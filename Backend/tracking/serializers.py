@@ -120,7 +120,6 @@ class LivreurSerializer(serializers.ModelSerializer):
         with transaction.atomic():
             request = self.context['request']  
             current_user = request.user if request else None
-            # proprietaire = getattr(current_user, 'proprietaire')
 
             instance = super().update(instance, validated_data)
 
@@ -138,6 +137,10 @@ class LivreurSerializer(serializers.ModelSerializer):
 
         return instance
 
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
+
 class ClientSerializer(serializers.ModelSerializer):
     # proprietaire = ProprietaireSerializer()
     # proprietaire = serializers.CharField(source='proprietaire.nom')
@@ -150,3 +153,4 @@ class ClientSerializer(serializers.ModelSerializer):
             'telephone', 
             'proprietaire'
         ]
+        read_only_fields = ['id', 'proprietaire']

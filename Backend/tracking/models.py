@@ -36,7 +36,7 @@ class Livreur(models.Model):
 
 class Client(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
-    proprietaire = models.ForeignKey(Proprietaire, on_delete=models.CASCADE, related_name="clients", editable=False)
+    proprietaire = models.ForeignKey(Proprietaire, on_delete=models.CASCADE, related_name="clients")
     nom = models.CharField(max_length=50)
     prenom = models.CharField(max_length=100)
     telephone = models.CharField(max_length=20)
@@ -45,4 +45,50 @@ class Client(models.Model):
     def __str__(self):
         return self.nom
 
+class Destination(models.Model):
+    latitude = models.DecimalField(max_digits=9, decimal_places=6)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6)
+    repere = models.CharField(max_length=100, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.repere
+
+class Livraison(models.Model):
+    class Status(models.TextChoices):
+        EN_ATTENTE = "en_attente", "En attente"
+        EN_ROUTE = "en_route", "En route"
+        LIVRE = "livree", "Livrée"
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    proprietaire = models.ForeignKey(Proprietaire, on_delete=models.CASCADE, related_name="livraisons", editable=False) 
+    livreur = models.ForeignKey(Livreur, on_delete=models.SET_NULL, null=True, related_name="livraisons")
+    client = models.ForeignKey(Client, on_delete=models.SET_NULL, null=True, related_name="livraisons")
+    destination = models.OneToOneField(Destination, on_delete=models.SET_NULL, null=True, related_name='livraison')
+    designation = models.TextField()
+    status = models.CharField(choices=Status.choices, default=Status.EN_ATTENTE, max_length=20)
+    date_livraison = models.DateField(null=True, blank=True)
+    heure_livraison = models.TimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        value = f"Livraison à livré le {self.date_livraison} à {self.heure_livraison}"
+        return value
+
+class Photo(models.Model):
+    livraison = models.ForeignKey(Livraison, on_delete=models.CASCADE, related_name="photos")
+    lien = models.ImageField(upload_to="details")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"path: {self.lien}"
+
+class Position(models.Model):
+    livraison = models.ForeignKey(Livraison, on_delete=models.CASCADE, related_name="positions")
+    latitude = models.DecimalField(max_digits=9, decimal_places=6)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        value = f"Position {self.id} (Latitude:  {self.latitude}, Longitude: {self.longitude})"
+        return value
