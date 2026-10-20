@@ -1,7 +1,9 @@
+from django.db import transaction
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
+from rest_framework import status
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from rest_framework import generics
 from rest_framework.viewsets import ModelViewSet
@@ -48,6 +50,11 @@ class LivreurAPIViewSet(ModelViewSet):
 
     def get_queryset(self):
         return super().get_queryset().filter(proprietaire__user = self.request.user)
+
+    def perform_destroy(self, instance):
+        with transaction.atomic():
+            super().perform_destroy(instance.user)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 # class LivreurListCreateAPIView(generics.ListCreateAPIView):
