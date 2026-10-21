@@ -9,18 +9,22 @@ from rest_framework.routers import DefaultRouter
 urlpatterns = [
     re_path(r'^auth/', include('djoser.urls')),
     re_path(r'^auth/', include('djoser.urls.jwt')),
-    
+
     path('admin/', admin.site.urls),
     path('tracking/api-token/', TokenObtainPairView.as_view(), name='token_obtain'),
-    path('users/', user_list),
+    # path('users/', user_list),
     path('clients/', ClientListAPIView.as_view()),
     path('api-auth/', include('rest_framework.urls'))
 ]
 
 router = DefaultRouter()
 router.register('livreur', LivreurAPIViewSet)
+router.register('livraison', LivraisonAPIViewSet)
 urlpatterns += router.urls
 
+router_detail_livraison = DefaultRouter()
+router_detail_livraison.register('livraison/detail', AddDetailLivraisonAPIViewSet)
+urlpatterns += router_detail_livraison.urls
 
 # if settings.DEBUG:
 #     urlpatterns += [path("silk/", include('silk.urls', namespace='silk')),]

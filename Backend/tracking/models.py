@@ -72,7 +72,7 @@ class Livraison(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        value = f"Livraison à livré le {self.date_livraison} à {self.heure_livraison}"
+        value = f"Livraison à livré par {self.livreur.nom if self.livreur else None} {self.livreur.prenom if self.livreur else None} le {self.date_livraison} à {self.heure_livraison}"
         return value
 
 class Photo(models.Model):
@@ -88,6 +88,14 @@ class Position(models.Model):
     latitude = models.DecimalField(max_digits=9, decimal_places=6)
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        indexes = [
+            models.Index(
+                fields=['livraison', 'created_at'],
+                name="position_livraison_date_idx"
+            ),
+        ]
 
     def __str__(self):
         value = f"Position {self.id} (Latitude:  {self.latitude}, Longitude: {self.longitude})"
