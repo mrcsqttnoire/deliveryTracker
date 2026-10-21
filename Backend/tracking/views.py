@@ -10,7 +10,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from tracking.permissions import IsProprietaire
 from tracking.models import Client, Destination, Livraison, Proprietaire, Livreur
-from tracking.serializers import DestinationCreateSerializer, DestinationSerializer, LivraisonSerializer, LivreurSerializer, ProprietaireInscriptionSerializer, ProprietaireSerializer, UserSerializer, ClientSerializer
+from tracking.serializers import DestinationSerializer, DetailLivraisonSerializer, LivraisonSerializer, LivreurSerializer, ProprietaireInscriptionSerializer, ProprietaireSerializer, UserSerializer, ClientSerializer
 # Create your views here.
 User = get_user_model()
 
@@ -92,10 +92,14 @@ class LivraisonAPIViewSet(ModelViewSet):
     def get_queryset(self):
         return super().get_queryset().filter(proprietaire__user = self.request.user)
 
+    def perform_create(self, serializer):
+        proprietaire = getattr(self.request.user, 'proprietaire')
+        serializer.save(proprietaire=proprietaire)
+
 
 class AddDetailLivraisonAPIViewSet(ModelViewSet):
     queryset = Livraison.objects.all()
-    serializer_class = DestinationCreateSerializer
+    serializer_class = DetailLivraisonSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):

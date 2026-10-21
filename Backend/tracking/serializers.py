@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import transaction
 from rest_framework import serializers
-from .models import Destination, Livraison, Proprietaire, Livreur, Client
+from .models import Destination, Livraison, Photo, Proprietaire, Livreur, Client
 
 User = get_user_model()
 # print(User)
@@ -165,7 +165,16 @@ class DestinationSerializer(serializers.ModelSerializer):
             'id',
         ]
 
-
+class PhotoSerialize(serializers.ModelField):
+    class Meta:
+        model = Photo
+        fields = [
+            'id',
+            'lien',
+        ]
+        read_only_fields = [
+            'id',
+        ]
 
 class LivraisonSerializer(serializers.ModelSerializer):
     class LivreurProprietaireField(serializers.PrimaryKeyRelatedField):
@@ -173,12 +182,17 @@ class LivraisonSerializer(serializers.ModelSerializer):
             request = self.context['request']
             qs = Livreur.objects.all()
             return qs.filter(proprietaire__user = request.user)
+        
+    class ClientProprietaireField(serializers.PrimaryKeyRelatedField):
+        def get_queryset(self):
+            request = self.context['request']
+            qs = Client.objects.all()
+            return qs.filter(proprietaire__user = request.user)
 
-    client = serializers.CharField(source='client.nom', required=False, read_only=True)
+
     proprietaire = serializers.CharField(source='proprietaire.nom', read_only=True)
     livreur = LivreurProprietaireField(required=False)
-    livreur_nom = serializers.CharField(source='livreur.nom', read_only=True)
-    livreur_numero = serializers.CharField(source='livreur.user.telephone', read_only=True)
+    client = ClientProprietaireField(required=False, read_only=True)
     destination = DestinationSerializer(read_only=True)
 
     # destination = DestinationSerializer()
@@ -191,27 +205,16 @@ class LivraisonSerializer(serializers.ModelSerializer):
             'status',
             'date_livraison',
             'heure_livraison',
-            'client',
             'proprietaire',
-            'livreur_nom',
-            'livreur_numero',
             'livreur',
-            'destination'
+            'client',
+            'destination',
         ]
+        extra_kwargs = {
+            'status': {'read_only': True}
+        }
 
-    def create(self, validated_data):
-        with transaction.atomic():
-            request = self.context['request']  
-            current_user = request.user if request else None
-            proprietaire = getattr(current_user, 'proprietaire')
-
-            livraison = Livraison.objects.create(proprietaire=proprietaire, **validated_data)   
-
-            # livreur = validated_data.pop('livreur', {})
-
-        return livraison
-
-class DestinationCreateSerializer(serializers.ModelSerializer):
+class DetailLivraisonSerializer(serializers.ModelSerializer):
     destination = DestinationSerializer()
     client = ClientSerializer()
 
@@ -234,8 +237,9 @@ class DestinationCreateSerializer(serializers.ModelSerializer):
             proprietaire = getattr(instance, 'proprietaire')
 
             if destination_data:
-                destination = Destination.objects.create(**destination_data)
-                instance.destination = destination
+                if not instance.destination :
+                    destination = Destination.objects.create(**destination_data)
+                    instance.destination = destination
 
             if client_data:
                 telephone = client_data.get('telephone')
