@@ -22,11 +22,16 @@
 
     --color-gradient-left: #C7E7FF;
     --color-gradient-right: #E7EEFE;
+    --color-gradient-cart: rgba(42,49,60,.6);
 
     --font-heading: 'Outfit';
     --font-body: 'Manrope';
 }
 
 .container-custom {
-    @apply w-full md:max-w-7xl m-auto bg-white p-4
+    @apply w-full px-4 md:max-w-7xl m-auto bg-white;
+}
+
+.center{
+    @apply flex justify-center items-center;
 }

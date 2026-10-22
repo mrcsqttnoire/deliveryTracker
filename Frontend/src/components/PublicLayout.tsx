@@ -1,10 +1,21 @@
+import photoLivreur from "../assets/img/livreur.png"
 import truck from "../assets/icons/truck.svg"
-import  {DetailLivraison}  from "./carte"
+import  {Carte}  from "./carte"
+import { LivreurDetailMin } from "./livreur.min"
+import { DetailColis } from "./detailColis"
 
 export function PublicLayout () {
+
+  const photos = [
+      {path: "/src/assets/img/test/billie-3.png"},
+      {path: "/src/assets/img/test/billie-2.jpg"},
+      {path: "/src/assets/img/test/billie-1.jpg"},
+    ]
+
+
   return <>
-   <main className="flex flex-col gap-1">
-    <section className="container-custom flex flex-col justify-center gap-4 shadow-md rounded-b-xl ">
+   <main className="flex flex-col gap-4">
+    <section className="container-custom py-4 flex flex-col justify-center gap-4 shadow-md rounded-b-xl ">
         <div className="flex items-center gap-2">
           <img src={truck} alt="livraison-icon" className="bg-primary-300 p-3 rounded-full" />
           <h3 className="font-heading text-2xl font-bold capitalize text-neutral font">Votre livraison</h3>
@@ -23,8 +34,10 @@ export function PublicLayout () {
             </div>
         </div>
     </section>
-    <section>
-      <DetailLivraison />
+    <section className="flex flex-col  gap-4">
+      <Carte />
+      <LivreurDetailMin photo={photoLivreur} nom="RANDRIANANTENAINA" prenom="Jean Nirina" tel="0333169049" />
+      <DetailColis designation="Exmple de designation livraison" photos={photos}/>
     </section>
    </main>
   </>

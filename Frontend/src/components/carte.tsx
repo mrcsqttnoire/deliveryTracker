@@ -1,12 +1,12 @@
 import map from "../assets/img/map.png"
 import { Button } from "./button"
 
-export function DetailLivraison () {
+export function Carte () {
   return <>
-    <div className="container-custom">
-      <div className="h-full w-full relative flex justify-center">
+    <div className="container-custom ">
+      <div className="h-full w-full relative flex justify-center ">
         <div className="w-full h-80 md:h-[420px] relative overflow-hidden">
-          <div className="bg-linear-to-b from-transparent to-black w-full h-full absolute top-0 left-0 bg-red-30 rounded-xl" ></div>
+          <div className="bg-linear-to-b from-transparent to-gradient-cart w-full h-full absolute top-0 left-0 bg-red-30 rounded-xl" ></div>
           <img src={map} alt="carte" className="w-full h-full rounded-2xl object-cover "/>
         </div>
         <div className="bg-white p-4 absolute w-11/12 bottom-4 flex items-center justify-between rounded-xl">
@@ -24,7 +24,6 @@ export function DetailLivraison () {
           </div>
         </div>
       </div>
-      <Button>Délivrer</Button>
     </div>
   </>
 }
