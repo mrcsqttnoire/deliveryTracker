@@ -1,10 +1,11 @@
-import { Counter } from './counter'
-// import './App.css'
+import { RouterProvider } from 'react-router-dom';
+import './index.css'
+import { routes } from './routes';
 
 function App() {
-  return <div>
-    <Counter start={0}/>
-  </div>
+  return (
+    <RouterProvider router={routes} />
+  );
 }
 
 export default App

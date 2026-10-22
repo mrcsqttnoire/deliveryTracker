@@ -1,0 +1,32 @@
+@import "tailwindcss";
+@font-face {
+    font-family: 'Manrope';
+    src: url('./assets/fonts/Manrope/Manrope.ttf');
+}
+@font-face {
+    font-family: 'Outfit';
+    src: url('./assets/fonts/Outfit/Outfit.ttf');
+}
+.tt{
+    color: rgba(83, 94, 123, 0.062);
+}
+@theme{
+    --color-primary: #E1312F;
+    --color-primary-300: rgba(225, 49, 47, .2);
+
+    --color-secondary: #535E7B;
+    --color-secondary-200: rgba(83, 94, 123, .5);
+
+    --color-tertiary: #00628A;
+    --color-neutral: #151C27;
+
+    --color-gradient-left: #C7E7FF;
+    --color-gradient-right: #E7EEFE;
+
+    --font-heading: 'Outfit';
+    --font-body: 'Manrope';
+}
+
+.container-custom {
+    @apply w-full md:max-w-7xl m-auto bg-white p-4
+}

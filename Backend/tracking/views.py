@@ -66,7 +66,7 @@ class LivreurAPIViewSet(ModelViewSet):
 #         return super().get_queryset().filter(proprietaire__user = self.request.user)
 
 
-class ClientListAPIView(generics.ListAPIView):
+class ClientListAPIView(generics.ListCreateAPIView):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
     permission_classes = [IsAuthenticated, IsProprietaire]
@@ -97,7 +97,7 @@ class LivraisonAPIViewSet(ModelViewSet):
         serializer.save(proprietaire=proprietaire)
 
 
-class AddDetailLivraisonAPIViewSet(ModelViewSet):
+class AddDetailLivraisonAPIView(generics.UpdateAPIView):
     queryset = Livraison.objects.all()
     serializer_class = DetailLivraisonSerializer
     permission_classes = [IsAuthenticated]
