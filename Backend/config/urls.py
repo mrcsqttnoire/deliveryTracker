@@ -19,9 +19,7 @@ urlpatterns = [
     path('tracking-api/', include('tracking.urls')),
 ]
 
-router = DefaultRouter()
-router.register('livreur', LivreurAPIViewSet)
-urlpatterns += router.urls
+
 
 # if settings.DEBUG:
 #     urlpatterns += [path("silk/", include('silk.urls', namespace='silk')),]

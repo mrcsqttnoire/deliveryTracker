@@ -81,7 +81,7 @@ class ProprietaireInscriptionSerializer(serializers.ModelSerializer):
 
 
 class LivreurSerializer(serializers.ModelSerializer):
-    email = serializers.CharField(source='user.username')
+    username = serializers.CharField(source='user.username')
     telephone = serializers.CharField(source='user.telephone')
     password = serializers.CharField(source='user.password', write_only=True, required=False)
     # role = serializers.SerializerMethodField()
@@ -96,7 +96,7 @@ class LivreurSerializer(serializers.ModelSerializer):
             'nom',
             'prenom',
             'telephone', 
-            'email', 
+            'username', 
             'password'
         ]
         read_only_fields = ["id"]

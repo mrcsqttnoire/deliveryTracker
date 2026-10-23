@@ -7,7 +7,7 @@ import { jwtDecode } from "jwt-decode";
 import api from "./api";
 import { AuthLayout } from "./page/AuthLayout";
 import { FormLogin } from "./components/formAuth";
-import { Signin } from "./page/signin";
+import { UserForm, UserProfile } from "./components/userForm";
 
 type ProtectedRoutesProps = {
     children: ReactNode,
@@ -55,10 +55,10 @@ function ProtectedRoutes({children}: ProtectedRoutesProps){
     }
 
     if(isAuthorized === null){
-            return <div>Loading...</div>
+            return <div className="center h-dvh">Loading...</div>
     }
 
-    return isAuthorized ? children : <Navigate to="login/"/>
+    return isAuthorized ? children : <Navigate to="auth/login/"/>
 }
 
 export const routes = createBrowserRouter([
@@ -85,8 +85,12 @@ export const routes = createBrowserRouter([
             },
             {
                 path: 'signin',
-                element: <Signin/>
-            }
+                element: <UserForm/>
+            },
+            {
+                path: 'signin/next',
+                element: <UserProfile role="proprietaire"/>
+            },
         ]
     },
     {

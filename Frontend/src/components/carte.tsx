@@ -1,3 +1,4 @@
+import { ArrowBigRight, ArrowRight, LayoutArrowRight, MoveRight } from "lucide-react"
 import map from "../assets/img/map.png"
 import { Button } from "./button"
 
@@ -12,9 +13,9 @@ export function Carte () {
         <div className="bg-white p-4 absolute w-11/12 bottom-4 flex items-center justify-between rounded-xl">
           <div className="text-neutral font-body font-semibold">
             <img src="" alt="" className="w-8" />
-            <div className="flex gap-4 ">
+            <div className="flex gap-2 ">
               <p>Analakely</p>
-              <img src="" alt="" />
+              <MoveRight />
               <p>Ambohijatovo</p>
             </div>
             <p className="text-secondary">Repère : Jovena Ambohijatovo</p>
