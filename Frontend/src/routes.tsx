@@ -1,10 +1,13 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import { Layout } from "./page/Applayout";
+import { AppLayout } from "./page/Applayout";
 import { PublicLayout } from "./page/PublicLayout";
 import { useEffect, useState, type ReactNode } from "react"; 
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "./constanst";
 import { jwtDecode } from "jwt-decode";
 import api from "./api";
+import { AuthLayout } from "./page/AuthLayout";
+import { FormLogin } from "./components/formAuth";
+import { Signin } from "./page/signin";
 
 type ProtectedRoutesProps = {
     children: ReactNode,
@@ -63,11 +66,27 @@ export const routes = createBrowserRouter([
         path: '/',
         element: <>
             <ProtectedRoutes>
-                <Layout/>
+                <AppLayout/>
             </ProtectedRoutes>
         </>,
         children:[
             {}
+        ]
+    },
+    {
+        path: 'auth',
+        element: <>
+            <AuthLayout />
+        </>,
+        children:[
+            {
+                path: 'login',
+                element: <FormLogin/>
+            },
+            {
+                path: 'signin',
+                element: <Signin/>
+            }
         ]
     },
     {
