@@ -7,7 +7,7 @@ interface Props {
 
 export function Header ({title}: Props) {
   return (
-    <header className="container-custom w-full shadow-2xl rounded-xl">
+    <header className="container-custom bg-white w-full shadow-2xl rounded-xl">
       <div className='grid grid-cols-2 p-3 items-center w-full'>
         <div className='h-14 flex items-center gap-4 '>
             <img src={logo} alt="delivery tracker" className='w-11' />
