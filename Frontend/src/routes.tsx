@@ -6,8 +6,8 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from "./constanst";
 import { jwtDecode } from "jwt-decode";
 import api from "./api";
 import { AuthLayout } from "./page/AuthLayout";
-import { FormLogin } from "./components/formAuth";
-import { UserForm, UserProfile } from "./components/userForm";
+import { FormLogin } from "./components/Auth/formAuth";
+import { UserForm, UserProfile } from "./components/Auth/userForm";
 import { Livraison } from "./page/livraison";
 import { NouvelleLivraison } from "./page/nouvelleLivraison";
 import { LivraisonProvider } from "./provider/LivraisonProvider";
@@ -21,7 +21,7 @@ function ProtectedRoutes({children}: ProtectedRoutesProps){
 
     useEffect(() => {
         auth().catch(() => setIsAuthorized(false))
-    })
+    }, [])
 
     const refreshToken = async () => {
         const refreshToken: string | null = localStorage.getItem(REFRESH_TOKEN)
