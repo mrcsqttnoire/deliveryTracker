@@ -1,7 +1,5 @@
 import { Bike, Box, LayoutGridCircles, Users } from "lucide-react";
-import { useState, type ChangeEvent, type SyntheticEvent } from "react";
 import { NavLink } from "react-router-dom";
-import { twMerge, type ClassNameValue } from "tailwind-merge";
 
 export function Navigation () {
 
