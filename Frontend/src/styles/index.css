@@ -1,0 +1,90 @@
+@import "tailwindcss";
+@font-face {
+    font-family: 'Manrope';
+    src: url('../assets/fonts/Manrope/Manrope.ttf');
+}
+@font-face {
+    font-family: 'Outfit';
+    src: url('../assets/fonts/Outfit/Outfit.ttf');
+}
+.tt{
+    color: rgba(83, 94, 123, 0.062);
+}
+@theme{
+    --color-primary: #E1312F;
+    --color-primary-300: rgba(225, 49, 47, .2);
+
+    --color-secondary: #535E7B;
+    --color-secondary-200: rgba(83, 94, 123, .5);
+
+    --color-tertiary: #00628A;
+    --color-neutral: #151C27;
+    --color-neutral-light : #F0F3FF;
+
+    --color-input: #F0F3FF;
+    --color-principale: #F9F9FF;
+
+    --color-gradient-left: #C7E7FF;
+    --color-gradient-right: #E7EEFE;
+    --color-gradient-cart: rgba(42,49,60,.6);
+    --color-gradient-cart-800: rgba(42,49,60,.8);
+
+    --color-en_attente: #9C5700;
+    --color-en_attent-bg: #FFECD2;
+
+    --color-en_route: #00628A;
+    --color-en_route-bg: #C7E7FF;
+    
+    --color-livree: #1B6D39;
+    --color-livree-bg: #D8F8E1;
+
+    --font-heading: 'Outfit';
+    --font-body: 'Manrope';
+}
+
+body{
+    @apply bg-principale;
+}
+
+.nav{
+    @apply flex-col font-body font-semibold;
+}
+
+.container-custom {
+    @apply w-full px-4 md:max-w-7xl m-auto ;
+}
+
+.container-custom-main {
+    @apply w-full px-8 md:max-w-7xl m-auto;
+}
+
+.center{
+    @apply flex justify-center items-center;
+}
+
+.focus{
+    @apply focus:border-secondary focus:outline focus:outline-secondary focus:invalid:border-pink-500 focus:invalid:outline-primary
+}
+
+.active{
+    @apply bg-white text-neutral
+}
+
+.inActive{
+    @apply bg-transparent text-secondary
+}
+
+.en_attente{
+    @apply bg-en_attent-bg text-en_attente px-3 py-1 rounded-2xl font-body
+font-bold
+}
+
+.en_route{
+    @apply bg-en_route-bg text-en_route px-3 py-1 rounded-2xl font-body
+font-bold
+}
+
+.livree{
+    @apply bg-livree-bg text-livree px-3 py-1 rounded-2xl font-body
+font-bold
+}
