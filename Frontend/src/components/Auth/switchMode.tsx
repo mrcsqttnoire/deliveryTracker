@@ -5,11 +5,6 @@ import { LogIn, Store } from "lucide-react";
 // import { useLogin } from "../provider/useLogin";
 import { useNavigate } from "react-router-dom";
 
-type btnType = {
-  btnActive: HTMLElement,
-  btnInActive: HTMLElement
-}
-
 function changeStateBtn(btnActive:HTMLElement, btnInActive:HTMLElement){
     btnActive?.classList.add("active")
     btnActive?.classList.remove("inActive")

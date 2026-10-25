@@ -4,13 +4,13 @@ import { type FormEvent } from "react";
 import { useUser } from "../../provider/CustomizedHooks";
 import { useNavigate } from "react-router-dom";
 
-type UserType = {
-    nom: string,
-    prenom: string,
-    telephone: string,
-    username: string,
-    password: string,
-}
+// type UserType = {
+//     nom: string,
+//     prenom: string,
+//     telephone: string,
+//     username: string,
+//     password: string,
+// }
 
 interface UserProps  {
     role: "proprietaire" | "livreur";

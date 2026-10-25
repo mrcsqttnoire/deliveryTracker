@@ -1,7 +1,7 @@
 import { useState, type FormEvent, type ReactNode } from "react";
 import { UserContext, type RoleType } from "./CustomizedHooks";
 import api from "../api";
-import { useNavigate, type NavigateFunction } from "react-router-dom";
+import { type NavigateFunction } from "react-router-dom";
 import axios from "axios";
 
 interface UserProviderProps {

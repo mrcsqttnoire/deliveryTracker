@@ -1,4 +1,4 @@
-import { twMerge, type ClassNameValue } from "tailwind-merge"
+import { twMerge } from "tailwind-merge"
 import { useLivraison } from "../../provider/CustomizedHooks"
 
 type photoType = {

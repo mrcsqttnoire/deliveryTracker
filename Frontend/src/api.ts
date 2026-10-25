@@ -1,4 +1,4 @@
-import axios, { type InternalAxiosRequestConfig } from "axios";
+import axios from "axios";
 import {ACCESS_TOKEN} from './constanst'
 
 const api = axios.create({
