@@ -4,7 +4,7 @@ import { Navigation } from "../components/shared/navigation";
 
 export function AppLayout () {
   return <>
-    <div className="h-screen">      
+    <div className="h-screen ">      
       <Header title="Livraison"/>
       <main className="center flex-col gap-4">
         <Outlet />  

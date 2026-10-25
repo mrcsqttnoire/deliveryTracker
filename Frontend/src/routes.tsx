@@ -8,10 +8,11 @@ import api from "./api";
 import { AuthLayout } from "./page/AuthLayout";
 import { FormLogin } from "./components/Auth/formAuth";
 import { UserForm, UserProfile } from "./components/Auth/userForm";
-import { NouvelleLivraison } from "./page/nouvelleLivraison";
+import { NouvelleLivraison } from "./page/Livraison/nouvelleLivraison";
 import { LivraisonProvider } from "./provider/LivraisonProvider";
-import { Livreur } from "./page/Livreur";
-import { Livraison } from "./page/Livraison";
+import { Livreur } from "./page/Livreurs/Livreur";
+import { Livraison } from "./page/Livraison/Livraison";
+import { Clients } from "./page/Clients/Client";
 
 type ProtectedRoutesProps = {
     children: ReactNode,
@@ -88,6 +89,10 @@ export const routes = createBrowserRouter([
             {
                 path: 'livreurs',
                 element: <Livreur />
+            },
+            {
+                path: 'clients',
+                element: <Clients />
             }
         ]
     },

@@ -5,7 +5,7 @@ import { Button } from "../shared/button";
 
 export function CardLivraison () {
   return <> 
-    <div className="flex flex-col gap-2 bg-white h-auto rounded-xl shadow-xl p-4">
+    <div className="flex flex-col gap-4 bg-white h-auto rounded-xl shadow-xl p-4">
         <div className="flex justify-between">
             <h5 className="font-body font-bold text-2xl">Hery Rakoto</h5>
             <BadgeLivraison type="en_attente" />

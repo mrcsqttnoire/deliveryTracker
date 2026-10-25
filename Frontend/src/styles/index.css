@@ -24,7 +24,7 @@
 
     --color-input: #F0F3FF;
     --color-principale: #F9F9FF;
-    --color-white-500 : rgba(255,255,255,.3);
+    --color-white-500 : rgba(255,255,255,.7);
 
     --color-gradient-left: #C7E7FF;
     --color-gradient-right: #E7EEFE;
@@ -53,7 +53,7 @@ body{
 }
 
 .active-nav{
-    @apply text-primary-800;
+    @apply text-primary;
 }
 
 .inactive-nav{
