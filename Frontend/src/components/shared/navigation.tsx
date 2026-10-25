@@ -4,15 +4,6 @@ import { NavLink } from "react-router-dom";
 import { twMerge, type ClassNameValue } from "tailwind-merge";
 
 export function Navigation () {
-  const [actif, setActif] = useState("selected")
-  const [inactif, setInactif] = useState("")
-
-  const selected = (e: ChangeEvent) => {
-    const source = e.target
-
-    source.classList.add("selected")
-  }
-  // const nav: HTMLElement[] = document.getElementById('linkNav')?.children
 
   return <>
       <nav className="bg-white-500 container-custom w-full h-16 grid grid-cols-4 items-center fixed inset-x-0 bottom-0 responsive-nav z-50 bg- text-secondary backdrop-blur-md rounded-t-xl shadow-[0_-10px_25px_rgba(0,0,0,0.15)] " id="linkNav">
