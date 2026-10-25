@@ -1,4 +1,5 @@
 import { twMerge, type ClassNameValue } from "tailwind-merge"
+import { useLivraison } from "../provider/CustomizedHooks"
 
 type photoType = {
     path: string,
@@ -11,11 +12,7 @@ interface DetailColisProps {
 
 export function DetailColis ({designation, photos}: DetailColisProps) {
 
-    const transformStyles: ClassNameValue = [
-        "rotate-0 translate-y-0",
-        "-rotate-6 -translate-x-2 md:-rotate-3",
-        "rotate-12 translate-x-3 md:rotate-6"
-    ];
+    const {transformStyles} =  useLivraison()
 
   return <>
     <div className="container-custom" >

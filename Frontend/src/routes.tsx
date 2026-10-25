@@ -10,6 +10,7 @@ import { FormLogin } from "./components/formAuth";
 import { UserForm, UserProfile } from "./components/userForm";
 import { Livraison } from "./page/livraison";
 import { NouvelleLivraison } from "./page/nouvelleLivraison";
+import { LivraisonProvider } from "./provider/LivraisonProvider";
 
 type ProtectedRoutesProps = {
     children: ReactNode,
@@ -73,12 +74,15 @@ export const routes = createBrowserRouter([
         </>,
         children:[
             {
-                path: 'livraison',
+                path: 'livraisons',
                 element: <Livraison />
             },
             {
-                path: 'livraison/create',
-                element: <NouvelleLivraison/>
+                path: 'livraisons/create',
+                element: 
+                <LivraisonProvider>
+                    <NouvelleLivraison/>
+                </LivraisonProvider>
             }
         ]
     },
