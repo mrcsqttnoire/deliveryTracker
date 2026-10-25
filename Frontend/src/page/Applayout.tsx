@@ -4,12 +4,13 @@ import { Navigation } from "../components/shared/navigation";
 
 export function AppLayout () {
   return <>
-    <body className="h-screen">      
+    <div className="h-screen">      
       <Header title="Livraison"/>
       <main className="center flex-col gap-4">
-        <Navigation/>
         <Outlet />  
+        <div className="h-16"></div>
       </main>
-    </body>
+      <Navigation/>
+    </div>
   </>
 }

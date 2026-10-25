@@ -8,11 +8,12 @@
     src: url('../assets/fonts/Outfit/Outfit.ttf');
 }
 .tt{
-    color: rgba(83, 94, 123, 0.062);
+    color: rgba(255, 255, 255, 0.562);
 }
 @theme{
     --color-primary: #E1312F;
     --color-primary-300: rgba(225, 49, 47, .2);
+    --color-primary-800: rgba(225, 49, 47, .8);
 
     --color-secondary: #535E7B;
     --color-secondary-200: rgba(83, 94, 123, .5);
@@ -23,6 +24,7 @@
 
     --color-input: #F0F3FF;
     --color-principale: #F9F9FF;
+    --color-white-500 : rgba(255,255,255,.3);
 
     --color-gradient-left: #C7E7FF;
     --color-gradient-right: #E7EEFE;
@@ -48,6 +50,14 @@ body{
 
 .nav{
     @apply flex-col font-body font-semibold;
+}
+
+.active-nav{
+    @apply text-primary-800;
+}
+
+.inactive-nav{
+    @apply text-secondary;
 }
 
 .container-custom {

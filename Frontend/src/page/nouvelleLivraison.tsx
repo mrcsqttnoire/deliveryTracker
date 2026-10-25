@@ -93,7 +93,7 @@ export function NouvelleLivraison () {
             </div>
         </div>
         <div className="flex justify-center  md:justify-end items-center gap-4  bg-white rounded-xl p-4 rounded-xl shadow-xl">
-            <Button className="bg-[#F0F3FF] text-secondary w-auto h-12 place-self-center">
+            <Button fn={deleteImg} type="reset" className="bg-[#F0F3FF] text-secondary w-auto h-12 place-self-center">
                 <X size={24}/>
             </Button>
             <Button className="text-white w-auto h-12 -self-center text-sm md:text-lg font-semibold font-body">
