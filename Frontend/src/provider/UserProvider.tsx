@@ -17,6 +17,7 @@ export function UserProvider({children}: UserProviderProps){
     const [username, setUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const [message, setMessage] = useState<string>(" ")
+    const [isLoading, setLoading] = useState<boolean>(false)
     
     // const navigate = useNavigate()
     const s_inscrire = async ( e: FormEvent, role: RoleType, nav: NavigateFunction) => { 
@@ -25,10 +26,18 @@ export function UserProvider({children}: UserProviderProps){
         if(nom.trim() && telephone.trim() && prenom.trim() && username.trim() && password.trim()){
             if(password.length >= 8){
                 try{
+                    setLoading(true)
                     const res = await api.post(routes, {nom, prenom, telephone, username, password}, {skipAuth: true})
-                    if (res.status == 201){
+
+                    if (res.status == 201 && role.role == "proprietaire"){
                         nav("/auth/login/")
+
+                    }else if (res.status == 201 && role.role == "livreur"){
+                        nav("livreurs")
+
                     } else {
+                        if (role.role == "livreur")
+                            setMessage("Impossible de enregistrer ce livreur")
                         setMessage("Impossible de créer votre compte")
                     }
                 } catch (err) {
@@ -38,6 +47,8 @@ export function UserProvider({children}: UserProviderProps){
                     } else {
                         setMessage("Une erreur inattendue est survenue");
                     }
+                } finally {
+                    setLoading(false)
                 }
             } else {
                 setMessage("Votre mot de passe est trop courte")
@@ -59,6 +70,7 @@ export function UserProvider({children}: UserProviderProps){
                 password, setPassword,
                 message, setMessage,
                 s_inscrire,
+                isLoading,
             }}>
             {children}
         </UserContext.Provider>

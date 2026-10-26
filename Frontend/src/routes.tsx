@@ -14,6 +14,7 @@ import { Livreur } from "./page/Livreurs/Livreur";
 import { Livraison } from "./page/Livraison/Livraison";
 import { Clients } from "./page/Clients/Client";
 import { Loading } from "./components/shared/loading";
+import { NouveauLivreur } from "./page/Livreurs/nouveauLivreur";
 
 type ProtectedRoutesProps = {
     children: ReactNode,
@@ -92,6 +93,27 @@ export const routes = createBrowserRouter([
             {
                 path: 'livreurs',
                 element: <Livreur />
+            },            
+            {
+                path: 'livreurs/create',
+                element: <NouveauLivreur/>,
+                children: [
+                    {
+                        path: '',
+                        element: 
+                            <UserForm 
+                                inputClassName="bg-white shadow-sm/8"
+                            />
+                    },
+                    {
+                        path: 'next',
+                        element: 
+                            <UserProfile 
+                                role="livreur"
+                                btn="Enregistrer"
+                            />
+                    },
+                ]
             },
             {
                 path: 'clients',

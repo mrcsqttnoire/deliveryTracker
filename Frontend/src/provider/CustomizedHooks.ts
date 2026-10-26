@@ -25,7 +25,10 @@ type ContextType = {
   message: string
   setMessage: (value: string) => void
 
+  isLoading: boolean
+
   s_inscrire: (e: FormEvent, role: RoleType, nav: NavigateFunction) => void
+  
 }
 
 export const UserContext = createContext<ContextType | null>(null)

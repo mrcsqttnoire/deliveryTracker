@@ -32,17 +32,15 @@ export function SwitchMode () {
   }
 
   return (
-      <div className="container-custom center">
-        <div className="flex p-2 gap-2 w-full md:max-w-5/7 lg:max-w-3/7  bg-input h-18 rounded-xl text-sm shadow-xl">
-          <Button fn={() => switchToLogin()} type="submit" className="active" id="login">
-            <LogIn />
-            Connexion
-          </Button>
-          <Button fn={()=> switchToSignin()} type="submit" className="inActive" id="signin">
-            <Store/>
-            Créer boutique
-          </Button>
-        </div>
-      </div>
+    <div className="flex p-2 gap-2 w-full bg-input h-18 rounded-xl text-sm shadow-xl">
+      <Button fn={() => switchToLogin()} type="submit" className="active" id="login">
+        <LogIn />
+        Connexion
+      </Button>
+      <Button fn={()=> switchToSignin()} type="submit" className="inActive" id="signin">
+        <Store/>
+        Créer boutique
+      </Button>
+    </div>
   );
 }
