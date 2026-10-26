@@ -111,6 +111,7 @@ export const routes = createBrowserRouter([
                             <UserProfile 
                                 role="livreur"
                                 btn="Enregistrer"
+                                r_path="/livreurs/create"
                             />
                     },
                 ]
@@ -137,7 +138,11 @@ export const routes = createBrowserRouter([
             },
             {
                 path: 'signin/next',
-                element: <UserProfile role="proprietaire"/>
+                element: 
+                    <UserProfile 
+                        role="proprietaire"
+                        r_path="/auth/signin/"
+                    />
             },
         ]
     },

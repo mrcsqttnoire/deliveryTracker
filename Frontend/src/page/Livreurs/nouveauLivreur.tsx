@@ -1,13 +1,18 @@
 import { Bike, Image, CloudUpload } from "lucide-react";
-import { useState, type ChangeEvent } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import { twMerge, type ClassNameValue } from "tailwind-merge";
 import { Outlet } from "react-router-dom";
+import { useUser } from "../../provider/CustomizedHooks";
 
 export function NouveauLivreur () {
     const [images, setImages] = useState<File[]>([])
-
-    // const bg: ClassNameValue = "bg-[rgba(240, 243, 255, 0.5)]"
     const [background, setBackground] = useState<ClassNameValue>("bg-neutral-light")
+    const {resetUserForm} = useUser()
+
+    useEffect(() => {
+        resetUserForm()
+     }, [])
+
     const saveImg = (e:ChangeEvent<HTMLInputElement>)=>{
         const files = e.currentTarget.files
         if(!files) return

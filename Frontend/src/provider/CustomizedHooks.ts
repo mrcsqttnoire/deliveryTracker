@@ -7,28 +7,26 @@ export type RoleType = {
 }
 
 type ContextType = {
-  nom: string
-  setNom: (value: string) => void
+    nom: string
+    setNom: (value: string) => void
 
-  prenom: string;
-  setPrenom: (value: string) => void
+    prenom: string;
+    setPrenom: (value: string) => void
 
-  telephone: string
-  setTelephone: (value: string) => void
+    telephone: string
+    setTelephone: (value: string) => void
 
-  username: string
-  setUsername: (value: string) => void
+    username: string
+    setUsername: (value: string) => void
 
-  password: string
-  setPassword: (value: string) => void
+    password: string
+    setPassword: (value: string) => void
 
-  message: string
-  setMessage: (value: string) => void
+    message: string
+    setMessage: (value: string) => void
 
-//   isLoading: boolean
-//   setIsLoading: (value: boolean) => void
-
-  s_inscrire: (e: FormEvent, role: RoleType, nav: NavigateFunction) => void
+    resetUserForm: () => void
+    s_inscrire: (e: FormEvent, role: RoleType, nav: NavigateFunction) => void
   
 }
 

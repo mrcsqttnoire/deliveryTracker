@@ -19,6 +19,15 @@ export function UserProvider({children}: UserProviderProps){
     const [message, setMessage] = useState<string>(" ")
     const {setIsLoading} = useLoading()
 
+    const resetUserForm = () => {
+        setNom("")
+        setPrenom("")
+        setTelephone("")
+        setUsername("")
+        setPassword("")
+        setMessage("")
+    }
+
     const s_inscrire = async ( e: FormEvent, role: RoleType, nav: NavigateFunction) => { 
         const routes = `/tracking-api/${role.role}/`
         e.preventDefault()
@@ -69,6 +78,7 @@ export function UserProvider({children}: UserProviderProps){
                 password, setPassword,
                 message, setMessage,
                 s_inscrire,
+                resetUserForm,
             }}>
             {children}
         </UserContext.Provider>

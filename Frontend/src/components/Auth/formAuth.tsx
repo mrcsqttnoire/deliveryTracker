@@ -1,10 +1,10 @@
 import { User, LockKeyhole, ChevronRight, BadgeInfo } from "lucide-react";
 import { Button } from "../shared/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../../api";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../constanst";
 import { useNavigate } from "react-router-dom";
-import { useLoading } from "../../provider/CustomizedHooks";
+import { useLoading, useUser } from "../../provider/CustomizedHooks";
 
 type User = {
     nom: string,
@@ -22,10 +22,14 @@ export function FormLogin () {
     const [message, setMessage] = useState<string | null>("")
     const {setIsLoading} = useLoading()
 
+    const {resetUserForm} = useUser()
+
+    useEffect(() => {
+        resetUserForm()
+     }, [])
+
     const seConnecter = async (e: React.FormEvent) => {
         e.preventDefault()
-
-
         try{
             if (username?.trim() && password?.trim()){
                 if(password.length >= 8){

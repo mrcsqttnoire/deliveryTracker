@@ -28,6 +28,12 @@ export function UserForm ({inputClassName}: StyleProps) {
         message,
      } = useUser()
 
+    // const {resetUserForm} = useUser()
+
+    // useEffect(() => {
+    //     resetUserForm()
+    //  }, [])
+
      function nextPage(e:FormEvent){
         e.preventDefault()
         navigate("next")
@@ -77,10 +83,11 @@ export function UserForm ({inputClassName}: StyleProps) {
 interface UserProps  {
     role: "proprietaire" | "livreur";
     btn?: "Se connecter" | "Enregistrer";
+    r_path: "/auth/signin/" | "/livreurs/create"
 }
 
 
-export function UserProfile({role, btn="Se connecter"}: UserProps){
+export function UserProfile({role, btn="Se connecter", r_path="/auth/signin/"}: UserProps){
     const navigate = useNavigate()
 
     const {
@@ -98,7 +105,7 @@ export function UserProfile({role, btn="Se connecter"}: UserProps){
                     <CircleCheckBig />
                     Créons votre profile
                 </h4>
-                <div className="flex items-center text-secondary" onClick={()=>{navigate("/livreurs/create")}}>
+                <div className="flex items-center text-secondary" onClick={()=>{navigate(r_path)}}>
                     <ChevronLeft className="cursor-pointer"/>
                     <p>2/2</p>
                 </div>

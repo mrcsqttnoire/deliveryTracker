@@ -2,8 +2,17 @@ import { Outlet } from "react-router-dom";
 import { SwitchMode } from "../components/Auth/switchMode";
 import { Truck } from "lucide-react";
 import bg_livraison  from "../assets/img/livraison_img.jpg"
+import { useEffect } from "react";
+import { useUser } from "../provider/CustomizedHooks";
 
 export function AuthLayout () {
+
+  const {resetUserForm} = useUser()
+
+  useEffect(() => {
+      resetUserForm()
+  }, [])
+
   return <>
     <main className="flex flex-col items-center justify-center h-screen">
         <div className="container-custom center ">
