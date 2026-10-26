@@ -1,5 +1,5 @@
 import { useState, type FormEvent, type ReactNode } from "react";
-import { UserContext, type RoleType } from "./CustomizedHooks";
+import { useLoading, UserContext, type RoleType } from "./CustomizedHooks";
 import api from "../api";
 import { type NavigateFunction } from "react-router-dom";
 import axios from "axios";
@@ -17,16 +17,15 @@ export function UserProvider({children}: UserProviderProps){
     const [username, setUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const [message, setMessage] = useState<string>(" ")
-    const [isLoading, setLoading] = useState<boolean>(false)
-    
-    // const navigate = useNavigate()
+    const {setIsLoading} = useLoading()
+
     const s_inscrire = async ( e: FormEvent, role: RoleType, nav: NavigateFunction) => { 
         const routes = `/tracking-api/${role.role}/`
         e.preventDefault()
         if(nom.trim() && telephone.trim() && prenom.trim() && username.trim() && password.trim()){
             if(password.length >= 8){
+                setIsLoading(true)
                 try{
-                    setLoading(true)
                     const res = await api.post(routes, {nom, prenom, telephone, username, password}, {skipAuth: true})
 
                     if (res.status == 201 && role.role == "proprietaire"){
@@ -48,7 +47,7 @@ export function UserProvider({children}: UserProviderProps){
                         setMessage("Une erreur inattendue est survenue");
                     }
                 } finally {
-                    setLoading(false)
+                    setIsLoading(false)
                 }
             } else {
                 setMessage("Votre mot de passe est trop courte")
@@ -70,7 +69,6 @@ export function UserProvider({children}: UserProviderProps){
                 password, setPassword,
                 message, setMessage,
                 s_inscrire,
-                isLoading,
             }}>
             {children}
         </UserContext.Provider>

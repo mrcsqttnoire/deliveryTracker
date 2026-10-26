@@ -1,6 +1,5 @@
 import { Bike, Image, CloudUpload } from "lucide-react";
 import { useState, type ChangeEvent } from "react";
-import { UserForm } from "../../components/Auth/userForm";
 import { twMerge, type ClassNameValue } from "tailwind-merge";
 import { Outlet } from "react-router-dom";
 

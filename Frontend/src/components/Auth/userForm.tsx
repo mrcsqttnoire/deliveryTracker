@@ -1,6 +1,6 @@
 import { BadgeInfo, ChevronLeft, ChevronRight, CircleCheckBig, FaceSlightlySmiling, IdCard,LockKeyhole,Phone, User, } from "lucide-react";
-import { Button, SpinLoading } from "../shared/button";
-import { useEffect, type FormEvent } from "react";
+import { Button } from "../shared/button";
+import { type FormEvent } from "react";
 import { useUser } from "../../provider/CustomizedHooks";
 import { useNavigate } from "react-router-dom";
 import { twMerge, type ClassNameValue } from "tailwind-merge";
@@ -87,7 +87,6 @@ export function UserProfile({role, btn="Se connecter"}: UserProps){
         username, setUsername,
         password, setPassword,
         message,
-        isLoading,
         s_inscrire,
     } = useUser()
 

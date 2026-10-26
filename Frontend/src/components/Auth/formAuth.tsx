@@ -4,6 +4,7 @@ import { useState } from "react";
 import api from "../../api";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../constanst";
 import { useNavigate } from "react-router-dom";
+import { useLoading } from "../../provider/CustomizedHooks";
 
 type User = {
     nom: string,
@@ -19,13 +20,16 @@ export function FormLogin () {
     const [username, setUsername] =  useState<string>("")
     const [password, setPassword] =  useState<string>("")
     const [message, setMessage] = useState<string | null>("")
+    const {setIsLoading} = useLoading()
 
     const seConnecter = async (e: React.FormEvent) => {
         e.preventDefault()
 
+
         try{
             if (username?.trim() && password?.trim()){
                 if(password.length >= 8){
+                    setIsLoading(true)
                     const res = await api.post(route, {username, password})
                     if(res &&res.status === 200){
                         const created_token = res.data.access
@@ -41,9 +45,11 @@ export function FormLogin () {
                 setMessage("Veuiller remplir tous les champs!")
                 return
             }
-        }catch (error){
+        } catch (error){
             console.log(error)
             setMessage("Impossible de se connecter")
+        } finally {
+            setIsLoading(false)
         }
     }
   return <>

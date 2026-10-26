@@ -25,7 +25,8 @@ type ContextType = {
   message: string
   setMessage: (value: string) => void
 
-  isLoading: boolean
+//   isLoading: boolean
+//   setIsLoading: (value: boolean) => void
 
   s_inscrire: (e: FormEvent, role: RoleType, nav: NavigateFunction) => void
   
@@ -54,4 +55,19 @@ export function useLivraison() {
     if (context == null) throw new Error("Aucun provider chargé")
 
     return context
+}
+
+type LoadingType = {
+    isLoading: boolean, 
+    setIsLoading: (val: boolean) => void
+}
+
+export const LoadingContext = createContext<LoadingType | null>(null)
+
+export function useLoading(){
+    const context: LoadingType | null = useContext(LoadingContext)
+
+    if(context == null) throw new Error("Aucun provider chargé")
+
+        return context
 }

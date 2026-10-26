@@ -1,8 +1,6 @@
 import type { ReactNode } from "react"
 import { twMerge, type ClassNameValue } from "tailwind-merge"
-import { Loading } from "./loading"
-import api from "../../api"
-import { useUser } from "../../provider/CustomizedHooks"
+import { useLoading } from "../../provider/CustomizedHooks"
 
 type btnType = {
     children: ReactNode,
@@ -13,9 +11,9 @@ type btnType = {
 }
 
 export function Button ({children, type="submit", className, fn, id}: btnType) {
-  const {isLoading} = useUser()
+  const {isLoading} = useLoading()
   return <>
-    <button onClick={fn} type={type}  className={twMerge("center gap-2 w-full bg-primary px-8 py-3 text-white font-body font-bold rounded-xl cursor-pointer hover:bg-primary/90 duration-50 disabled:bg-primary/70", className)} id={id} disabled={isLoading}>
+    <button onClick={fn} type={type}  className={twMerge("center gap-2 w-full bg-primary px-8 py-3 text-white font-body font-bold rounded-xl cursor-pointer hover:bg-primary/90 duration-50 disabled:bg-primary/65", className)} id={id} disabled={isLoading}>
         {isLoading && <SpinLoading/>}
         {children}
     </button>
