@@ -13,6 +13,7 @@ import { LivraisonProvider } from "./provider/LivraisonProvider";
 import { Livreur } from "./page/Livreurs/Livreur";
 import { Livraison } from "./page/Livraison/Livraison";
 import { Clients } from "./page/Clients/Client";
+import { Loading } from "./components/shared/loading";
 
 type ProtectedRoutesProps = {
     children: ReactNode,
@@ -60,7 +61,9 @@ function ProtectedRoutes({children}: ProtectedRoutesProps){
     }
 
     if(isAuthorized === null){
-            return <div className="center h-dvh">Loading...</div>
+            return <div className="center flex-col h-dvh">
+                <Loading/>
+            </div>
     }
 
     return isAuthorized ? children : <Navigate to="auth/login/"/>
