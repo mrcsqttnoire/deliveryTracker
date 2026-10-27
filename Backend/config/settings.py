@@ -183,7 +183,8 @@ SIMPLE_JWT = {
 }
 
 ## Configuration cloudinary pour le stockage
-print("Cloudinary env:", os.getenv("CLOUDINARY_CLOUD_NAME"))
+
+# print("Cloudinary env:", os.getenv("CLOUDINARY_CLOUD_NAME"))
 if not DEBUG:
     CLOUDINARY_CLOUD_NAME = config("CLOUDINARY_CLOUD_NAME", default="")
 
@@ -195,7 +196,8 @@ if not DEBUG:
         }
         STORAGES = {
             "default": {"BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage"},
-            "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+            "staticfiles": {"BACKEND": "cloudinary_storage.storage.StaticCloudinaryStorage"},
+            # "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},  
         }
 
 MEDIA_URL = "media/"
