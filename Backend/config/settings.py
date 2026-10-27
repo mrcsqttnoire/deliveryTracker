@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 from decouple import Csv, config
 from datetime import timedelta
@@ -182,7 +183,7 @@ SIMPLE_JWT = {
 }
 
 ## Configuration cloudinary pour le stockage
-
+print("Cloudinary env:", os.getenv("CLOUDINARY_CLOUD_NAME"))
 if not DEBUG:
     CLOUDINARY_CLOUD_NAME = config("CLOUDINARY_CLOUD_NAME", default="")
 
