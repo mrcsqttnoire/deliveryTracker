@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary_storage',
     'django.contrib.staticfiles',
+    'cloudinary',
     "rest_framework",
     "corsheaders",
     "tracking",
@@ -178,3 +180,22 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
+
+## Configuration cloudinary pour le stockage
+
+if not DEBUG:
+    CLOUDINARY_CLOUD_NAME = config("CLOUDINARY_CLOUD_NAME", default="")
+
+    if CLOUDINARY_CLOUD_NAME:
+        CLOUDINARY_STORAGE = {
+            "CLOUD_NAME": CLOUDINARY_CLOUD_NAME,
+            "API_KEY": config("CLOUDINARY_API_KEY"),
+            "API_SECRET": config("CLOUDINARY_API_SECRET"),
+        }
+        STORAGES = {
+            "default": {"BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage"},
+            "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+        }
+
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "media"

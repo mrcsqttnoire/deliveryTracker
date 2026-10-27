@@ -2,11 +2,19 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 import uuid
+from django.core.exceptions import ValidationError
 # Create your models here.
+
+def validate_image_size(photo_obj):
+    filesize = photo_obj.size
+    limit = 3.0 
+    if filesize > limit * 1024 * 1024:
+        raise ValidationError(f"La taille maximale de l'image est de {limit}MB")
 
 class User(AbstractUser):
     is_proprietaire = models.BooleanField(default=True)
     telephone = models.CharField(max_length=20, null=False)
+    photo = models.ImageField(upload_to="users_profils", null=True, blank=True, validators=[validate_image_size])
 
 class Proprietaire(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

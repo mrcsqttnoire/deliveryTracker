@@ -28,21 +28,46 @@ class UserSerializer(serializers.ModelSerializer):
             'nom', 
             'prenom', 
             'username', 
-            'role', 
             'password'
+            'role', 
+            'photo',
         ]
         extra_kwargs = {
             'password': {'write_only': True}
         }
+
+def get_photo_url(user, request=None):
+    if not user.photo:
+        return None
+
+    url = user.photo.url
+
+    if "res.cloudinary.com" in url and "/upload/" in url:
+        url = url.replace(
+            "/upload/",
+            "/upload/f_auto,q_auto,c_fill,g_face,w_200,h_200/",
+            1,
+        )
+
+    if request is not None:
+        # print("ok")
+        url = request.build_absolute_uri(url)
+    
+    return url
 
 class ProprietaireSerializer(serializers.ModelSerializer):
     # user = UserSerializer(read_only=True)
     email = serializers.CharField(source='user.username', read_only=True)
     # is_proprietaire = serializers.BooleanField(source='user.is_proprietaire')
     role = serializers.SerializerMethodField()
+    optimized_photo = serializers.SerializerMethodField()
 
     def get_role(self, obj):
         return 'Propriétaire' if obj.user.is_proprietaire else 'Livreur'
+
+    
+    def get_optimized_photo(self, obj):
+        return get_photo_url(obj.user, self.context.get('request') )
 
     class Meta:
         model = Proprietaire
@@ -50,7 +75,8 @@ class ProprietaireSerializer(serializers.ModelSerializer):
             'nom', 
             'prenom', 
             'email', 
-            'role'
+            'role',
+            'optimized_photo',
         ]
 
 class ProprietaireInscriptionSerializer(serializers.ModelSerializer):
@@ -65,6 +91,7 @@ class ProprietaireInscriptionSerializer(serializers.ModelSerializer):
             'telephone',
             'username',
             'password',
+            'photo',
         ]
         extra_kwargs = {
             'password': {'write_only': True},
@@ -84,6 +111,11 @@ class LivreurSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username')
     telephone = serializers.CharField(source='user.telephone')
     password = serializers.CharField(source='user.password', write_only=True, required=False)
+    photo = serializers.ImageField(source='user.photo')
+    optimized_photo = serializers.SerializerMethodField(read_only=True)
+
+    def get_optimized_photo(self, obj):
+        return get_photo_url(obj.user, self.context.get('request'))
     # role = serializers.SerializerMethodField()
 
     # def get_role(self, obj):
@@ -97,7 +129,9 @@ class LivreurSerializer(serializers.ModelSerializer):
             'prenom',
             'telephone', 
             'username', 
-            'password'
+            'password',
+            'photo',
+            'optimized_photo',
         ]
         read_only_fields = ["id"]
 

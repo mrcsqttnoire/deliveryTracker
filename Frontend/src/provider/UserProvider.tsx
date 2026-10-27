@@ -28,27 +28,27 @@ export function UserProvider({children}: UserProviderProps){
         setMessage("")
     }
 
-    const s_inscrire = async ( e: FormEvent, role: RoleType, nav: NavigateFunction) => { 
-        const routes = `/tracking-api/${role.role}/`
+    const s_inscrire = async ( e: FormEvent, {role}: RoleType, nav: NavigateFunction) => { 
+        const routes = `/tracking-api/${role}/`
         e.preventDefault()
         if(nom.trim() && telephone.trim() && prenom.trim() && username.trim() && password.trim()){
             if(password.length >= 8){
                 setIsLoading(true)
                 try{
                     let res = await api.post(routes, {nom, prenom, telephone, username, password}, {skipAuth: false})
-                    if (role.role == "proprietaire"){
+                    if (role == "proprietaire"){
                         res = await api.post(routes, {nom, prenom, telephone, username, password}, {skipAuth: true})
                     }
 
-                    if (res.status == 201 && role.role == "proprietaire"){
+                    if (res.status == 201 && role == "proprietaire"){
                         nav("/auth/login/")
 
-                    }else if (res.status == 201 && role.role == "livreur"){
+                    }else if (res.status == 201 && role == "livreur"){
                         nav("livreurs")
 
                     } else {
-                        if (role.role == "livreur")
-                            setMessage("Impossible de enregistrer ce livreur")
+                        if (role == "livreur")
+                            setMessage("Impossible d' enregistrer ce livreur")
                         setMessage("Impossible de créer votre compte")
                     }
                 } catch (err) {

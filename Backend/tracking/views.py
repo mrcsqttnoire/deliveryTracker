@@ -21,14 +21,15 @@ User = get_user_model()
     
 #     return Response(serializer.data)
 
-# class ProprietaireList(APIView):
-#     permission_classes = [IsAuthenticated, IsAdminUser]
+class ProprietaireList(generics.ListAPIView):
+    queryset = Proprietaire.objects.all()
+    serializer_class = ProprietaireSerializer
+    permission_classes = [IsAuthenticated, IsProprietaire]
 
-#     def get(self, request):
-#         props = Proprietaire.objects.all()
-#         serializer = ProprietaireSerializer(props, many=True)
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(user=self.request.user)
 
-#         return Response(serializer.data)
 
 class ProprietaireCreateAPIView(generics.CreateAPIView):
     Model = User
