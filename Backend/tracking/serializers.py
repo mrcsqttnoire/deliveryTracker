@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.db import transaction
 from rest_framework import serializers
 from .models import Destination, Livraison, Photo, Proprietaire, Livreur, Client
+from django.core.exceptions import ValidationError
 
 User = get_user_model()
 # print(User)
@@ -108,11 +109,18 @@ class ProprietaireInscriptionSerializer(serializers.ModelSerializer):
 
 
 class LivreurSerializer(serializers.ModelSerializer):
+    def validate_image_size(photo_obj):
+        filesize = photo_obj.size
+        limit = 2.0 
+        if filesize > limit * 1024 * 1024:
+            raise ValidationError(f"La taille maximale de l'image est de {limit}MB")
+        
     username = serializers.CharField(source='user.username')
     telephone = serializers.CharField(source='user.telephone')
     password = serializers.CharField(source='user.password', write_only=True, required=False)
-    photo = serializers.ImageField(source='user.photo')
+    photo = serializers.ImageField(source='user.photo', required=False, allow_null=True, validators=[validate_image_size])
     optimized_photo = serializers.SerializerMethodField(read_only=True)
+
 
     def get_optimized_photo(self, obj):
         return get_photo_url(obj.user, self.context.get('request'))
