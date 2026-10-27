@@ -100,10 +100,7 @@ export const routes = createBrowserRouter([
                 children: [
                     {
                         path: '',
-                        element: 
-                            <UserForm 
-                                inputClassName="bg-white shadow-sm/8"
-                            />
+                        element: <UserForm/>
                     },
                     {
                         path: 'next',

@@ -5,7 +5,7 @@ import { Button } from "../shared/button"
 
 export function CardLivreur () {
   return <>
-    <div className="flex flex-col gap-3 bg-white h-auto rounded-xl shadow-xl p-4">
+    <div className="flex flex-col gap-3 bg-white h-auto rounded-xl shadow-xl p-4 hover:-translate-y-0.5    duration-300">
         <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
                 <div >
@@ -42,11 +42,11 @@ export function CardLivreur () {
             </div>
         </div>
         <div className="flex gap-2">
-            <Button className="bg-gradient-right text-neutral">
+            <Button className="bg-gradient-right text-neutral hover:bg-gradient-right hover:opacity-85 duration-50">
                 <Navigation className="text-primary"/>
                 Assigner 
             </Button>
-            <Button className="w-auto bg-gradient-right text-neutral"><EllipsisVertical size={18} /></Button>
+            <Button className="w-auto bg-gradient-right text-neutral hover:bg-gradient-right hover:opacity-85"><EllipsisVertical size={18} /></Button>
         </div>
     </div>
   </>

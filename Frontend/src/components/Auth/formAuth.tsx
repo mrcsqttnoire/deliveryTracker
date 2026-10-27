@@ -67,14 +67,14 @@ export function FormLogin () {
             <label htmlFor="username" className="font-body font-semibold text-md">Email</label>
             <div className="relative w-full h-12">
                 <User className="absolute top-1/2 -translate-y-1/2 left-4 Text-Black text-secondary"/>
-                <input type="email" id="username" value={username} className="w-full font-body bg-input h-full pl-[calc(32px+24px)] rounded-xl focus" name="username" placeholder="Veuillez entrer votre email" required onChange={(e)=>setUsername(e.target.value)}/>
+                <input type="email" id="username" value={username} className="w-full font-body bg-white shadow-sm/10 h-full pl-[calc(32px+24px)] rounded-xl focus" name="username" placeholder="Veuillez entrer votre email" required onChange={(e)=>setUsername(e.target.value)}/>
             </div>
         </div>
         <div className="flex flex-col gap-1.5 w-full text-neutral">
             <label htmlFor="password" className="font-body font-semibold text-md">Mot de passe</label>
             <div className="relative w-full h-12">
                 <LockKeyhole className="absolute top-1/2 -translate-y-1/2 left-4 Text-Black text-secondary"/>
-                <input type="password" id="password" value={password} className="w-full font-body bg-input h-full pl-[calc(32px+24px)] rounded-xl focus" name="password" placeholder="Entrez votre mot de passe ici" required onChange={(e)=>setPassword(e.target.value)}/>
+                <input type="password" id="password" value={password} className="w-full font-body bg-white shadow-sm/10 h-full pl-[calc(32px+24px)] rounded-xl focus" name="password" placeholder="Entrez votre mot de passe ici" required onChange={(e)=>setPassword(e.target.value)}/>
             </div>
         </div>
         <div className="w-full mt-2">

@@ -35,7 +35,10 @@ export function UserProvider({children}: UserProviderProps){
             if(password.length >= 8){
                 setIsLoading(true)
                 try{
-                    const res = await api.post(routes, {nom, prenom, telephone, username, password}, {skipAuth: true})
+                    let res = await api.post(routes, {nom, prenom, telephone, username, password}, {skipAuth: false})
+                    if (role.role == "proprietaire"){
+                        res = await api.post(routes, {nom, prenom, telephone, username, password}, {skipAuth: true})
+                    }
 
                     if (res.status == 201 && role.role == "proprietaire"){
                         nav("/auth/login/")

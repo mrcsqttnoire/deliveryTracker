@@ -3,21 +3,9 @@ import { Button } from "../shared/button";
 import { type FormEvent } from "react";
 import { useUser } from "../../provider/CustomizedHooks";
 import { useNavigate } from "react-router-dom";
-import { twMerge, type ClassNameValue } from "tailwind-merge";
-
-// type UserType = {
-//     nom: string,
-//     prenom: string,
-//     telephone: string,
-//     username: string,
-//     password: string,
-// }
-type StyleProps = {
-    inputClassName?: ClassNameValue;
-}
 
 
-export function UserForm ({inputClassName}: StyleProps) {
+export function UserForm () {
     const navigate = useNavigate()
 
     const {
@@ -27,12 +15,6 @@ export function UserForm ({inputClassName}: StyleProps) {
 
         message,
      } = useUser()
-
-    // const {resetUserForm} = useUser()
-
-    // useEffect(() => {
-    //     resetUserForm()
-    //  }, [])
 
      function nextPage(e:FormEvent){
         e.preventDefault()
@@ -53,21 +35,21 @@ export function UserForm ({inputClassName}: StyleProps) {
                 <label htmlFor="nom" className="font-body font-semibold text-md">Nom</label>
                 <div className="relative w-full h-12">
                     <IdCard className="absolute top-1/2 -translate-y-1/2 left-4 Text-Black text-secondary"/>
-                    <input type="text" id="nom" value={nom} className={twMerge("w-full font-body bg-input h-full pl-[calc(32px+24px)] rounded-xl focus", inputClassName)} name="nom" placeholder="ex: RASOAMALALA" required onChange={(e)=>setNom(e.target.value)}/>
+                    <input type="text" id="nom" value={nom} className={("w-full font-body bg-white shadow-sm/10 h-full pl-[calc(32px+24px)] rounded-xl focus")} name="nom" placeholder="ex: RASOAMALALA" required onChange={(e)=>setNom(e.target.value)}/>
                 </div>
             </div>
             <div className="flex flex-col gap-1.5 w-full text-neutral">
                 <label htmlFor="prenom" className="font-body font-semibold text-md">Prénom</label>
                 <div className="relative w-full h-12">
                     <FaceSlightlySmiling className="absolute top-1/2 -translate-y-1/2 left-4 Text-Black text-secondary"/>
-                    <input type="text" id="prenom" value={prenom} className={twMerge("w-full font-body bg-input h-full pl-[calc(32px+24px)] rounded-xl focus", inputClassName)} name="prenom" placeholder="ex: Marie sophie" required onChange={(e)=>setPrenom(e.target.value)}/>
+                    <input type="text" id="prenom" value={prenom} className={("w-full font-body bg-white shadow-sm/10 h-full pl-[calc(32px+24px)] rounded-xl focus")} name="prenom" placeholder="ex: Marie sophie" required onChange={(e)=>setPrenom(e.target.value)}/>
                 </div>
             </div>
             <div className="flex flex-col gap-1.5 w-full text-neutral">
                 <label htmlFor="telephone" className="font-body font-semibold text-md">Téléphone</label>
                 <div className="relative w-full h-12">
                     <Phone  className="absolute top-1/2 -translate-y-1/2 left-4 Text-Black text-secondary"/>
-                    <input type="text" id="telephone" value={telephone} className={twMerge("w-full font-body bg-input h-full pl-[calc(32px+24px)] rounded-xl focus", inputClassName)} name="telephone" placeholder="ex: 0333169049" required onChange={(e)=>setTelephone(e.target.value)}/>
+                    <input type="text" id="telephone" value={telephone} className={("w-full font-body bg-white shadow-sm/10 h-full pl-[calc(32px+24px)] rounded-xl focus")} name="telephone" placeholder="ex: 0333169049" required onChange={(e)=>setTelephone(e.target.value)}/>
                 </div>
             </div>
             <div className="w-full mt-2">
@@ -114,14 +96,14 @@ export function UserProfile({role, btn="Se connecter", r_path="/auth/signin/"}: 
                 <label htmlFor="username" className="font-body font-semibold text-md">Email</label>
                 <div className="relative w-full h-12">
                     <User  className="absolute top-1/2 -translate-y-1/2 left-4 Text-Black text-secondary"/>
-                    <input type="email" id="username" value={username} className="w-full font-body bg-input h-full pl-[calc(32px+24px)] rounded-xl focus" name="username" placeholder="Veuillez entrer votre email" required onChange={(e)=>setUsername(e.target.value)}/>
+                    <input type="email" id="username" value={username} className="w-full font-body bg-white shadow-sm/10 h-full pl-[calc(32px+24px)] rounded-xl focus" name="username" placeholder="Veuillez entrer votre email" required onChange={(e)=>setUsername(e.target.value)}/>
                 </div>
             </div>
             <div className="flex flex-col gap-1.5 w-full text-neutral">
                 <label htmlFor="password" className="font-body font-semibold text-md">Mot de passe</label>
                 <div className="relative w-full h-12">
                     <LockKeyhole  className="absolute top-1/2 -translate-y-1/2 left-4 Text-Black text-secondary"/>
-                    <input type="password" id="password" value={password} className="w-full font-body bg-input h-full pl-[calc(32px+24px)] rounded-xl focus" name="password" placeholder="Entrez votre mot de passe ici" required onChange={(e)=>setPassword(e.target.value)}/>
+                    <input type="password" id="password" value={password} className="w-full font-body bg-white shadow-sm/10 h-full pl-[calc(32px+24px)] rounded-xl focus" name="password" placeholder="Entrez votre mot de passe ici" required onChange={(e)=>setPassword(e.target.value)}/>
                 </div>
             </div>
             <div className="w-full mt-2">

@@ -10,7 +10,7 @@ export function AppLayout () {
         <Outlet />  
         <div className="h-16"></div>
       </main>
-      <Navigation/>
     </div>
+    <Navigation/>
   </>
 }
