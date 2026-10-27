@@ -2,7 +2,7 @@ import { UserPlus } from "lucide-react";
 import { HeadPage } from "../../components/shared/headPage";
 import { CardLivreur } from "../../components/livreur/cardLivreur";
 
-export function Livreur () {
+export default function Livreur () {
 
   return <>
     <section className="container-custom-main rounded-xl shadow-xl py-6 bg-bg-principale">

@@ -5,7 +5,7 @@ import { LivreurDetailMin } from "../components/livreur/livreur.min"
 import { DetailColis } from "../components/Livraison/detailColis"
 import { LivraisonProvider } from "../provider/LivraisonProvider"
 
-export function PublicLayout () {
+export default function PublicLayout () {
 
   const photos = [
       {path: "/src/assets/img/test/billie-3.png"},

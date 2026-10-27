@@ -2,7 +2,7 @@ import { CirclePlus, Search } from "lucide-react";
 import { CardLivraison } from "../../components/Livraison/cardLivraison";
 import { HeadPage } from "../../components/shared/headPage";
 
-export function Livraison () {
+export default function Livraison () {
   return <>
     <section className="container-custom-main rounded-xl shadow-xl py-4 bg-bg-principale">
         <div className="flex flex-col gap-4 ">

@@ -13,7 +13,7 @@ type User = {
 }
 
 
-export function FormLogin () {
+export default function FormLogin () {
     const navigate = useNavigate()
     const route = "/auth/jwt/create/"
 

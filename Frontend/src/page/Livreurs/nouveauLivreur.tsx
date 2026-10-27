@@ -5,7 +5,7 @@ import { Outlet } from "react-router-dom";
 import { useCompression, useUser } from "../../provider/CustomizedHooks";
 import { SpinLoading } from "../../components/shared/button";
 
-export function NouveauLivreur () {
+export default function NouveauLivreur () {
     // const [images, setImages] = useState<File[]>([])
     const [background, setBackground] = useState<ClassNameValue>("bg-neutral-light")
     const {resetUserForm} = useUser()

@@ -1,7 +1,8 @@
 import { Loading } from "../../components/shared/loading";
 
-export function Clients () {
+export default function Clients () {
   return <>
-    <Loading></Loading>
+    <Loading>
+    </Loading>
   </>
 }

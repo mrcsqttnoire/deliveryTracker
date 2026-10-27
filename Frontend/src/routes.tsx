@@ -1,20 +1,26 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import { AppLayout } from "./page/Applayout";
-import { PublicLayout } from "./page/PublicLayout";
-import { useEffect, useState, type ReactNode } from "react"; 
+import { lazy, useEffect, useState, type ReactNode } from "react"; 
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "./constanst";
 import { jwtDecode } from "jwt-decode";
 import api from "./api";
-import { AuthLayout } from "./page/AuthLayout";
-import { FormLogin } from "./components/Auth/formAuth";
-import { UserForm, UserProfile } from "./components/Auth/userForm";
-import { NouvelleLivraison } from "./page/Livraison/nouvelleLivraison";
+import { Loading, SuspenseLayout } from "./components/shared/loading";
 import { LivraisonProvider } from "./provider/LivraisonProvider";
-import { Livreur } from "./page/Livreurs/Livreur";
-import { Livraison } from "./page/Livraison/Livraison";
-import { Clients } from "./page/Clients/Client";
-import { Loading } from "./components/shared/loading";
-import { NouveauLivreur } from "./page/Livreurs/nouveauLivreur";
+
+const AppLayout = lazy(() => import('./page/Applayout'))
+const AuthLayout = lazy(() => import('./page/AuthLayout'))
+const PublicLayout = lazy(() => import('./page/PublicLayout'))
+
+const Livraison = lazy(() => import('./page/Livraison/Livraison'))
+const NouvelleLivraison = lazy(() => import('./page/Livraison/nouvelleLivraison'))
+
+const Livreur = lazy(() => import('./page/Livreurs/Livreur'))
+const NouveauLivreur = lazy(() => import('./page/Livreurs/nouveauLivreur'))
+
+const Clients = lazy(() => import('./page/Clients/Client'))
+
+const UserForm = lazy(() => import('./components/Auth/userForm'))
+const UserProfile = lazy(() => import('./components/Auth/userProfile'))
+const FormLogin = lazy(() => import('./components/Auth/formAuth'))
 
 type ProtectedRoutesProps = {
     children: ReactNode,
@@ -75,47 +81,67 @@ export const routes = createBrowserRouter([
         path: '/',
         element: <>
             <ProtectedRoutes>
-                <AppLayout/>
+                <SuspenseLayout>
+                    {<AppLayout/>}
+                </SuspenseLayout>
             </ProtectedRoutes>
         </>,
         children:[
             {
                 path: 'livraisons',
-                element: <Livraison />
+                element: <SuspenseLayout>
+                    <Livraison/>
+                </SuspenseLayout>
             },
             {
                 path: 'livraisons/create',
                 element: 
                 <LivraisonProvider>
-                    <NouvelleLivraison/>
+                    <SuspenseLayout>
+                        <NouvelleLivraison/>
+                    </SuspenseLayout>
                 </LivraisonProvider>
             },
             {
                 path: 'livreurs',
-                element: <Livreur />
+                element: 
+                <SuspenseLayout>
+                    <Livreur/>
+                </SuspenseLayout>
             },            
             {
                 path: 'livreurs/create',
-                element: <NouveauLivreur/>,
+                element: 
+                    <SuspenseLayout>
+                        <NouveauLivreur/>
+                    </SuspenseLayout>,
                 children: [
                     {
                         path: '',
-                        element: <UserForm/>
+                        element: 
+                            <SuspenseLayout>
+                                <UserForm/>
+                            </SuspenseLayout>
                     },
                     {
                         path: 'next',
                         element: 
-                            <UserProfile 
-                                role="livreur"
-                                btn="Enregistrer"
-                                r_path="/livreurs/create"
-                            />
+                            <SuspenseLayout>
+                                <UserProfile 
+                                    role="livreur"
+                                    btn="Enregistrer"
+                                    r_path="/livreurs/create"
+                                />
+                            </SuspenseLayout>
                     },
                 ]
             },
             {
                 path: 'clients',
-                element: <Clients />
+                element: 
+                <SuspenseLayout>
+                    <Clients />
+                </SuspenseLayout>
             }
         ]
     },

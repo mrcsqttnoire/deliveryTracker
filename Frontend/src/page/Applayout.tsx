@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import { Header } from "../components/shared/header";
 import { Navigation } from "../components/shared/navigation";
 
-export function AppLayout () {
+export default function AppLayout () {
   return <>
     <div className="h-screen ">      
       <Header title="Livraison"/>

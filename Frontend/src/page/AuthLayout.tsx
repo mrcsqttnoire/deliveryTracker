@@ -5,7 +5,7 @@ import bg_livraison  from "../assets/img/livraison_img.jpg"
 import { useEffect } from "react";
 import { useUser } from "../provider/CustomizedHooks";
 
-export function AuthLayout () {
+export default function AuthLayout () {
 
   const {resetUserForm} = useUser()
 
