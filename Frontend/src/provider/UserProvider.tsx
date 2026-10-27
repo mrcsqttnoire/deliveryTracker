@@ -1,5 +1,5 @@
 import { useState, type FormEvent, type ReactNode } from "react";
-import { useLoading, UserContext, type RoleType } from "./CustomizedHooks";
+import { useCompression, useLoading, UserContext, type RoleType } from "./CustomizedHooks";
 import api from "../api";
 import { type NavigateFunction } from "react-router-dom";
 import axios from "axios";
@@ -18,6 +18,10 @@ export function UserProvider({children}: UserProviderProps){
     const [password, setPassword] = useState<string>("")
     const [message, setMessage] = useState<string>(" ")
     const {setIsLoading} = useLoading()
+    const {
+        setImages,
+        compressedImg, setCompressedImg,
+    } = useCompression()
 
     const resetUserForm = () => {
         setNom("")
@@ -26,25 +30,44 @@ export function UserProvider({children}: UserProviderProps){
         setUsername("")
         setPassword("")
         setMessage("")
+        setCompressedImg([])
+        setImages([])
     }
 
     const s_inscrire = async ( e: FormEvent, {role}: RoleType, nav: NavigateFunction) => { 
-        const routes = `/tracking-api/${role}/`
         e.preventDefault()
+        const routes = `/tracking-api/${role}/`
+
         if(nom.trim() && telephone.trim() && prenom.trim() && username.trim() && password.trim()){
             if(password.length >= 8){
                 setIsLoading(true)
                 try{
-                    let res = await api.post(routes, {nom, prenom, telephone, username, password}, {skipAuth: false})
+
+                    const data = new FormData()
+                    data.append('nom', nom)
+                    data.append('prenom', prenom)
+                    data.append('telephone', telephone)
+                    data.append('username', username)
+                    data.append('password', password)
+
+                    if(compressedImg && compressedImg.length > 0){
+                        compressedImg.forEach((img) => {
+                            data.append('photo', img, img.name)
+                        })
+                    }
+
+                    let res = await api.post(routes, data, {skipAuth: false})
                     if (role == "proprietaire"){
-                        res = await api.post(routes, {nom, prenom, telephone, username, password}, {skipAuth: true})
+                        res = await api.post(routes, data, {skipAuth: true})
                     }
 
                     if (res.status == 201 && role == "proprietaire"){
+                        alert("Votre compte a été créé avec succès")
                         nav("/auth/login/")
 
                     }else if (res.status == 201 && role == "livreur"){
-                        nav("livreurs")
+                        alert("Bienvenu dans notre boutique")
+                        nav("/livreurs")
 
                     } else {
                         if (role == "livreur")

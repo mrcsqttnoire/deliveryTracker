@@ -15,8 +15,8 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
     ]
 
     return <>
-        <LivraisonContext value={{transformStyles}}>
+        <LivraisonContext.Provider value={{transformStyles}}>
             {children}
-        </LivraisonContext>
+        </LivraisonContext.Provider>
     </>
 }
