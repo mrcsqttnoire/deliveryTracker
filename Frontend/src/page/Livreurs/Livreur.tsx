@@ -5,7 +5,7 @@ import { CardLivreur } from "../../components/livreur/cardLivreur";
 export default function Livreur () {
 
   return <>
-    <section className="container-custom-main rounded-xl shadow-xl py-6 bg-bg-principale">
+    <section className="container-custom py-6 bg-bg-principale min-h-full">
       <div className="flex flex-col gap-4 ">
         <div>
           <HeadPage

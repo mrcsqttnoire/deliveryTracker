@@ -8,7 +8,7 @@ interface Props {
 export function Header ({title}: Props) {
   return (
     <header className="bg-white-500 container-custom sticky top-0 backdrop-blur-md w-full shadow-2xl rounded-xl z-50">
-      <div className='grid grid-cols-2 p-3 items-center w-full'>
+      <div className='grid grid-cols-2 py-3 items-center w-full'>
         <div className='h-14 flex items-center gap-4 '>
             <img src={logo} alt="delivery tracker" className='w-11' />
             <h3 className='font-heading font-bold text-3xl text-neutral'>{title}</h3>

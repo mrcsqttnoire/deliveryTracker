@@ -4,11 +4,11 @@ import { Navigation } from "../components/shared/navigation";
 
 export default function AppLayout () {
   return <>
-    <div className="h-screen ">      
+    <div className="flex h-dvh flex-col overflow-hidden">
       <Header title="Livraison"/>
-      <main className="center flex-col gap-4">
+      <main className="scrollbar-custom min-h-0 flex-1 scroll-smooth overflow-y-auto overscroll-y-contain pb-20">
         <Outlet />  
-        <div className="h-16"></div>
+        {/* <div className="h-16"></div> */}
       </main>
     </div>
     <Navigation/>

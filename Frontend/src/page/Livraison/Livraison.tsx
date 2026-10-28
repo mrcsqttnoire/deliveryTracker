@@ -4,8 +4,8 @@ import { HeadPage } from "../../components/shared/headPage";
 
 export default function Livraison () {
   return <>
-    <section className="container-custom-main rounded-xl shadow-xl py-4 bg-bg-principale">
-        <div className="flex flex-col gap-4 ">
+    <section className="container-custom py-4 bg-bg-principale">
+        <div className="flex flex-col gap-4">
             <HeadPage 
                 title="Mission du jour"
                 desc="Delivery Tracker"

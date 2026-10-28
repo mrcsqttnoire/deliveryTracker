@@ -25,6 +25,9 @@ type ContextType = {
     message: string
     setMessage: (value: string) => void
 
+    conf_password: string
+    setConfPassword: (value: string) => void
+
     resetUserForm: () => void
     s_inscrire: (e: FormEvent, role: RoleType, nav: NavigateFunction) => void
   

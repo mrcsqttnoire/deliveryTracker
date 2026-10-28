@@ -16,7 +16,9 @@ export function UserProvider({children}: UserProviderProps){
     const [telephone, setTelephone] = useState<string>("")
     const [username, setUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
-    const [message, setMessage] = useState<string>(" ")
+    const [conf_password, setConfPassword] = useState<string>("")
+    const [message, setMessage] = useState<string>("")
+
     const {setIsLoading} = useLoading()
     const {
         setImages,
@@ -29,6 +31,7 @@ export function UserProvider({children}: UserProviderProps){
         setTelephone("")
         setUsername("")
         setPassword("")
+        setConfPassword("")
         setMessage("")
         setCompressedImg([])
         setImages([])
@@ -37,52 +40,58 @@ export function UserProvider({children}: UserProviderProps){
     const s_inscrire = async ( e: FormEvent, {role}: RoleType, nav: NavigateFunction) => { 
         e.preventDefault()
         const routes = `/tracking-api/${role}/`
-
         if(nom.trim() && telephone.trim() && prenom.trim() && username.trim() && password.trim()){
             if(password.length >= 8){
-                setIsLoading(true)
-                try{
+                if (conf_password.trim() == password.trim()){
+                    setIsLoading(true)
+                    try{
+    
+                        const data = new FormData()
+                        data.append('nom', nom)
+                        data.append('prenom', prenom)
+                        data.append('telephone', telephone)
+                        data.append('username', username)
+                        data.append('password', password)
+    
+                        if(compressedImg && compressedImg.length > 0){
+                            compressedImg.forEach((img) => {
+                                data.append('photo', img, img.name)
+                            })
+                        }
 
-                    const data = new FormData()
-                    data.append('nom', nom)
-                    data.append('prenom', prenom)
-                    data.append('telephone', telephone)
-                    data.append('username', username)
-                    data.append('password', password)
-
-                    if(compressedImg && compressedImg.length > 0){
-                        compressedImg.forEach((img) => {
-                            data.append('photo', img, img.name)
-                        })
+                        let res
+                        if (role == "proprietaire"){
+                            res = await api.post(routes, data, {skipAuth: true})
+                        } else {
+                            res = await api.post(routes, data, {skipAuth: false}) 
+                        }
+                        
+                        if (res.status == 201 && role == "proprietaire"){
+                            alert("Votre compte a été créé avec succès")
+                            nav("/auth/login/")
+    
+                        }else if (res.status == 201 && role == "livreur"){
+                            alert("Bienvenu dans notre boutique")
+                            nav("/livreurs")
+    
+                        } else {
+                            if (role == "livreur")
+                                setMessage("Impossible d' enregistrer ce livreur")
+                            setMessage("Impossible de créer votre compte")
+                        }
+                    } catch (err) {
+                        if (axios.isAxiosError(err)) {
+                            const data = err.response?.data;
+                            setMessage(data?.detail ?? JSON.stringify(data) ?? "Erreur lors de la création du compte");
+                        } else {
+                            setMessage("Une erreur inattendue est survenue");
+                        }
+                    } finally {
+                        setIsLoading(false)
                     }
-
-                    let res = await api.post(routes, data, {skipAuth: false})
-                    if (role == "proprietaire"){
-                        res = await api.post(routes, data, {skipAuth: true})
-                    }
-
-                    if (res.status == 201 && role == "proprietaire"){
-                        alert("Votre compte a été créé avec succès")
-                        nav("/auth/login/")
-
-                    }else if (res.status == 201 && role == "livreur"){
-                        alert("Bienvenu dans notre boutique")
-                        nav("/livreurs")
-
-                    } else {
-                        if (role == "livreur")
-                            setMessage("Impossible d' enregistrer ce livreur")
-                        setMessage("Impossible de créer votre compte")
-                    }
-                } catch (err) {
-                    if (axios.isAxiosError(err)) {
-                        const data = err.response?.data;
-                        setMessage(data?.detail ?? JSON.stringify(data) ?? "Erreur lors de la création du compte");
-                    } else {
-                        setMessage("Une erreur inattendue est survenue");
-                    }
-                } finally {
-                    setIsLoading(false)
+                } else {
+                    setMessage("Le mot de passe ne convient pas")
+                    return
                 }
             } else {
                 setMessage("Votre mot de passe est trop courte")
@@ -103,6 +112,8 @@ export function UserProvider({children}: UserProviderProps){
                 username, setUsername,
                 password, setPassword,
                 message, setMessage,
+                conf_password, setConfPassword,
+
                 s_inscrire,
                 resetUserForm,
             }}>

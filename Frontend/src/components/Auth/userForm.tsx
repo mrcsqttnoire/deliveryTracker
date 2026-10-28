@@ -3,6 +3,8 @@ import { Button } from "../shared/button";
 import { type FormEvent } from "react";
 import { useUser } from "../../provider/CustomizedHooks";
 import { useNavigate } from "react-router-dom";
+import { Alert } from "../shared/alert";
+import { twMerge } from "tailwind-merge";
 
 
 export default function UserForm () {
@@ -23,7 +25,7 @@ export default function UserForm () {
 
   return <>
         <form onSubmit={(e) => nextPage(e)} className="center w-full  flex-col gap-4 bg-white p-4 rounded-xl shadow-lg">
-            <p className="">{message}</p>   
+            <Alert className={twMerge( message ? `` : "hidden")}>{message}</Alert>   
             <div className="w-full flex justify-between">
                 <h4 className="flex  gap-2 items-center font-heading font-bold text-xl self-start">
                     <BadgeInfo />

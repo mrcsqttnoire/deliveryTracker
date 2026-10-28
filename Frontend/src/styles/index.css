@@ -48,6 +48,11 @@ body{
     @apply bg-principale;
 }
 
+.scrollbar-custom {
+    scrollbar-width: none;
+}
+
+
 .btn-primary{
     @apply gap-2 w-full bg-primary px-8 py-3 text-white font-body font-bold rounded-xl cursor-pointer
 }
@@ -79,6 +84,9 @@ body{
 .focus{
     @apply focus:border-secondary focus:outline focus:outline-secondary focus:invalid:border-pink-500 focus:invalid:outline-primary
 }
+.unfocus{
+    @apply focus:outline-none focus:invalid:border-none
+}
 
 .active{
     @apply bg-white text-neutral
@@ -86,6 +94,10 @@ body{
 
 .inActive{
     @apply bg-transparent text-secondary
+}
+
+.invalid{
+    @apply aria-[invalid=true]:border-primary aria-[invalid=true]:border-1 text-primary aria-[invalid=true]:border-primary aria-[invalid=false]:border-secondary
 }
 
 .en_attente{
