@@ -99,3 +99,18 @@ export function useCompression(){
 
         return context
 }
+
+// ----------------------------------------ù
+type UtilitiesType = {
+    Bg_profile_client: ClassNameValue[]
+}
+
+export const UtilitiesContext = createContext<UtilitiesType | null>(null)
+
+export function useUtilities(){
+    const context: UtilitiesType | null = useContext(UtilitiesContext)
+
+    if(context == null) throw new Error("Aucun provider chargé")
+
+        return context
+}

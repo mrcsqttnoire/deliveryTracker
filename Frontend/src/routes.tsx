@@ -1,10 +1,14 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { ClientSkeleton } from "./skeleton/client/ClientSkeleton";
+import { createBrowserRouter, Navigate, useLocation } from "react-router-dom";
 import { lazy, useEffect, useState, type ReactNode } from "react"; 
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "./constanst";
 import { jwtDecode } from "jwt-decode";
 import api from "./api";
 import { Loading, SuspenseLayout } from "./components/shared/loading";
 import { LivraisonProvider } from "./provider/LivraisonProvider";
+import { LayoutSkeleton } from "./skeleton/LayoutSkeleton";
+import { LivreurSkeleton } from "./skeleton/livreur/LivreurSkeleton";
+import { Dashboard } from "./page/Dashboard";
 
 const AppLayout = lazy(() => import('./page/Applayout'))
 const AuthLayout = lazy(() => import('./page/AuthLayout'))
@@ -28,6 +32,7 @@ type ProtectedRoutesProps = {
 
 function ProtectedRoutes({children}: ProtectedRoutesProps){
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null)
+    const location = useLocation()
 
     useEffect(() => {
         auth().catch(() => setIsAuthorized(false))
@@ -68,9 +73,19 @@ function ProtectedRoutes({children}: ProtectedRoutesProps){
     }
 
     if(isAuthorized === null){
-            return <div className="center flex-col h-dvh">
-                <Loading/>
-            </div>
+        // if (location.pathname == "/clients"){
+        //     // console.log("ok")
+        //     return <LayoutSkeleton/>
+        // }
+        // if (location.pathname == "/livreurs"){
+        //     return <LivreurSkeleton/>
+        // }
+        // return <>
+        //     <div className="center flex-col h-dvh">
+        //             <Loading/>
+        //     </div>
+        // </>
+        return <LayoutSkeleton/>
     }
 
     return isAuthorized ? children : <Navigate to="auth/login/"/>
@@ -81,12 +96,16 @@ export const routes = createBrowserRouter([
         path: '/',
         element: <>
             <ProtectedRoutes>
-                <SuspenseLayout>
+                <SuspenseLayout fallback= {<LayoutSkeleton />}>
                     {<AppLayout/>}
                 </SuspenseLayout>
             </ProtectedRoutes>
         </>,
         children:[
+            {
+                path: '',
+                element: <Dashboard/>
+            },
             {
                 path: 'livraisons',
                 element: <SuspenseLayout>
@@ -105,14 +124,14 @@ export const routes = createBrowserRouter([
             {
                 path: 'livreurs',
                 element: 
-                <SuspenseLayout>
+                <SuspenseLayout fallback={<LivreurSkeleton/>}>
                     <Livreur/>
                 </SuspenseLayout>
             },            
             {
                 path: 'livreurs/create',
                 element: 
-                    <SuspenseLayout>
+                    <SuspenseLayout >
                         <NouveauLivreur/>
                     </SuspenseLayout>,
                 children: [
@@ -139,7 +158,7 @@ export const routes = createBrowserRouter([
             {
                 path: 'clients',
                 element: 
-                <SuspenseLayout>
+                <SuspenseLayout fallback={<ClientSkeleton/>}>
                     <Clients />
                 </SuspenseLayout>
             }

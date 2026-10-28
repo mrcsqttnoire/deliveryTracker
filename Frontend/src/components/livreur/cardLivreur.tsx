@@ -1,4 +1,4 @@
-import { CircleCheckBig, EllipsisVertical, Navigation, Phone, UserKey } from "lucide-react"
+import { CircleCheckBig, EllipsisVertical, Navigation, Phone, PhoneCall, UserKey } from "lucide-react"
 import  billie  from "../../assets/img/test/billie-1.jpg"
 import { BadgeLivraison } from "../Livraison/badge"
 import { Button } from "../shared/button"
@@ -32,7 +32,6 @@ export function CardLivreur () {
                     <p className="font-body font-bold text-neutral">5 livraison(s)</p>
                 </div>
             </div>
-            <div className="w-1 h-8 bg-white"></div>
             <div className="flex  text-secondary items-center gap-2">
                 <Phone/>
                 <div>
@@ -42,11 +41,16 @@ export function CardLivreur () {
             </div>
         </div>
         <div className="flex gap-2">
+            <Button className="w-auto bg-gradient-right text-primary hover:bg-gradient-right hover:opacity-85"> 
+                <PhoneCall size={18} />
+            </Button>
             <Button className="bg-gradient-right text-neutral hover:bg-gradient-right hover:opacity-85 duration-50">
                 <Navigation className="text-primary"/>
                 Assigner 
             </Button>
-            <Button className="w-auto bg-gradient-right text-neutral hover:bg-gradient-right hover:opacity-85"><EllipsisVertical size={18} /></Button>
+            <Button className="w-auto bg-gradient-right text-neutral hover:bg-gradient-right hover:opacity-85"> 
+                <EllipsisVertical size={18} />
+            </Button>
         </div>
     </div>
   </>

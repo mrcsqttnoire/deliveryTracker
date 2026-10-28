@@ -48,10 +48,16 @@ body{
     @apply bg-principale;
 }
 
+
 .scrollbar-custom {
     scrollbar-width: none;
 }
 
+/* @media (prefers-reduced-motion: reduce) {
+  html .react-loading-skeleton {
+    --pseudo-element-display: block;
+  }
+} */
 
 .btn-primary{
     @apply gap-2 w-full bg-primary px-8 py-3 text-white font-body font-bold rounded-xl cursor-pointer

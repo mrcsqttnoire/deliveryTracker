@@ -1,5 +1,18 @@
-import { Suspense, type ReactNode } from "react"
+import { Suspense,  type ReactNode } from "react"
 import logo  from "../../assets/img/logo.png"
+
+interface SuspenseProps {
+  children: ReactNode
+  fallback?: ReactNode
+}
+
+export function SuspenseLayout ({ children, fallback }: SuspenseProps) {
+    return <>
+        <Suspense fallback= {fallback ?? <Loading/>}>
+          {children}
+        </Suspense>
+    </>
+}
 
 export function Loading (){
   return <>
@@ -16,10 +29,4 @@ export function Loading (){
   </>
 }
 
-export function SuspenseLayout ({ children }: { children: ReactNode }) {
-    return <>
-        <Suspense fallback= {<Loading/>}>
-          {children}
-        </Suspense>
-    </>
-}
+
