@@ -1,4 +1,4 @@
-import { Bike, Calendar, Clock, Compass, Link, Navigation, Phone, UserRoundArrowLeft } from "lucide-react";
+import { Bike, Calendar, Clock, Compass, Link, Navigation } from "lucide-react";
 import { BadgeLivraison } from "./badge";
 import { Button } from "../shared/button";
 

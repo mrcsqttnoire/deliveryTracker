@@ -32,7 +32,7 @@ type ProtectedRoutesProps = {
 
 function ProtectedRoutes({children}: ProtectedRoutesProps){
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null)
-    const location = useLocation()
+    // const location = useLocation()
 
     useEffect(() => {
         auth().catch(() => setIsAuthorized(false))

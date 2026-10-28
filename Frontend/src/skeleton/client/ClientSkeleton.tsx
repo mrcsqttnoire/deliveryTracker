@@ -1,6 +1,5 @@
 import Skeleton from "react-loading-skeleton";
 import { CardSkeleton } from "../../components/skeleton/cardSkeleton";
-import { LayoutSkeleton } from "../LayoutSkeleton";
 
 export function ClientSkeleton () {
     return <>

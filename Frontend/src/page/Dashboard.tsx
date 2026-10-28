@@ -1,7 +1,8 @@
-import { Bike, CheckCheck, CircleDot, Dot, HeartHandshake, Hourglass, Store, UserGroup } from "lucide-react";
+import { Bike, CheckCheck, CircleDot, HeartHandshake, Hourglass, Store, UserGroup } from "lucide-react";
 import { CardLivraison } from "../components/Livraison/cardLivraison";
 import { NavLink } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
+import { Filter } from "../components/shared/filter";
 // import { Button } from "../components/shared/button";
 
 export function Dashboard () {
@@ -97,17 +98,7 @@ export function Dashboard () {
                         <h4 className="font-heading font-bold text-2xl text-neutral">Course recente</h4>
                         <a href="/livraison" className="text-primary font-body font-semibold">Tout voir</a>
                     </div>
-                    <div className="grid grid-cols-3 gap-4">
-                        <NavLink to={"/"} className={(active)=>(twMerge("bg-white py-4 px-8 text-center font-body font-semibold shadow-sm/15 rounded-4xl", active ? "bg-neutral text-white" : ""))}>
-                            Toutes
-                        </NavLink >
-                        <NavLink to={""} className={(active)=>(twMerge("bg-white py-4 px-8 text-center text-secondary font-body font-semibold shadow-sm/15 rounded-4xl"))}>
-                            En cours
-                        </NavLink >
-                        <NavLink to={""} className={(active)=>(twMerge("bg-white py-4 px-8 text-center text-secondary font-body font-semibold shadow-sm/15 rounded-4xl"))}>
-                            En attentes
-                        </NavLink >
-                    </div>
+                    <Filter/>
                     <div className="grid grid-cols-1 lg:grid lg:grid-cols-2 gap-4">
                         <CardLivraison></CardLivraison>
                         <CardLivraison></CardLivraison>

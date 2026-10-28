@@ -1,7 +1,5 @@
 import Skeleton from "react-loading-skeleton";
 import { CardSkeleton } from "../../components/skeleton/cardSkeleton";
-import { LayoutSkeleton } from "../LayoutSkeleton";
-
 export function LivreurSkeleton () {
     return <>
             <section className="container-custom py-4 bg-principale min-h-full">

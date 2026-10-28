@@ -1,6 +1,7 @@
 import { CirclePlus, Search } from "lucide-react";
 import { CardLivraison } from "../../components/Livraison/cardLivraison";
 import { HeadPage } from "../../components/shared/headPage";
+import { Filter } from "../../components/shared/filter";
 
 export default function Livraison () {
   return <>
@@ -16,6 +17,7 @@ export default function Livraison () {
                 <Search className="absolute top-1/2 -translate-y-1/2 left-4 z-10"/>
                 <input type="text" name="livraison-search" className="absolute top-0 left-0 pl-[calc(32px+24px)] h-12 bg-[#F0F3FF] w-full font-body font-medium rounded-xl inset-shadow-sm " placeholder="Rechercher une livraison"/>
             </div>
+            <Filter />
             <div className="grid grid-cols-1 lg:grid lg:grid-cols-2 gap-4">
                 <CardLivraison></CardLivraison>
                 <CardLivraison></CardLivraison>
