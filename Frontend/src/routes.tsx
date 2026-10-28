@@ -1,10 +1,10 @@
 import { ClientSkeleton } from "./skeleton/client/ClientSkeleton";
-import { createBrowserRouter, Navigate, useLocation } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import { lazy, useEffect, useState, type ReactNode } from "react"; 
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "./constanst";
 import { jwtDecode } from "jwt-decode";
 import api from "./api";
-import { Loading, SuspenseLayout } from "./components/shared/loading";
+import { SuspenseLayout } from "./components/shared/loading";
 import { LivraisonProvider } from "./provider/LivraisonProvider";
 import { LayoutSkeleton } from "./skeleton/LayoutSkeleton";
 import { LivreurSkeleton } from "./skeleton/livreur/LivreurSkeleton";
