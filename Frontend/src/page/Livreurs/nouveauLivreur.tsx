@@ -57,7 +57,7 @@ export default function NouveauLivreur () {
                         <p className="font-body font-medium text-secondary drop-shadow-2xl">Veuillez assurer que le visage soit dégagé</p>
                         <label htmlFor="photo" className="h-10 w-auto px-4 center gap-2 mt-2 bg-white text-primary rounded-xl aria-disabled:bg-white/50 aria-disabled:text-primary/50 cursor-pointer hover:scale-98 duration-75 ease-in" aria-disabled={inCompressing}>
                             <CloudUpload />
-                            <p className="font-body font-bold ">Choisir une image</p>
+                            <p className="font-body font-bold ">{inCompressing ? "Compression..." : "Choisir une image"}</p>
                             <input 
                                 onChange={saveImg} 
                                 type="file" 

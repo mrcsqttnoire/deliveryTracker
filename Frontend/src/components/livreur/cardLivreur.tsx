@@ -2,8 +2,23 @@ import { CircleCheckBig, EllipsisVertical, Navigation, Phone, PhoneCall, UserKey
 import  billie  from "../../assets/img/test/billie-1.jpg"
 import { BadgeLivraison } from "../Livraison/badge"
 import { Button } from "../shared/button"
+import type { Livreur } from "../../provider/CustomizedHooks"
 
-export function CardLivreur () {
+// type Livreur = {
+//     id: string
+//     nom: string
+//     prenom: string
+//     telephone: string
+//     username: string
+//     optimized_photo: string
+//     photo: string
+// }   
+
+interface CardLivreurProps {
+    data: Livreur
+}
+
+export function CardLivreur ({data}: CardLivreurProps) {
   return <>
     <div className="flex flex-col gap-3 bg-white h-auto rounded-xl shadow-xl p-4 hover:-translate-y-0.5    duration-300">
         <div className="flex justify-between items-center">
@@ -12,10 +27,10 @@ export function CardLivreur () {
                     <img src={billie} alt="profile" className="w-12 h-12 rounded-full"/>
                 </div>
                 <div>
-                    <h3 className="font-heading font-semibold text-xl text-neutral">Faly R.</h3>
+                    <h3 className="font-heading font-semibold text-xl text-neutral">{data.nom}</h3>
                     <div className="flex gap-2 items-center font-body font-medium text-secondary">
                         <UserKey size={18}/>
-                        <p>faly@gmail.com</p>
+                        <p>{data.username}</p>
                     </div>
                 </div>
             </div>
@@ -36,7 +51,7 @@ export function CardLivreur () {
                 <Phone/>
                 <div>
                     <h5 className="font-body font-bold text-sm">Téléphone</h5>
-                    <p className="font-body font-bold text-neutral"> 0333169523</p>
+                    <p className="font-body font-bold text-neutral"> {data.telephone}</p>
                 </div>
             </div>
         </div>

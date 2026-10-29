@@ -7,6 +7,7 @@ import { LoadingProvider } from './provider/LoadingProvider';
 import { CompressionImage } from './provider/CompressionImage';
 
 import 'react-loading-skeleton/dist/skeleton.css';
+import { LivreurProvider } from './provider/LivreurProvider';
 
 function App() {
   return (
@@ -14,7 +15,9 @@ function App() {
       <LoadingProvider>
         <CompressionImage>
           <UserProvider>
-            <RouterProvider router={routes} />
+            <LivreurProvider>
+              <RouterProvider router={routes} />
+            </LivreurProvider>
           </UserProvider>
         </CompressionImage>
       </LoadingProvider>

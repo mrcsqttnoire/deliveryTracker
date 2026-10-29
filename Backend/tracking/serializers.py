@@ -138,6 +138,7 @@ class LivreurSerializer(serializers.ModelSerializer):
             'telephone', 
             'username', 
             'password',
+            'status',
             'photo',
             'optimized_photo',
         ]

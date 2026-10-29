@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 import {ACCESS_TOKEN} from './constanst'
 
 const api = axios.create({
@@ -26,5 +26,7 @@ api.interceptors.request.use(
         )
     }
 )
+
+
 
 export default api

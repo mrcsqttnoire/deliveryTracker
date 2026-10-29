@@ -114,3 +114,30 @@ export function useUtilities(){
 
         return context
 }
+
+// ----------------------------------------
+
+export type Livreur = {
+    id: string,
+    nom: string,
+    prenom: string,
+    telephone: string,
+    username: string,
+    optimized_photo: string,
+    photo: string,
+    status: string
+}   
+
+type LivreurContextType = {
+    livreursList: Livreur[] | null
+}
+
+export const LivreurContext = createContext<LivreurContextType | null>(null)
+
+export function useLivreur(){
+    const context: LivreurContextType | null = useContext(LivreurContext)
+
+    if (context === null) throw new Error("Aucun provider chargé")
+
+    return context
+}
