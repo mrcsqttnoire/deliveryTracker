@@ -71,6 +71,7 @@ export function UserProvider({children}: UserProviderProps){
                             nav("/auth/login/")
     
                         }else if (res.status == 201 && role == "livreur"){
+                            // getLivreurs()
                             alert("Bienvenu dans notre boutique")
                             nav("/livreurs")
     

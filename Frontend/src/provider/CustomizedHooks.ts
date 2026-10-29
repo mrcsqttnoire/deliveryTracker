@@ -103,6 +103,8 @@ export function useCompression(){
 // ----------------------------------------ù
 type UtilitiesType = {
     Bg_profile_client: ClassNameValue[]
+    isOpen: boolean
+    setIsOpen: (val: boolean)=>void
 }
 
 export const UtilitiesContext = createContext<UtilitiesType | null>(null)
@@ -130,6 +132,7 @@ export type Livreur = {
 
 type LivreurContextType = {
     livreursList: Livreur[] | null
+    getLivreurs: () => void
 }
 
 export const LivreurContext = createContext<LivreurContextType | null>(null)

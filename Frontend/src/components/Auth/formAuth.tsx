@@ -5,6 +5,8 @@ import api from "../../api";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../constanst";
 import { useNavigate } from "react-router-dom";
 import { useLoading, useUser } from "../../provider/CustomizedHooks";
+import { Alert } from "../shared/alert";
+import { twMerge } from "tailwind-merge";
 
 type User = {
     nom: string,
@@ -34,7 +36,7 @@ export default function FormLogin () {
             if (username?.trim() && password?.trim()){
                 if(password.length >= 8){
                     setIsLoading(true)
-                    const res = await api.post(route, {username, password})
+                    const res = await api.post(route, {username, password}, {skipAuth: true})
                     if(res &&res.status === 200){
                         const created_token = res.data.access
                         const refresh_token = res.data.refresh
@@ -58,7 +60,7 @@ export default function FormLogin () {
     }
   return <>
     <form onSubmit={seConnecter} className="center w-full flex-col gap-4 bg-white p-4 rounded-xl shadow-lg">
-        <p className="">{message}</p>   
+        <Alert className={twMerge( message ? `` : "hidden")}>{message}</Alert>    
         <h4 className="flex  gap-2 items-center font-heading font-bold text-xl self-start">
             <BadgeInfo />
             Entrez votre identification

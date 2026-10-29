@@ -1,13 +1,21 @@
-import { BadgeInfo, UserPlus } from "lucide-react";
+import { UserPlus } from "lucide-react";
 import { HeadPage } from "../../components/shared/headPage";
 import { CardLivreur } from "../../components/livreur/cardLivreur";
 import { useLivreur } from "../../provider/CustomizedHooks";
 import { Info } from "../../components/shared/info";
+import { useEffect } from "react";
 
 
 
 export default function Livreur () {
-  const {livreursList} = useLivreur()
+  const {
+    livreursList,
+    getLivreurs
+  } = useLivreur()
+
+  useEffect(()=>{
+    getLivreurs()
+  }, [])
 
   return <>
     <section className="container-custom py-6 bg-bg-principale min-h-full">
@@ -36,19 +44,14 @@ export default function Livreur () {
         </div>
         <div className="flex flex-col gap-4">
           <h3 className="font-body font-semibold text-[16px}">Liste des livreurs</h3>
-          <div className="grid grid-cols-1 lg:grid lg:grid-cols-2 gap-4">
-            {
-              livreursList && livreursList?.map((l)=>(
-                <CardLivreur key={l.id} data={l}></CardLivreur>
-              ))
-            }
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+            {livreursList && livreursList?.map((livreur) => (
+              <CardLivreur key={livreur.id} data={livreur} />
+            ))}
           </div>
-          {
-            !livreursList &&               
-            <Info>
-                Vous n'avez pas encore embaucher un livreur
-            </Info>
-          }
+            {livreursList !== null && livreursList.length === 0 && (
+              <Info>Vous n'avez pas encore embauché de livreur</Info>
+            )}
         </div>
       </div>
     </section>

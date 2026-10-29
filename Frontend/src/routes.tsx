@@ -1,14 +1,13 @@
 import { ClientSkeleton } from "./skeleton/client/ClientSkeleton";
-import { createBrowserRouter, Navigate } from "react-router-dom";
-import { lazy, useEffect, useState, type ReactNode } from "react"; 
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "./constanst";
-import { jwtDecode } from "jwt-decode";
-import api from "./api";
+import { createBrowserRouter } from "react-router-dom";
+import { lazy} from "react"; 
+
 import { SuspenseLayout } from "./components/shared/loading";
 import { LivraisonProvider } from "./provider/LivraisonProvider";
 import { LayoutSkeleton } from "./skeleton/LayoutSkeleton";
 import { LivreurSkeleton } from "./skeleton/livreur/LivreurSkeleton";
 import { Dashboard } from "./page/Dashboard";
+import { ProtectedRoutes } from "./security/ProtectedRoutes";
 
 const AppLayout = lazy(() => import('./page/Applayout'))
 const AuthLayout = lazy(() => import('./page/AuthLayout'))
@@ -26,70 +25,7 @@ const UserForm = lazy(() => import('./components/Auth/userForm'))
 const UserProfile = lazy(() => import('./components/Auth/userProfile'))
 const FormLogin = lazy(() => import('./components/Auth/formAuth'))
 
-type ProtectedRoutesProps = {
-    children: ReactNode,
-}
 
-function ProtectedRoutes({children}: ProtectedRoutesProps){
-    const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null)
-    // const location = useLocation()
-
-    useEffect(() => {
-        auth().catch(() => setIsAuthorized(false))
-    }, [])
-
-    const refreshToken = async () => {
-        const refreshToken: string | null = localStorage.getItem(REFRESH_TOKEN)
-            try{
-                const res = await api.post("/auth/jwt/refresh/", {
-                    'refresh' : refreshToken
-                })
-                if (res.status === 200){
-                    localStorage.setItem(ACCESS_TOKEN, res.data.access)
-                    setIsAuthorized(true)
-                }else {
-                    setIsAuthorized(false)
-                }
-            } catch (e) {
-                console.log(e)
-                setIsAuthorized(false)
-            }
-    }
-
-    const auth = async () => {
-        const token: string | null = localStorage.getItem(ACCESS_TOKEN)
-        if(!token){
-            setIsAuthorized(false)
-            return
-        }
-        const decoded_token = jwtDecode(token)
-        const now: number = Date.now() / 1000
-        if(decoded_token.exp && decoded_token.exp < now){
-            await refreshToken()
-        } else {
-            setIsAuthorized(true)
-        }
-
-    }
-
-    if(isAuthorized === null){
-        // if (location.pathname == "/clients"){
-        //     // console.log("ok")
-        //     return <LayoutSkeleton/>
-        // }
-        // if (location.pathname == "/livreurs"){
-        //     return <LivreurSkeleton/>
-        // }
-        // return <>
-        //     <div className="center flex-col h-dvh">
-        //             <Loading/>
-        //     </div>
-        // </>
-        return <LayoutSkeleton/>
-    }
-
-    return isAuthorized ? children : <Navigate to="auth/login/"/>
-}
 
 export const routes = createBrowserRouter([
     {

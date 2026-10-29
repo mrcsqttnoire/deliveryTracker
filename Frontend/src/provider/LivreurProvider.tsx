@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { LivreurContext, type Livreur } from "./CustomizedHooks";
 import api from "../api";
 
@@ -21,10 +21,10 @@ export function LivreurProvider ({children}: LivreurProviderProps) {
             .catch((err) => console.log(err))
         }
         
-        useEffect(() => {
-            getLivreurs()
-            // console.log(livreursList)
-    }, [])
+        // useEffect(() => {
+        //     getLivreurs()
+        //     // console.log(livreursList)
+        // }, [])
 
         // useEffect(() => {
         //     console.log(livreursList);
@@ -32,7 +32,8 @@ export function LivreurProvider ({children}: LivreurProviderProps) {
 
     return <LivreurContext.Provider
         value={{
-            livreursList
+            livreursList,
+            getLivreurs,
         }}
     >
         {children}

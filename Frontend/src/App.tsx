@@ -8,19 +8,22 @@ import { CompressionImage } from './provider/CompressionImage';
 
 import 'react-loading-skeleton/dist/skeleton.css';
 import { LivreurProvider } from './provider/LivreurProvider';
+import { UtilitiesProvider } from './provider/UtilitiesProvider';
 
 function App() {
   return (
     <SkeletonTheme baseColor="#DCE3F2" highlightColor="#F4F7FF">
-      <LoadingProvider>
-        <CompressionImage>
-          <UserProvider>
+      <UtilitiesProvider>
+        <LoadingProvider>
+          <CompressionImage>
             <LivreurProvider>
-              <RouterProvider router={routes} />
+              <UserProvider>
+                <RouterProvider router={routes} />
+              </UserProvider>
             </LivreurProvider>
-          </UserProvider>
-        </CompressionImage>
-      </LoadingProvider>
+          </CompressionImage>
+        </LoadingProvider>
+      </UtilitiesProvider>
     </SkeletonTheme>
   );
 }

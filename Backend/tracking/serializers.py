@@ -152,7 +152,7 @@ class LivreurSerializer(serializers.ModelSerializer):
             current_user = request.user if request else None
             proprietaire = getattr(current_user, 'proprietaire')
 
-            user = User.objects.create_user(**user_data)
+            user = User.objects.create_user(is_proprietaire=False,**user_data)
             livreur = Livreur.objects.create(user=user, proprietaire=proprietaire, **validated_data)
 
         return livreur

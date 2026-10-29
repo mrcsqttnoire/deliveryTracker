@@ -67,7 +67,7 @@ export default function UserProfile({role, btn="Se connecter", r_path="/auth/sig
                 </div>
             </div>
             <div className="flex flex-col gap-1.5 w-full text-neutral">
-                <label htmlFor="conf_password" className="font-body font-semibold text-md">Mot de passe</label>
+                <label htmlFor="conf_password" className="font-body font-semibold text-md">Confirmation du mot de passe</label>
                 <div className="relative w-full h-12">
                     <ShieldCheck  className={twMerge("absolute top-1/2 -translate-y-1/2 left-4 Text-Black text-secondary", !isPassword ? 'text-primary' : '')}/>
                     <input type="password" id="conf_password" value={conf_password} className={twMerge("w-full font-body bg-white shadow-sm/10 h-full pl-[calc(32px+24px)] rounded-xl focus", !isPassword ? 'invalid' : ' ')} name="password" placeholder="confirmez votre mot de passe ici" aria-invalid={isPassword} required onChange={(e)=>check_password(e)}/>

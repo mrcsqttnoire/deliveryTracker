@@ -42,6 +42,20 @@
 
     --font-heading: 'Outfit';
     --font-body: 'Manrope';
+
+    --animate-scaling: scaling .3s ease-in-out ;
+
+    @keyframes scaling {
+        0% {
+            transform: scale(.9);
+        }
+        50% {
+            transform: scale(1.1);
+        }
+        100%{
+            transform: scale(1)
+        }
+    }
 }
 
 body{
@@ -119,4 +133,19 @@ font-bold
 .livree{
     @apply bg-livree-bg text-livree px-3 py-1 rounded-2xl font-body
 font-bold
+}
+
+
+.menu-deroulant {
+  transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s;
+
+  opacity: 0;
+  transform: scale(0);
+  visibility: hidden;
+}
+
+.menu-deroulant.is-open {
+  opacity: 1;
+  transform: scale(1);
+  visibility: visible;
 }

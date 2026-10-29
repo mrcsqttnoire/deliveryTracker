@@ -1,5 +1,4 @@
 import { CircleCheckBig, EllipsisVertical, Navigation, Phone, PhoneCall, UserKey } from "lucide-react"
-import  billie  from "../../assets/img/test/billie-1.jpg"
 import { BadgeLivraison } from "../Livraison/badge"
 import { Button } from "../shared/button"
 import type { Livreur } from "../../provider/CustomizedHooks"
@@ -19,15 +18,21 @@ interface CardLivreurProps {
 }
 
 export function CardLivreur ({data}: CardLivreurProps) {
+    const initials = `${data.nom.charAt(0)}${data.prenom.charAt(0)}`;
+
   return <>
     <div className="flex flex-col gap-3 bg-white h-auto rounded-xl shadow-xl p-4 hover:-translate-y-0.5    duration-300">
         <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
-                <div >
-                    <img src={billie} alt="profile" className="w-12 h-12 rounded-full"/>
+                <div className="center w-12 h-12 rounded-full">
+                    {data.optimized_photo ? (
+                        <img src={data.optimized_photo} alt="profile" className="w-12 h-12 rounded-full object-cover"/>
+                    ):
+                        <p>{initials}</p>
+                    }
                 </div>
                 <div>
-                    <h3 className="font-heading font-semibold text-xl text-neutral">{data.nom}</h3>
+                    <h3 className="font-heading font-semibold text-xl text-neutral">{data.nom} {data.prenom}</h3>
                     <div className="flex gap-2 items-center font-body font-medium text-secondary">
                         <UserKey size={18}/>
                         <p>{data.username}</p>
