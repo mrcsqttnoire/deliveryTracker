@@ -195,13 +195,13 @@ if not DEBUG:
             "API_SECRET": config("CLOUDINARY_API_SECRET"),
         }
 
-        STATICFILES_STORAGE = "cloudinary_storage.storage.StaticCloudinaryStorage"
-        DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+        # STATICFILES_STORAGE = "cloudinary_storage.storage.StaticCloudinaryStorage"
+        # DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
         STORAGES = {
             "default": {"BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage"},
-            "staticfiles": {"BACKEND": "cloudinary_storage.storage.StaticCloudinaryStorage"},
-            # "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},  
+            # "staticfiles": {"BACKEND": "cloudinary_storage.storage.StaticCloudinaryStorage"},
+            "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},  
         }
 
 MEDIA_URL = "media/"
