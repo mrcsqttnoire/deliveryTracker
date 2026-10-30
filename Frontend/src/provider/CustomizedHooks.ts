@@ -22,9 +22,6 @@ type ContextType = {
     password: string
     setPassword: (value: string) => void
 
-    message: string
-    setMessage: (value: string) => void
-
     conf_password: string
     setConfPassword: (value: string) => void
 
@@ -45,7 +42,33 @@ export function useUser() {
 
 // -----------------------------------------------
 
+export type Livraisons = {
+    designation: string
+    date_livraison: string
+    heure_livraison: string
+    livreur: string
+}
+
 type LivraisonType = {
+    designation: string
+    setDesignation: (val: string) => void
+
+    dateLivraison: string
+    setDateLivraison: (val: string) => void
+
+    heureLivraison: string
+    setHeureLivraison: (val: string) => void 
+
+    livreurAssigne: string
+    setLivreurAssigne: (val: string) => void
+
+    livraisons: Livraisons[]
+    setLivraisons: (val: []) => void
+    
+    createLivraison: (e: FormEvent<HTMLFormElement>, nav: NavigateFunction) => void
+
+    viderChamp: () => void
+
     transformStyles: ClassNameValue[]
 }
 
@@ -86,8 +109,8 @@ type CompressionType = {
 
     inCompressing: boolean
 
-    setManyFile: (val: boolean) => void
-    CompresseImg: (e: ChangeEvent<HTMLInputElement>) => void
+    CompresseImg: (e: ChangeEvent<HTMLInputElement>, manyFile?: boolean) => void
+    deleteImg: ()=>void
 }
 
 export const CompressionContext = createContext<CompressionType | null>(null)
@@ -102,6 +125,9 @@ export function useCompression(){
 
 // ----------------------------------------ù
 type UtilitiesType = {
+    message: string
+    setMessage: (value: string) => void
+
     Bg_profile_client: ClassNameValue[]
     isOpen: boolean
     setIsOpen: (val: boolean)=>void

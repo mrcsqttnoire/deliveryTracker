@@ -1,13 +1,15 @@
 import { UserPlus } from "lucide-react";
 import { HeadPage } from "../../components/shared/headPage";
 import { CardLivreur } from "../../components/livreur/cardLivreur";
-import { useLivreur } from "../../provider/CustomizedHooks";
+import { useLivreur, type Livreur } from "../../provider/CustomizedHooks";
 import { Info } from "../../components/shared/info";
 import { useEffect } from "react";
 
 
 
 export default function Livreur () {
+  // const [livreurLibre, setLivreurLibre] = useState<Livreur[] | null>(null)
+  // const [livreurOcc, setLivreurOcc] = useState<Livreur[] | null>(null)
   const {
     livreursList,
     getLivreurs
@@ -15,7 +17,11 @@ export default function Livreur () {
 
   useEffect(()=>{
     getLivreurs()
+    
   }, [])
+  
+  const livreurLibre = livreursList?.filter((lv) => lv.status === "libre") ?? []
+  const livreurOcc = livreursList?.filter((lv) => lv.status === "occupe") ?? []
 
   return <>
     <section className="container-custom py-6 bg-bg-principale min-h-full">
@@ -34,11 +40,11 @@ export default function Livreur () {
             <h5 className="font-body font-bold text-sm text-secondary">INSCRITS</h5>
           </div>
           <div className="bg-livree-bg font-he text-livree place-content-center text-center rounded-xl ">
-            <p className="font-heading font-semibold text-xl">2</p>
+            <p className="font-heading font-semibold text-xl">{livreurLibre?.length ?? 0}</p>
             <h5 className="font-body font-bold text-sm">LIBRES</h5>
           </div>
           <div className="bg-en_route-bg text-en_route place-content-center text-center rounded-xl">
-            <p className="font-heading font-semibold text-xl">3</p>
+            <p className="font-heading font-semibold text-xl">{livreurOcc?.length ?? 0}</p>
             <h5 className="font-body font-bold text-sm">EN COURSE</h5>
           </div>
         </div>

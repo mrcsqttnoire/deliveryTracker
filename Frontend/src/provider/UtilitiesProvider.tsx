@@ -7,6 +7,8 @@ interface UtilitiesProviderProps {
 }
 
 export function UtilitiesProvider ({children}: UtilitiesProviderProps) {
+    
+    const [message, setMessage] = useState<string>("")
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const Bg_profile_client: ClassNameValue[] = [
@@ -17,6 +19,7 @@ export function UtilitiesProvider ({children}: UtilitiesProviderProps) {
     return <>
         <UtilitiesContext.Provider value={{
             Bg_profile_client,
+            message, setMessage,
             isOpen, setIsOpen,
         }}>
             {children}

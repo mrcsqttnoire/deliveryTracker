@@ -3,7 +3,7 @@ import { twMerge, type ClassNameValue } from "tailwind-merge";
 
 type badgeType = {
     title?: string,
-    type: "en_attente" | "en_route" | "livree",
+    type: "en_attente" | "en_route" | "livree" | string,
     className?: ClassNameValue,
 }
 
@@ -12,7 +12,7 @@ export function BadgeLivraison ({title, type, className}: badgeType) {
         en_attente: "En attente",
         en_route: "En route",
         livree: "Livrée",
-    }[type];
+    }[type]
 
   return <>
     <div className={twMerge("flex", type, className)}>

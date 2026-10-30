@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../../provider/CustomizedHooks";
+import { useUser, useUtilities } from "../../provider/CustomizedHooks";
 import { ChevronLeft, ChevronRight, CircleCheckBig, LockKeyhole, ShieldCheck, User } from "lucide-react";
 import { Button } from "../shared/button";
 import { useEffect, useState, type ChangeEvent } from "react";
@@ -17,12 +17,12 @@ export default function UserProfile({role, btn="Se connecter", r_path="/auth/sig
     const navigate = useNavigate()
 
     const [isPassword, setIsPassword] = useState<boolean>(true)
+    const {message, setMessage} = useUtilities()
 
     const {
         username, setUsername,
         password, setPassword,
         conf_password, setConfPassword,
-        message, setMessage,
         s_inscrire,
     } = useUser()
 

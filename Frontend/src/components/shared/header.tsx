@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 import { useUtilities } from '../../provider/CustomizedHooks';
 import { twMerge } from 'tailwind-merge';
 
+const exclude = ["/", "create", "next"]
 
 export function Header () {
   const location = useLocation()
@@ -16,7 +17,8 @@ export function Header () {
     if (p === "/"){
       setPage("Acceuil")
     } else {
-      setPage(p.replace('/', ""))
+      let title = exclude.reduce((p, ex)=>p.replaceAll(ex, ""), p)
+      setPage(title)
     }
   }, [location])
 

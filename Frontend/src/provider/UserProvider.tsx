@@ -1,5 +1,5 @@
 import { useState, type FormEvent, type ReactNode } from "react";
-import { useCompression, useLoading, UserContext, type RoleType } from "./CustomizedHooks";
+import { useCompression, useLoading, UserContext, useUtilities, type RoleType } from "./CustomizedHooks";
 import api from "../api";
 import { type NavigateFunction } from "react-router-dom";
 import axios from "axios";
@@ -17,8 +17,7 @@ export function UserProvider({children}: UserProviderProps){
     const [username, setUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const [conf_password, setConfPassword] = useState<string>("")
-    const [message, setMessage] = useState<string>("")
-
+    const {setMessage} = useUtilities()
     const {setIsLoading} = useLoading()
     const {
         setImages,
@@ -83,9 +82,9 @@ export function UserProvider({children}: UserProviderProps){
                     } catch (err) {
                         if (axios.isAxiosError(err)) {
                             const data = err.response?.data;
-                            setMessage(data?.detail ?? JSON.stringify(data) ?? "Erreur lors de la création du compte");
+                            setMessage(data?.detail ?? JSON.stringify(data) ?? "Erreur lors de la création du compte")
                         } else {
-                            setMessage("Une erreur inattendue est survenue");
+                            setMessage("Une erreur inattendue est survenue")
                         }
                     } finally {
                         setIsLoading(false)
@@ -112,7 +111,6 @@ export function UserProvider({children}: UserProviderProps){
                 telephone, setTelephone,
                 username, setUsername,
                 password, setPassword,
-                message, setMessage,
                 conf_password, setConfPassword,
 
                 s_inscrire,

@@ -12,6 +12,9 @@ import type { Livreur } from "../../provider/CustomizedHooks"
 //     optimized_photo: string
 //     photo: string
 // }   
+// type Status = {
+//     status: "libre" | "occupe"
+// }
 
 interface CardLivreurProps {
     data: Livreur
@@ -19,6 +22,17 @@ interface CardLivreurProps {
 
 export function CardLivreur ({data}: CardLivreurProps) {
     const initials = `${data.nom.charAt(0)}${data.prenom.charAt(0)}`;
+
+    const type = {
+        libre: "livree",
+        occupe: "en_route",
+    }[data.status]
+
+    const status = {
+        libre: "Libre",
+        occupe: "Occupé",
+    }[data.status]
+    
 
   return <>
     <div className="flex flex-col gap-3 bg-white h-auto rounded-xl shadow-xl p-4 hover:-translate-y-0.5    duration-300">
@@ -40,8 +54,8 @@ export function CardLivreur ({data}: CardLivreurProps) {
                 </div>
             </div>
             <BadgeLivraison
-                title="Libre"
-                type="livree"
+                title={status}
+                type={type ? type : "livree"}
             />
         </div>
         <div className="bg-input flex justify-between items-center px-4 py-2 rounded-xl">

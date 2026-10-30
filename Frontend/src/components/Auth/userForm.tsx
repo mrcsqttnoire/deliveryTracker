@@ -1,7 +1,7 @@
 import { BadgeInfo, ChevronRight, FaceSlightlySmiling, IdCard, Phone } from "lucide-react";
 import { Button } from "../shared/button";
 import { type FormEvent } from "react";
-import { useUser } from "../../provider/CustomizedHooks";
+import { useUser, useUtilities } from "../../provider/CustomizedHooks";
 import { useNavigate } from "react-router-dom";
 import { Alert } from "../shared/alert";
 import { twMerge } from "tailwind-merge";
@@ -9,13 +9,11 @@ import { twMerge } from "tailwind-merge";
 
 export default function UserForm () {
     const navigate = useNavigate()
-
+    const {message} = useUtilities()
     const {
         nom, setNom,
         prenom, setPrenom,
         telephone, setTelephone,
-
-        message,
      } = useUser()
 
      function nextPage(e:FormEvent){

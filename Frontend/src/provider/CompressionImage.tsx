@@ -9,10 +9,9 @@ interface CompressionImageProps {
 export function CompressionImage ({children}: CompressionImageProps) {
     const [images, setImages] = useState<File[] | null>(null);
     const [compressedImg, setCompressedImg] = useState<File[] | null>(null);
-    const [manyFile, setManyFile] = useState<boolean>(false);
     const [inCompressing, setInCompressing] = useState<boolean>(false);
     
-    const CompresseImg = async (e: ChangeEvent<HTMLInputElement>) => {
+    const CompresseImg = async (e: ChangeEvent<HTMLInputElement>, manyFile: boolean = false) => {
         setInCompressing(true)
         const imageFiles = e.currentTarget.files
         if (!imageFiles) return
@@ -45,12 +44,17 @@ export function CompressionImage ({children}: CompressionImageProps) {
         }
     }
 
+    const deleteImg = ()=>{
+        setCompressedImg(null)
+        // alert("ok")
+    }
+
     return <>
         <CompressionContext.Provider value={{
             images, setImages,
             compressedImg, setCompressedImg,
             inCompressing,
-            setManyFile,
+            deleteImg,
             CompresseImg
         }}>
             {children}

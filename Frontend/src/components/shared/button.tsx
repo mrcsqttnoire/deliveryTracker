@@ -7,14 +7,16 @@ type btnType = {
     type?: "submit" | "reset" | "button",
     className?: ClassNameValue,
     id?: string
+    noLoading?: boolean
+    disable?: boolean
     fn?: () => void,
 }
 
-export function Button ({children, type="submit", className, fn, id}: btnType) {
+export function Button ({children, type="submit", className, fn, id, noLoading=false, disable=false}: btnType) {
   const {isLoading} = useLoading()
   return <>
-    <button onClick={fn} type={type}  className={twMerge("center gap-2 w-full bg-primary px-8 py-3 text-white font-body font-bold rounded-xl cursor-pointer hover:bg-primary/90 duration-50 disabled:bg-primary/65", className)} id={id} disabled={isLoading}>
-        {isLoading && <SpinLoading/>}
+    <button onClick={fn} type={type}  className={twMerge("center gap-2 w-full bg-primary px-8 py-3 text-white font-body font-bold rounded-xl cursor-pointer hover:bg-primary/90 duration-50 disabled:bg-primary/65 active:scale-95", className)} id={id} disabled={isLoading || disable}>
+        {!noLoading && isLoading && <SpinLoading/>}
         {children}
     </button>
   </>

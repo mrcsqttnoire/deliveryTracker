@@ -73,12 +73,16 @@ body{
   }
 } */
 
+input:valid{
+    @apply border-primary
+}
+
 .btn-primary{
     @apply gap-2 w-full bg-primary px-8 py-3 text-white font-body font-bold rounded-xl cursor-pointer
 }
 
 .nav{
-    @apply flex-col font-body font-semibold;
+    @apply flex-col font-body font-semibold active:scale-95;
 }
 
 .active-nav{
