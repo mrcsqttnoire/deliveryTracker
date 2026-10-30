@@ -13,5 +13,44 @@ Content-Type: application/json
     "prenom": "be",
     "email": "rakoto@gmail.com"
 }
+###
+POST http://localhost:8000/auth/jwt/create/
+Content-Type: application/json
+
+{
+    "username": "sophie@gmail.com",
+    "password": "password123"
+}
 
 ### 
+POST http://localhost:8000/tracking-api/livraison/
+Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzkzMzcwMjExLCJpYXQiOjE3OTMzNjk5MTEsImp0aSI6Ijk3NzgxOGQ5YTg3MjRiYjBhZmQ0ZDJkYjU0ZWUwZTYzIiwidXNlcl9pZCI6IjE5In0.JZ8rA05YNeyhC636teZZ7-wNJEoHXLCLlC5Mi5cMh64
+Content-Type: multipart/form-data; boundary=----boundaryLimit
+
+------boundaryLimit
+Content-Disposition: form-data; name="designation"
+
+Teste Livraison dans sophie avec api
+------boundaryLimit
+Content-Disposition: form-data; name="date_livraison"
+
+2026-12-03
+------boundaryLimit
+Content-Disposition: form-data; name="heure_livraison"
+
+13:15:00
+------boundaryLimit
+Content-Disposition: form-data; name="livreur"
+
+86616722-f854-4252-a6a7-505205529273
+------boundaryLimit
+Content-Disposition: form-data; name="uploaded_photos"; filename="django_1.jpg"
+Content-Type: image/jpeg
+
+< D:/VE/Photo-2/django_1.jpg
+------boundaryLimit
+Content-Disposition: form-data; name="uploaded_photos"; filename="django_2.jpg"
+Content-Type: image/jpeg
+
+< D:/VE/Photo-2/django_2.jpg
+------boundaryLimit--

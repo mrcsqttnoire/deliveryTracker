@@ -23,13 +23,16 @@ export function CompressionImage ({children}: CompressionImageProps) {
         };
 
         try{
-            const promesse = Array.from(imageFiles).map((img) => imageCompression(img, options))
+            const promesse = Array.from(imageFiles).map( async (img) => {
+                const compressed = await imageCompression(img, options)
+                return new File([compressed], img.name, { type: compressed.type })
+            })
             const compresedFiles = await Promise.all(promesse)
 
             
             if (manyFile){
                 setCompressedImg((oldImg) => {
-                    const oldImgs = oldImg ? oldImg : []
+                    const oldImgs = oldImg ?? []
                     return [...oldImgs, ...compresedFiles]
                 })
             } else {

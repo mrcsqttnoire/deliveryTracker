@@ -85,7 +85,7 @@ class Livraison(models.Model):
 
 class Photo(models.Model):
     livraison = models.ForeignKey(Livraison, on_delete=models.CASCADE, related_name="photos")
-    lien = models.ImageField(upload_to="details")
+    lien = models.ImageField(upload_to="details_livraisons", null=True, blank=True, validators=[validate_image_size])
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

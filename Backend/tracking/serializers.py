@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import transaction
 from rest_framework import serializers
+from rest_framework.exceptions import PermissionDenied
 from .models import Destination, Livraison, Photo, Proprietaire, Livreur, Client
 from django.core.exceptions import ValidationError
 
@@ -108,12 +109,13 @@ class ProprietaireInscriptionSerializer(serializers.ModelSerializer):
         return user
 
 
+def validate_image_size(photo_obj):
+    filesize = photo_obj.size
+    limit = 3.0 
+    if filesize > limit * 1024 * 1024:
+        raise ValidationError(f"La taille maximale de l'image est de {limit}MB")
+    
 class LivreurSerializer(serializers.ModelSerializer):
-    def validate_image_size(photo_obj):
-        filesize = photo_obj.size
-        limit = 3.0 
-        if filesize > limit * 1024 * 1024:
-            raise ValidationError(f"La taille maximale de l'image est de {limit}MB")
         
     username = serializers.CharField(source='user.username')
     telephone = serializers.CharField(source='user.telephone')
@@ -150,6 +152,10 @@ class LivreurSerializer(serializers.ModelSerializer):
         with transaction.atomic():
             request = self.context['request']  
             current_user = request.user if request else None
+
+            if not hasattr(current_user, 'proprietaire'):
+                raise PermissionDenied("Seul un propriétaire peut créer un livreur.")
+            
             proprietaire = getattr(current_user, 'proprietaire')
 
             user = User.objects.create_user(is_proprietaire=False,**user_data)
@@ -208,7 +214,8 @@ class DestinationSerializer(serializers.ModelSerializer):
             'id',
         ]
 
-class PhotoSerialize(serializers.ModelField):
+class PhotoLivraisonSerializer(serializers.ModelSerializer):
+    # livraison = LivraisonSerializer()
     class Meta:
         model = Photo
         fields = [
@@ -218,6 +225,7 @@ class PhotoSerialize(serializers.ModelField):
         read_only_fields = [
             'id',
         ]
+
 
 class LivraisonSerializer(serializers.ModelSerializer):
     class LivreurProprietaireField(serializers.PrimaryKeyRelatedField):
@@ -231,14 +239,23 @@ class LivraisonSerializer(serializers.ModelSerializer):
             request = self.context['request']
             qs = Client.objects.all()
             return qs.filter(proprietaire__user = request.user)
-
-
+    
     proprietaire = serializers.CharField(source='proprietaire.nom', read_only=True)
     livreur = LivreurProprietaireField(required=False)
     client = ClientProprietaireField(required=False, read_only=True)
     destination = DestinationSerializer(read_only=True)
+    photos = PhotoLivraisonSerializer(many=True, read_only=True) 
+    uploaded_photos = serializers.ListField(child=serializers.ImageField(), write_only=True, required=False)
 
     # destination = DestinationSerializer()
+    def create(self, validated_data):
+        photos_data = validated_data.pop('uploaded_photos', [])
+        with transaction.atomic():
+            livraison = Livraison.objects.create(**validated_data)
+            
+            for photo in photos_data:
+                Photo.objects.create(livraison=livraison, lien=photo)
+        return livraison
 
     class Meta:
         model = Livraison
@@ -252,10 +269,14 @@ class LivraisonSerializer(serializers.ModelSerializer):
             'livreur',
             'client',
             'destination',
+            'photos',
+            'uploaded_photos'
         ]
         extra_kwargs = {
             'status': {'read_only': True}
         }
+
+
 
 class DetailLivraisonSerializer(serializers.ModelSerializer):
     destination = DestinationSerializer()

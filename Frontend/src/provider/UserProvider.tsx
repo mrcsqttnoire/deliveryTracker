@@ -54,7 +54,7 @@ export function UserProvider({children}: UserProviderProps){
     
                         if(compressedImg && compressedImg.length > 0){
                             compressedImg.forEach((img) => {
-                                data.append('photo', img, img.name)
+                                data.append('photo', img)
                             })
                         }
 

@@ -14,13 +14,6 @@ from tracking.serializers import DestinationSerializer, DetailLivraisonSerialize
 # Create your views here.
 User = get_user_model()
 
-# @api_view(["GET"])
-# def user_list(request):
-#     user = User.objects.select_related('proprietaire', 'livreur')
-#     serializer = UserSerializer(user, many=True)
-    
-#     return Response(serializer.data)
-
 class ProprietaireList(generics.ListAPIView):
     queryset = Proprietaire.objects.all()
     serializer_class = ProprietaireSerializer

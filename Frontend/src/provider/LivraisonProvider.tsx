@@ -1,6 +1,6 @@
 import { useState, type FormEvent, type ReactNode } from "react";
 import type { ClassNameValue } from "tailwind-merge";
-import { LivraisonContext, useLoading, useUtilities, type Livraisons } from "./CustomizedHooks";
+import { LivraisonContext, useCompression, useLoading, useUtilities, type Livraisons } from "./CustomizedHooks";
 import api from "../api";
 import axios from "axios";
 import type { NavigateFunction } from "react-router-dom";
@@ -16,6 +16,7 @@ const transformStyles: ClassNameValue[] = [
     "-rotate-6 -translate-x-2 md:-rotate-3",
     "rotate-12 translate-x-3 md:rotate-6"
 ]
+
 const route = "tracking-api/livraison/"
 
 
@@ -27,7 +28,7 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
     const [livreurAssigne, setLivreurAssigne] = useState<string>("")
     const {setMessage} = useUtilities()
     const {setIsLoading} = useLoading()
-
+    const {compressedImg, setCompressedImg} = useCompression()
     const [livraisons, setLivraisons] = useState<Livraisons[]>([])
     
     const createLivraison = async (e: FormEvent<HTMLFormElement>, nav: NavigateFunction) => {
@@ -64,21 +65,25 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
             data.append('date_livraison', dateLivraison)
             data.append('heure_livraison', heureLivraison)
             data.append('livreur', livreurAssigne)
-    
+            compressedImg?.forEach((img)=>{
+                data.append('uploaded_photos', img)
+            })
             const res = await api.post(
                 route,
                 data
             )
             if (res.status === 201){
                 setMessage("Livraison créée avec succès. Vous allez être redirigé!")
+                await new Promise(r => setTimeout(r, 2000))
                 viderChamp()
-                await new Promise(r => setTimeout(r, 3000))
                 nav("/livraisons")
             }
         } catch (err) {
             if (axios.isAxiosError(err)){
                 const data = err.response?.data
-                setMessage(data?.detail ?? JSON.stringify(data) ?? "Erreur lors de la création du compte")
+                if (data.detail){
+                    setMessage(data?.detail ?? JSON.stringify(data) ?? "Erreur lors de la création du compte")
+                }
             } else {
                 setMessage("Une erreur inattendue est survenue")
             }
@@ -94,7 +99,12 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
         setHeureLivraison("")
         setLivreurAssigne("")
         setMessage("")
+        setCompressedImg([])
     }
+
+    // const getLivraisons = async () => {
+
+    // }
 
     return <>
         <LivraisonContext.Provider value={{

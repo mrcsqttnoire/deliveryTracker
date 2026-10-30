@@ -1,4 +1,4 @@
-import { Bike, Box, CircleCheckBig, ImagePlus, Trash, TruckElectric, X } from "lucide-react";
+import { Bike, Box, CircleAlert, CircleCheckBig, ImagePlus, Trash, TruckElectric, X } from "lucide-react";
 import { useEffect } from "react";
 import { Button, SpinLoading } from "../../components/shared/button";
 import { useCompression, useLivraison, useLivreur, useUtilities } from "../../provider/CustomizedHooks";
@@ -70,8 +70,9 @@ export default function NouvelleLivraison () {
         </div>
         {message && !message.includes("passé") &&
              <Alert 
-                className={twMerge(message.includes("succès") && "bg-livree-bg/50 text-livree flex items-center gap-2 sticky top-4 justify-self-center w-11/12 backdrop-blur-xl z-50 animate-scaling ")}>
-                <CircleCheckBig className="shrink-0"/>
+                className={twMerge(message.includes("succès") && "bg-livree-bg/50 text-livree ","flex items-center gap-2 sticky top-4 justify-self-center w-11/12 backdrop-blur-xl z-50 animate-scaling ")}>
+                {message.includes("succès") && <CircleCheckBig className="shrink-0"/>}
+                {!message.includes("succès") && <CircleAlert className="shrink-0"/>}
                 {message}
             </Alert>
         }
