@@ -10,6 +10,7 @@ interface LivreurProviderProps {
 export function LivreurProvider ({children}: LivreurProviderProps) {
 
     const [livreursList, setLivreursList] = useState<Livreur[] | null>(null)
+    // const [livreur, setLivreur] = useState<Livreur[] | null>(null)
 
     const route = "tracking-api/livreur"
     const getLivreurs = async () => {
@@ -21,14 +22,13 @@ export function LivreurProvider ({children}: LivreurProviderProps) {
             .catch((err) => console.log(err))
         }
         
-        // useEffect(() => {
-        //     getLivreurs()
-        //     // console.log(livreursList)
-        // }, [])
+    // const getOneLivreur = async (id: string) => {
+    //     try{
+    //         const res = await api.get(route.concat(`${id}/`))
+    //     } catch (err) {
 
-        // useEffect(() => {
-        //     console.log(livreursList);
-        // }, [livreursList]);
+    //     }
+    // }
 
     return <LivreurContext.Provider
         value={{

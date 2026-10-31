@@ -3,7 +3,6 @@ import { createBrowserRouter } from "react-router-dom";
 import { lazy} from "react"; 
 
 import { SuspenseLayout } from "./components/shared/loading";
-import { LivraisonProvider } from "./provider/LivraisonProvider";
 import { LayoutSkeleton } from "./skeleton/LayoutSkeleton";
 import { LivreurSkeleton } from "./skeleton/livreur/LivreurSkeleton";
 import { Dashboard } from "./page/Dashboard";
@@ -51,11 +50,9 @@ export const routes = createBrowserRouter([
             {
                 path: 'livraisons/create',
                 element: 
-                <LivraisonProvider>
                     <SuspenseLayout>
                         <NouvelleLivraison/>
                     </SuspenseLayout>
-                </LivraisonProvider>
             },
             {
                 path: 'livreurs',

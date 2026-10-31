@@ -27,7 +27,7 @@ export function Header () {
   }
 
   return (
-    <header className=" bg-white-500 container-custom sticky top-0 backdrop-blur-md w-full shadow-2xl rounded-xl z-50">
+    <header className=" bg-white-500 container-custom md:w-full sticky top-0 backdrop-blur-md w-full shadow-2xl rounded-xl z-50">
       <div className='grid grid-cols-2 py-3 items-center w-full'>
         <div className='h-14 flex items-center gap-4 '>
             <img src={logo} alt="delivery tracker" className='w-11' />

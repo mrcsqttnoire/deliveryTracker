@@ -10,8 +10,8 @@ export default function AppLayout () {
 
   return <>
     <div className="flex h-dvh flex-col overflow-hidden">
-      <div className="relative z-50">
-        <Header/>
+      <Header/>
+      <div className="relative container-custom z-50">
         <Options className={twMerge("absolute right-4 z-50", isOpen && "is-open")}/>
       </div>
       <main className="scrollbar-custom min-h-0 flex-1 scroll-smooth overflow-y-auto overscroll-y-contain pb-20">

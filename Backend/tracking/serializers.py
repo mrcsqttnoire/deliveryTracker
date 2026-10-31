@@ -241,13 +241,16 @@ class LivraisonSerializer(serializers.ModelSerializer):
             return qs.filter(proprietaire__user = request.user)
     
     proprietaire = serializers.CharField(source='proprietaire.nom', read_only=True)
-    livreur = LivreurProprietaireField(required=False)
+    livreur = LivreurProprietaireField()
+    livreur_prenom = serializers.CharField(source='livreur.prenom', read_only=True)
+    livreur_telephone = serializers.CharField(source='livreur.user.telephone', read_only=True)
     client = ClientProprietaireField(required=False, read_only=True)
+    client_nom = serializers.CharField(source='client.nom' ,read_only=True)
+    client_prenom = serializers.CharField(source='client.prenom', read_only=True)
     destination = DestinationSerializer(read_only=True)
     photos = PhotoLivraisonSerializer(many=True, read_only=True) 
     uploaded_photos = serializers.ListField(child=serializers.ImageField(), write_only=True, required=False)
 
-    # destination = DestinationSerializer()
     def create(self, validated_data):
         photos_data = validated_data.pop('uploaded_photos', [])
         with transaction.atomic():
@@ -267,10 +270,14 @@ class LivraisonSerializer(serializers.ModelSerializer):
             'heure_livraison',
             'proprietaire',
             'livreur',
+            'livreur_prenom',
+            'livreur_telephone',
             'client',
+            'client_nom',
+            'client_prenom',
             'destination',
             'photos',
-            'uploaded_photos'
+            'uploaded_photos',
         ]
         extra_kwargs = {
             'status': {'read_only': True}
@@ -320,3 +327,30 @@ class DetailLivraisonSerializer(serializers.ModelSerializer):
             instance.save()
 
         return instance
+
+
+class LivraisonListSerializer(serializers.ModelSerializer):
+    livreur_prenom = serializers.CharField(source='livreur.prenom', read_only=True)
+    livreur_telephone = serializers.CharField(source='livreur.user.telephone', read_only=True)
+    client_nom = serializers.CharField(source='client.nom' ,read_only=True)
+    client_prenom = serializers.CharField(source='client.prenom', read_only=True)
+    destination_lat = serializers.CharField(source='destination.latitude', read_only=True)
+    destination_long = serializers.CharField(source='destination.longitude', read_only=True)
+    destination_repere = serializers.CharField(source='destination.repere', read_only=True)
+    
+    class Meta:
+        model = Livraison
+        fields = [
+            'id',
+            'designation',
+            'status',
+            'date_livraison',
+            'heure_livraison',
+            'livreur_prenom',
+            'livreur_telephone',
+            'client_nom',
+            'client_prenom',
+            'destination_lat',
+            'destination_long',
+            'destination_repere',
+        ]

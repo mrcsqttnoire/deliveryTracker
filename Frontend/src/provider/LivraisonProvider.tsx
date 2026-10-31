@@ -18,6 +18,7 @@ const transformStyles: ClassNameValue[] = [
 ]
 
 const route = "tracking-api/livraison/"
+const listRoute = "tracking-api/list-livraison/"
 
 
 export function LivraisonProvider({children}: LivraisonProviderProps){
@@ -102,9 +103,24 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
         setCompressedImg([])
     }
 
-    // const getLivraisons = async () => {
-
-    // }
+    const getLivraisons = async () => {
+        setIsLoading(true)
+        try{
+            const res = await api.get(listRoute)
+            if (res && res.status === 200){
+                const data = res.data
+                setLivraisons(data)    
+            }
+        } catch (err) {
+            if (axios.isAxiosError(err)){
+                setMessage("Erreur lors du chargement des données")
+            } else {
+                console.log(err)
+            }
+        } finally {
+            setIsLoading(false)
+        }
+    }
 
     return <>
         <LivraisonContext.Provider value={{
@@ -115,7 +131,7 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
             livreurAssigne, setLivreurAssigne, 
             livraisons, setLivraisons,
             viderChamp,
-            createLivraison,  
+            createLivraison, getLivraisons
         }}>
             {children}
         </LivraisonContext.Provider>

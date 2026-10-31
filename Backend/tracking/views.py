@@ -10,7 +10,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from tracking.permissions import IsProprietaire
 from tracking.models import Client, Destination, Livraison, Proprietaire, Livreur
-from tracking.serializers import DestinationSerializer, DetailLivraisonSerializer, LivraisonSerializer, LivreurSerializer, ProprietaireInscriptionSerializer, ProprietaireSerializer, UserSerializer, ClientSerializer
+from tracking.serializers import DestinationSerializer, DetailLivraisonSerializer, LivraisonListSerializer, LivraisonSerializer, LivreurSerializer, ProprietaireInscriptionSerializer, ProprietaireSerializer, UserSerializer, ClientSerializer
 # Create your views here.
 User = get_user_model()
 
@@ -73,9 +73,9 @@ class DestinationAPIView(generics.CreateAPIView):
     serializer_class = DestinationSerializer
 
 class LivraisonAPIViewSet(ModelViewSet):
-    queryset = Livraison.objects.all()
+    queryset = Livraison.objects.select_related('client','proprietaire', 'destination', 'proprietaire')
     serializer_class = LivraisonSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsProprietaire]
 
     def get_permissions(self):
         actions = ['create', 'update', 'destroy']
@@ -84,12 +84,23 @@ class LivraisonAPIViewSet(ModelViewSet):
         return [IsAuthenticated()]
 
     def get_queryset(self):
-        return super().get_queryset().filter(proprietaire__user = self.request.user)
+        qs = super().get_queryset().filter(proprietaire__user = self.request.user)
+        return qs
 
     def perform_create(self, serializer):
         proprietaire = getattr(self.request.user, 'proprietaire')
         serializer.save(proprietaire=proprietaire)
 
+class LivraisonListAPIView(generics.ListAPIView):
+    queryset = (Livraison.objects
+                .select_related('client','proprietaire', 'destination', 'proprietaire')
+                .prefetch_related('photos')
+                .all()
+                )
+    serializer_class = LivraisonListSerializer
+    permission_classes = [IsAuthenticated, IsProprietaire]
+    def get_queryset(self):
+        return super().get_queryset().filter(proprietaire__user = self.request.user)
 
 class AddDetailLivraisonAPIView(generics.UpdateAPIView):
     queryset = Livraison.objects.all()

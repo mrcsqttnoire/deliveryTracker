@@ -43,10 +43,20 @@ export function useUser() {
 // -----------------------------------------------
 
 export type Livraisons = {
+    id: string
     designation: string
     date_livraison: string
     heure_livraison: string
     livreur: string
+    livreur_prenom: string
+    livreur_telephone: string
+    client_nom: string
+    client_prenom: string
+    destination_lat: string
+    destination_long: string
+    destination_repere: string
+    status: string
+    photo: []
 }
 
 type LivraisonType = {
@@ -64,7 +74,8 @@ type LivraisonType = {
 
     livraisons: Livraisons[]
     setLivraisons: (val: []) => void
-    
+
+    getLivraisons: () => void
     createLivraison: (e: FormEvent<HTMLFormElement>, nav: NavigateFunction) => void
 
     viderChamp: () => void
