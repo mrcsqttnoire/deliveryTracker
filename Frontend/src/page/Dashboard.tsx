@@ -1,5 +1,6 @@
 import { Bike, CheckCheck, CircleDot, HeartHandshake, Hourglass, Store, UserGroup } from "lucide-react";
 import { Filter } from "../components/shared/filter";
+import { MapComponent } from "../map/map";
 // import { Button } from "../components/shared/button";
 
 export function Dashboard () {
@@ -98,6 +99,9 @@ export function Dashboard () {
                     <Filter/>
                     <div className="grid grid-cols-1 lg:grid lg:grid-cols-2 gap-4">
                         {/* <CardLivraison data={[]}></CardLivraison> */}
+                    </div>
+                    <div>
+                        <MapComponent/>
                     </div>
                 </div>
             </div>
