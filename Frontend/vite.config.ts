@@ -10,4 +10,20 @@ export default defineConfig({
     babel({ presets: [reactCompilerPreset()] }),
     tailwindcss(),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          // Crée un fichier javascript séparé dédié uniquement à MapLibre
+          if (id.includes("maplibre-gl")) {
+            return "maplibre";
+          }
+          // Isole le reste des dépendances (React, Lucide, etc.)
+          if (id.includes("node_modules")) {
+            return "vendor";
+          }
+        },
+      },
+    },
+  },
 })

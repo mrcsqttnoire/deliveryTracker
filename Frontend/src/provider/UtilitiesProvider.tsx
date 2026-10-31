@@ -10,6 +10,20 @@ export function UtilitiesProvider ({children}: UtilitiesProviderProps) {
     
     const [message, setMessage] = useState<string>("")
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isCopied, setIsCopied] = useState<boolean>(false)
+
+    async function copieTexte(texte: string) {
+        setIsCopied(true)
+        await navigator.clipboard.writeText(texte)
+            .then(()=>{
+                setTimeout(()=>{
+                    setIsCopied(false)
+                }, 2000)
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
+    }
 
     const Bg_profile_client: ClassNameValue[] = [
         "bg-livree-bg text-livree",
@@ -21,6 +35,7 @@ export function UtilitiesProvider ({children}: UtilitiesProviderProps) {
             Bg_profile_client,
             message, setMessage,
             isOpen, setIsOpen,
+            isCopied, copieTexte
         }}>
             {children}
         </UtilitiesContext.Provider>

@@ -31,6 +31,7 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
     const {setIsLoading} = useLoading()
     const {compressedImg, setCompressedImg} = useCompression()
     const [livraisons, setLivraisons] = useState<Livraisons[]>([])
+    const [maLivraison, setMaLivraison] = useState<Livraisons | null>(null)
     
     const createLivraison = async (e: FormEvent<HTMLFormElement>, nav: NavigateFunction) => {
         setIsLoading(true)
@@ -122,6 +123,30 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
         }
     }
 
+    const getSelectedLivraison = async (id: string, nav: NavigateFunction) => {
+        setIsLoading(true)
+        try{
+            if (!id.trim()){
+                nav("/")
+            }
+            const res = await api.get(`${route}${id}`)
+            if (res && res.status === 200){
+                const data = res.data
+                // console.log(data)
+                setMaLivraison(data)
+                // setLivraisons(data)    
+            }
+        } catch (err) {
+            if (axios.isAxiosError(err)){
+                setMessage("Erreur lors du chargement des données")
+            } else {
+                console.log(err)
+            }
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
     return <>
         <LivraisonContext.Provider value={{
             transformStyles,
@@ -130,8 +155,9 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
             heureLivraison, setHeureLivraison,
             livreurAssigne, setLivreurAssigne, 
             livraisons, setLivraisons,
-            viderChamp,
-            createLivraison, getLivraisons
+            viderChamp, maLivraison,
+            createLivraison, getLivraisons,
+            getSelectedLivraison,
         }}>
             {children}
         </LivraisonContext.Provider>

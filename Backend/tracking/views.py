@@ -101,12 +101,23 @@ class LivraisonListAPIView(generics.ListAPIView):
     permission_classes = [IsAuthenticated, IsProprietaire]
     def get_queryset(self):
         return super().get_queryset().filter(proprietaire__user = self.request.user)
-
-class AddDetailLivraisonAPIView(generics.UpdateAPIView):
-    queryset = Livraison.objects.all()
-    serializer_class = DetailLivraisonSerializer
-    permission_classes = [IsAuthenticated]
-
+    
+class OneLivraisonAPIView(generics.RetrieveAPIView):
+    queryset = (Livraison.objects
+                .select_related('client','proprietaire', 'destination', 'proprietaire')
+                .prefetch_related('photos')
+                .all()
+                )
+    serializer_class = LivraisonListSerializer
+    permission_classes = [AllowAny]
     def get_queryset(self):
         return super().get_queryset().filter(proprietaire__user = self.request.user)
+
+class AddDetailLivraisonAPIView(generics.RetrieveUpdateAPIView):
+    queryset = Livraison.objects.all()
+    serializer_class = DetailLivraisonSerializer
+    permission_classes = [AllowAny]
+
+    # def get_queryset(self):
+    #     return super().get_queryset().filter(proprietaire__user = self.request.user)
 

@@ -42,12 +42,20 @@ export function useUser() {
 
 // -----------------------------------------------
 
+export type PhotoType = {
+    id: number
+    lien: string
+}
+
+
 export type Livraisons = {
     id: string
     designation: string
     date_livraison: string
     heure_livraison: string
     livreur: string
+    livreur_photo: string
+    livreur_nom: string
     livreur_prenom: string
     livreur_telephone: string
     client_nom: string
@@ -56,7 +64,7 @@ export type Livraisons = {
     destination_long: string
     destination_repere: string
     status: string
-    photo: []
+    photos: PhotoType[]
 }
 
 type LivraisonType = {
@@ -73,10 +81,12 @@ type LivraisonType = {
     setLivreurAssigne: (val: string) => void
 
     livraisons: Livraisons[]
-    setLivraisons: (val: []) => void
+    maLivraison: Livraisons | null
 
+    setLivraisons: (val: []) => void
     getLivraisons: () => void
     createLivraison: (e: FormEvent<HTMLFormElement>, nav: NavigateFunction) => void
+    getSelectedLivraison: (id: string, nav: NavigateFunction) => void
 
     viderChamp: () => void
 
@@ -142,6 +152,9 @@ type UtilitiesType = {
     Bg_profile_client: ClassNameValue[]
     isOpen: boolean
     setIsOpen: (val: boolean)=>void
+
+    isCopied: boolean
+    copieTexte: (texte: string)=>void
 }
 
 export const UtilitiesContext = createContext<UtilitiesType | null>(null)

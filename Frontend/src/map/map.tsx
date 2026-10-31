@@ -6,7 +6,7 @@ import {setWorkerUrl} from 'maplibre-gl';
 setWorkerUrl(workerUrl);
 
 // maplibregl.setWorkerUrl(workerUrl)
-export function MapPublic() {
+export default function MapPublic() {
   return <>
     <Map
         id='map_public'
@@ -15,7 +15,11 @@ export function MapPublic() {
         latitude: -18.9137,
         zoom: 15,
         }}
-        style={{width: 1250, height: 600}}
+        style={{
+            width: "100%", 
+            height: "100%",
+            borderRadius: "12px",
+        }}
         mapStyle="https://tiles.openfreemap.org/styles/bright"
     >
     </Map>

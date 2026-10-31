@@ -1,19 +1,25 @@
-import photoLivreur from "../assets/img/livreur.png"
+
 import truck from "../assets/icons/truck.svg"
 import  {Carte}  from "../components/Livraison/carte"
 import { LivreurDetailMin } from "../components/livreur/livreur.min"
 import { DetailColis } from "../components/Livraison/detailColis"
 import { LivraisonProvider } from "../provider/LivraisonProvider"
 import { MapProvider } from "@vis.gl/react-maplibre"
+import { useLivraison } from "../provider/CustomizedHooks"
+import { useEffect } from "react"
+import { useNavigate, useParams } from "react-router-dom"
 
+
+type RouteParams = {
+  id: string
+}
 export default function PublicLayout () {
-
-  const photos = [
-      {path: "/src/assets/img/test/billie-3.png"},
-      {path: "/src/assets/img/test/billie-2.jpg"},
-      {path: "/src/assets/img/test/billie-1.jpg"},
-    ]
-    
+  const navigate = useNavigate()
+  const {id} = useParams<RouteParams>()
+  useEffect(()=>{
+    getSelectedLivraison(id ?? '', navigate)
+  }, [])
+  const {getSelectedLivraison, maLivraison} = useLivraison()
   return <>
    <LivraisonProvider>
     <MapProvider>
@@ -27,7 +33,7 @@ export default function PublicLayout () {
                   <h5 className="font-body font-bold text-tertiary text-lg">En route vers vous </h5>
                 <div className="flex flex-col gap-2">
                   <div className="w-full h-[6px] bg-[#E2E8F8] rounded-xl">
-                    <div className="w-1/2 h-full bg-tertiary rounded-xl"></div>
+                    <div className="w-1/2 h-full bg-tertiary origin-left animate-progress-bar rounded-xl"></div>
                   </div>
                   <div className="flex justify-between text-tertiary font-body font-bold text-[15px] tracking-[1px]">
                     <p>Préparé</p>
@@ -39,8 +45,14 @@ export default function PublicLayout () {
         </section>
         <section className="flex flex-col gap-4">
           <Carte />
-          <LivreurDetailMin photo={photoLivreur} nom="RANDRIANANTENAINA" prenom="Jean Nirina" tel="0333169049" />
-          <DetailColis designation="Exmple de designation livraison" photos={photos}/>
+          <LivreurDetailMin photo={maLivraison?.livreur_photo ?? ""}
+            nom={maLivraison?.livreur_nom ?? ""} 
+            prenom={maLivraison?.livreur_prenom ?? ""} 
+            tel={maLivraison?.livreur_telephone ?? ""} 
+          />
+          <DetailColis 
+            designation={maLivraison?.designation ?? "Il n'y a pas des informations qui sont avec votre colis"} 
+            photos={maLivraison?.photos}/>
         </section>
       </main>
     </MapProvider>

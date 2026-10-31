@@ -1,10 +1,9 @@
-import { Bike, Calendar, Clock, Compass, Link, Navigation } from "lucide-react";
+import { Bike, Calendar, Clock, Compass, Copy, Navigation } from "lucide-react";
 import { BadgeLivraison } from "./badge";
 import { Button } from "../shared/button";
-import type { Livraisons } from "../../provider/CustomizedHooks";
+import { useUtilities, type Livraisons } from "../../provider/CustomizedHooks";
 import { useEffect, useState } from "react";
 import { getDetailsPos } from "../../map/nominatim";
-
 interface CardLivraisonProps {
     data: Livraisons
     index: number
@@ -17,6 +16,7 @@ export function CardLivraison ({data, index}: CardLivraisonProps) {
     const nom_complet = (nom || prenom) && nom.concat(` ${prenom}`)
 
     const [lieu, setLieu] = useState("")
+    const {copieTexte} = useUtilities()
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -36,8 +36,8 @@ export function CardLivraison ({data, index}: CardLivraisonProps) {
             <div className="flex flex-col gap-1">
                 <div className="flex gap-2">
                     <Navigation className="text-[#004C6C]"/>
-                    <p className="font-body font-medium text-neutral">{lieu}</p>
-                    <p className="font-body font-medium text-secondary">{data.destination_repere}</p>
+                    <p className="font-body font-medium text-neutral">{lieu }</p>
+                    <p className="font-body font-medium text-secondary">{data.destination_repere ?? "Donner le lien de cette livraison au client dédié"}</p>
                 </div>
                 <div className="bg-neutral-light flex gap-2 items-center text-secondary p-3 rounded-xl mt-2">
                     <div className="flex items-center gap-2">
@@ -62,15 +62,19 @@ export function CardLivraison ({data, index}: CardLivraisonProps) {
                 </div>
             </div>
             <div className="grid grid-cols-2">
-                <a href={lien} className="flex gap-2 items-center font-body font-medium text-secondary/50">
-                    <Link className="w-6 shrink-0" size={24}/>  
-                    <span className="break-all ">
+                <div className="flex gap-2 items-center font-body font-medium text-secondary/50">
+                    <button onClick={()=>copieTexte(lien)} className="p-2 hover:bg-livree-bg hover:text-livree rounded-full active:scale-95">
+                        <Copy className="w-6 shrink-0 " size={24}  />  
+                    </button>
+                    <a href={lien} className="break-all ">
                         {lien}
-                </span>
-                </a>
+                    </a>
+                </div>
                 <Button className="w-auto bg-input text-neutral justify-self-end self-center hover:bg-primary/10 hover:text-primary duration-75" noLoading>
-                    <Compass className="text-primary"/>
-                    Suivi direct
+                    <a href={lien} className="w-full h-full flex gap-2">
+                        <Compass className="text-primary"/>
+                        Suivi direct
+                    </a>
                 </Button>   
             </div>
         </div>

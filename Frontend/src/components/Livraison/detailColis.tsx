@@ -1,13 +1,11 @@
 import { twMerge } from "tailwind-merge"
-import { useLivraison } from "../../provider/CustomizedHooks"
+import { useLivraison, type PhotoType } from "../../provider/CustomizedHooks"
 
-type photoType = {
-    path: string,
-}
+
 
 interface DetailColisProps {
     designation: string,
-    photos?: photoType[] | null,
+    photos?: PhotoType[] | null,
 }
 
 export function DetailColis ({designation, photos}: DetailColisProps) {
@@ -23,8 +21,11 @@ export function DetailColis ({designation, photos}: DetailColisProps) {
             </div>
             <div className="w-2/6 center relative h-32 md:w-64 lg:w-78 xl:w-96 md:h-38 lg:h-46">
                 {photos && photos.map((p, index) => (
-                    <img key={index} src={p.path} alt="none" className={twMerge(`absolute w-32 h-32 md:w-64 lg:w-78 xl:w-96 lg:h-36 object-cover rounded-xl`, transformStyles[index % transformStyles.length])}/>
+                    <img key={index} src={p.lien} alt="none" className={twMerge(`absolute w-32 h-32 md:w-64 lg:w-78 xl:w-96 lg:h-36 object-cover rounded-xl`, transformStyles[index % transformStyles.length])}/>
                 ))}
+                {
+                    !Boolean(photos == null) && <p className="text-secondary font-body">Il n'y a pas des photos du colis envoyé</p>
+                }
             </div>
         </div>
     </div>

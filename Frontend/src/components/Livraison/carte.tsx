@@ -1,9 +1,12 @@
 import {MoveRight } from "lucide-react"
 // import map from "../../assets/img/map.png"
-import { MapPublic } from "../../map/map"
-import { useEffect, useState } from "react"
+// import { MapPublic } from "../../map/map"
+import { lazy, Suspense, useEffect, useState } from "react"
 import { getUserLocation, type UserLocation } from "../../map/customMapHook"
 import { useMap } from "@vis.gl/react-maplibre"
+import Skeleton from "react-loading-skeleton"
+
+const MapPublic = lazy(() => import("../../map/map"))
 
 export function Carte () {
   const [location, setLocation] = useState<UserLocation | null>(null)
@@ -31,13 +34,15 @@ export function Carte () {
     <div className="container-custom ">
       <div className="h-full w-full relative flex justify-center ">
         <div className="w-full h-80 md:h-[420px] relative overflow-hidden">
-          <div className="bg-linear-to-b from-transparent to-gradient-cart w-full h-full absolute top-0 left-0 bg-red-30 rounded-xl" ></div>
+          <div className="bg-linear-to-b from-transparent to-gradient-cart w-full h-full absolute top-0 left-0 bg-red-30 rounded-xl z-10 pointer-events-none" ></div>
           {/* <img src={map} alt="carte" className="w-full h-full rounded-2xl object-cover "/> */}
           <div className="w-full h-full rounded-2xl object-cover">
-            <MapPublic/>
+            <Suspense fallback={<Skeleton className="w-full h-full"/>}>
+              <MapPublic/>
+            </Suspense>
           </div>
         </div>
-        <div className="bg-white p-4 absolute w-11/12 bottom-4 flex items-center justify-between rounded-xl">
+        <div className="bg-white p-4 absolute w-11/12 bottom-4 flex items-center justify-between rounded-xl z-20">
           <div className="text-neutral font-body font-semibold">
             <img src="" alt="" className="w-8" />
             <div className="flex gap-2 ">

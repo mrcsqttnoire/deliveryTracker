@@ -242,6 +242,8 @@ class LivraisonSerializer(serializers.ModelSerializer):
     
     proprietaire = serializers.CharField(source='proprietaire.nom', read_only=True)
     livreur = LivreurProprietaireField()
+    livreur_photo = serializers.ImageField(source='livreur.user.photo', read_only=True)
+    livreur_nom = serializers.CharField(source='livreur.nom', read_only=True)
     livreur_prenom = serializers.CharField(source='livreur.prenom', read_only=True)
     livreur_telephone = serializers.CharField(source='livreur.user.telephone', read_only=True)
     client = ClientProprietaireField(required=False, read_only=True)
@@ -270,6 +272,8 @@ class LivraisonSerializer(serializers.ModelSerializer):
             'heure_livraison',
             'proprietaire',
             'livreur',
+            'livreur_photo',
+            'livreur_nom',
             'livreur_prenom',
             'livreur_telephone',
             'client',
@@ -329,23 +333,19 @@ class DetailLivraisonSerializer(serializers.ModelSerializer):
         return instance
 
 
-class LivraisonListSerializer(serializers.ModelSerializer):
-    livreur_prenom = serializers.CharField(source='livreur.prenom', read_only=True)
-    livreur_telephone = serializers.CharField(source='livreur.user.telephone', read_only=True)
-    client_nom = serializers.CharField(source='client.nom' ,read_only=True)
-    client_prenom = serializers.CharField(source='client.prenom', read_only=True)
+class LivraisonListSerializer(LivraisonSerializer):
     destination_lat = serializers.CharField(source='destination.latitude', read_only=True)
     destination_long = serializers.CharField(source='destination.longitude', read_only=True)
     destination_repere = serializers.CharField(source='destination.repere', read_only=True)
     
-    class Meta:
-        model = Livraison
+    class Meta(LivraisonSerializer.Meta):
         fields = [
             'id',
             'designation',
             'status',
             'date_livraison',
             'heure_livraison',
+            'livreur_nom',
             'livreur_prenom',
             'livreur_telephone',
             'client_nom',
