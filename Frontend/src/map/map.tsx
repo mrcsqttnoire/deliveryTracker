@@ -6,15 +6,18 @@ import {setWorkerUrl} from 'maplibre-gl';
 setWorkerUrl(workerUrl);
 
 // maplibregl.setWorkerUrl(workerUrl)
-export function MapComponent() {
-  return <Map
-  
-    initialViewState={{
-      longitude: 47.543085,
-      latitude: -18.925857,
-      zoom: 17,
-    }}
-    style={{width: 1250, height: 600}}
-    mapStyle="https://tiles.openfreemap.org/styles/bright"
-  />;
+export function MapPublic() {
+  return <>
+    <Map
+        id='map_public'
+        initialViewState={{
+        longitude: 47.5216,
+        latitude: -18.9137,
+        zoom: 15,
+        }}
+        style={{width: 1250, height: 600}}
+        mapStyle="https://tiles.openfreemap.org/styles/bright"
+    >
+    </Map>
+  </>
 }

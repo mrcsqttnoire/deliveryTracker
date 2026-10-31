@@ -1,6 +1,6 @@
 import { Bike, CheckCheck, CircleDot, HeartHandshake, Hourglass, Store, UserGroup } from "lucide-react";
 import { Filter } from "../components/shared/filter";
-import { MapComponent } from "../map/map";
+import { MapPublic } from "../map/map";
 // import { Button } from "../components/shared/button";
 
 export function Dashboard () {
@@ -101,7 +101,7 @@ export function Dashboard () {
                         {/* <CardLivraison data={[]}></CardLivraison> */}
                     </div>
                     <div>
-                        <MapComponent/>
+                        <MapPublic/>
                     </div>
                 </div>
             </div>
