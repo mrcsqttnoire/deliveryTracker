@@ -6,8 +6,10 @@ import { DetailColis } from "../components/Livraison/detailColis"
 import { LivraisonProvider } from "../provider/LivraisonProvider"
 import { MapProvider } from "@vis.gl/react-maplibre"
 import { useLivraison } from "../provider/CustomizedHooks"
-import { useEffect } from "react"
+import { lazy, useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+
+const FormStep = lazy(()=> import("./Clients/livraisonAddons"))
 
 
 type RouteParams = {
@@ -24,6 +26,7 @@ export default function PublicLayout () {
    <LivraisonProvider>
     <MapProvider>
       <main className="flex flex-col gap-4">
+        <FormStep/>
         <section className="container-custom py-4 flex flex-col justify-center gap-4 shadow-md rounded-b-xl ">
             <div className="flex items-center gap-2">
               <img src={truck} alt="livraison-icon" className="bg-primary-300 p-3 rounded-full" />

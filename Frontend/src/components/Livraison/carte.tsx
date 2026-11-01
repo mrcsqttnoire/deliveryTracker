@@ -33,12 +33,12 @@ export function Carte () {
   return <>
     <div className="container-custom ">
       <div className="h-full w-full relative flex justify-center ">
-        <div className="w-full h-80 md:h-[420px] relative overflow-hidden">
+        <div className="w-full h-100 md:h-[420px] relative overflow-hidden">
           <div className="bg-linear-to-b from-transparent to-gradient-cart w-full h-full absolute top-0 left-0 bg-red-30 rounded-xl z-10 pointer-events-none" ></div>
           {/* <img src={map} alt="carte" className="w-full h-full rounded-2xl object-cover "/> */}
           <div className="w-full h-full rounded-2xl object-cover">
             <Suspense fallback={<Skeleton className="w-full h-full"/>}>
-              <MapPublic/>
+              <MapPublic id="map_public"/>
             </Suspense>
           </div>
         </div>

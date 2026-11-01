@@ -145,6 +145,12 @@ export function useCompression(){
 }
 
 // ----------------------------------------ù
+export type CoordType = {
+    lng: number
+    lat: number
+}
+
+
 type UtilitiesType = {
     message: string
     setMessage: (value: string) => void
@@ -155,6 +161,9 @@ type UtilitiesType = {
 
     isCopied: boolean
     copieTexte: (texte: string)=>void
+
+    marker: CoordType | null
+    setMarker: (co: CoordType) => void
 }
 
 export const UtilitiesContext = createContext<UtilitiesType | null>(null)
@@ -189,6 +198,38 @@ export const LivreurContext = createContext<LivreurContextType | null>(null)
 
 export function useLivreur(){
     const context: LivreurContextType | null = useContext(LivreurContext)
+
+    if (context === null) throw new Error("Aucun provider chargé")
+
+    return context
+}
+
+//-----------------------------------------
+// export type Client = {
+//     id: string,
+//     nom: string,
+//     prenom
+// }
+
+type ClientContextType = {
+    repere: string, 
+    setRepere: (val: string) => void,
+
+    nom_client: string
+    setNomClient: (val: string) => void
+
+    prenom_client: string
+    setPrenomClient: (val: string) => void
+
+    telephone_client: string
+    setTelephoneClient: (val:string) => void
+
+}
+
+export const DetailContext = createContext<ClientContextType | null>(null)
+
+export function useDetail(){
+    const context: ClientContextType | null = useContext(DetailContext)
 
     if (context === null) throw new Error("Aucun provider chargé")
 

@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import { UtilitiesContext } from "./CustomizedHooks";
+import { UtilitiesContext, type CoordType } from "./CustomizedHooks";
 import type { ClassNameValue } from "tailwind-merge";
 
 interface UtilitiesProviderProps {
@@ -11,6 +11,7 @@ export function UtilitiesProvider ({children}: UtilitiesProviderProps) {
     const [message, setMessage] = useState<string>("")
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isCopied, setIsCopied] = useState<boolean>(false)
+    const [marker, setMarker] = useState<CoordType | null>(null)
 
     async function copieTexte(texte: string) {
         setIsCopied(true)
@@ -35,7 +36,8 @@ export function UtilitiesProvider ({children}: UtilitiesProviderProps) {
             Bg_profile_client,
             message, setMessage,
             isOpen, setIsOpen,
-            isCopied, copieTexte
+            isCopied, copieTexte,
+            marker, setMarker
         }}>
             {children}
         </UtilitiesContext.Provider>

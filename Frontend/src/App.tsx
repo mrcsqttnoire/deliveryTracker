@@ -10,6 +10,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import { LivreurProvider } from './provider/LivreurProvider';
 import { UtilitiesProvider } from './provider/UtilitiesProvider';
 import { LivraisonProvider } from './provider/LivraisonProvider';
+import { AddDetailProvider } from './provider/AddDetailProvider';
 
 function App() {
     return (
@@ -20,7 +21,9 @@ function App() {
               <LivreurProvider>
                 <LivraisonProvider>
                   <UserProvider>
-                    <RouterProvider router={routes} />
+                    <AddDetailProvider>
+                      <RouterProvider router={routes} />
+                    </AddDetailProvider>
                   </UserProvider>
                 </LivraisonProvider>
               </LivreurProvider>

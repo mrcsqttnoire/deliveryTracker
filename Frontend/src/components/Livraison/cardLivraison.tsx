@@ -61,7 +61,7 @@ export function CardLivraison ({data, index}: CardLivraisonProps) {
                     </div>
                 </div>
             </div>
-            <div className="grid grid-cols-2">
+            <div className="flex gap-2 justify-between">
                 <div className="flex gap-2 items-center font-body font-medium text-secondary/50">
                     <button onClick={()=>copieTexte(lien)} className="p-2 hover:bg-livree-bg hover:text-livree rounded-full active:scale-95">
                         <Copy className="w-6 shrink-0 " size={24}  />  
@@ -70,9 +70,9 @@ export function CardLivraison ({data, index}: CardLivraisonProps) {
                         {lien}
                     </a>
                 </div>
-                <Button className="w-auto bg-input text-neutral justify-self-end self-center hover:bg-primary/10 hover:text-primary duration-75" noLoading>
+                <Button className="w-auto bg-input shrink-0 text-neutral justify-self-end self-center hover:bg-primary/10 hover:text-primary duration-75" noLoading>
                     <a href={lien} className="w-full h-full flex gap-2">
-                        <Compass className="text-primary"/>
+                        <Compass className="text-primary shrink-0"/>
                         Suivi direct
                     </a>
                 </Button>   

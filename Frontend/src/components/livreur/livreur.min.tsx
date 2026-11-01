@@ -14,7 +14,7 @@ export function LivreurDetailMin ({photo, nom,  prenom, tel}: LivreurProps) {
             <div className="p-4 flex justify-between items-center rounded-xl shadow-xl" >
                 <div className="flex items-center gap-2">
                     <div className="center w-14 h-14 rounded-full text">
-                        {photo && <img src={photo} alt="photo livreur" className="w-14 h-14 object-cover " />}
+                        {photo && <img src={photo} alt="photo livreur" className="w-14 h-14 object-cover rounded-full" />}
                         {!photo && initials}
                     </div>
                     <div>
