@@ -127,12 +127,15 @@ export const routes = createBrowserRouter([
             <SuspenseLayout>
                 <PublicLayout/>
             </SuspenseLayout>,
-        children:[
-            {
-                path: 'form',
-                element: <></>
-            }
-        ]
+    },
+    {
+        path: 'livraison/admin-suivi/:id',
+        element: 
+            <ProtectedRoutes>
+                <SuspenseLayout>
+                    <PublicLayout/>
+                </SuspenseLayout>
+            </ProtectedRoutes>,
     }
 ])
 

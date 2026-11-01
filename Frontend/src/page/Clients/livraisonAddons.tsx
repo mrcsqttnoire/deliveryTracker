@@ -1,23 +1,33 @@
-import { Check, ChevronRight, FaceSlightlySmiling, IdCard, MapPinned, Phone, Search, Signpost, TruckElectric, X } from "lucide-react";
+import { BadgeInfoIcon, Check, ChevronLeft, ChevronRight, CircleCheckBig, FaceSlightlySmiling, IdCard, MapPinned, Phone, Search, Signpost, TruckElectric, X } from "lucide-react";
 import { lazy, Suspense, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { Button } from "../../components/shared/button";
 import { twMerge } from "tailwind-merge";
-import { useDetail, useUtilities } from "../../provider/CustomizedHooks";
-import { suggere, type Suggestion } from "../../map/nominatim";
+import { useDetail, useLoading, useUtilities } from "../../provider/CustomizedHooks";
+import { getDetailsPos, suggere, type Suggestion } from "../../map/nominatim";
 import { useMap } from "@vis.gl/react-maplibre";
+import { useNavigate } from "react-router-dom";
+import { Alert } from "../../components/shared/alert";
 
 const Carte = lazy(()=>import("../../map/map"))
 
-export default function AddDetailLivraison () {
-    const {marker} = useUtilities()
+interface AddDetailProps {
+    id: string
+}
+
+export default function AddDetailLivraison ({id}: AddDetailProps) {
+    const navigate = useNavigate()
+    const {marker, message, setMessage} = useUtilities()
     const [step, setStep] = useState<number>(1)
     const {
         repere, setRepere,
         nom_client, setNomClient, 
         prenom_client, setPrenomClient,
         telephone_client, setTelephoneClient,
+        setLieu,
+        AddDetail,
     } = useDetail()
+    const {isLoading, setIsLoading} = useLoading()
     const [query, setQuery] = useState("")
     const [suggestions, setSuggestions] = useState<Suggestion[]>([])
     const {map_form} = useMap()
@@ -34,9 +44,23 @@ export default function AddDetailLivraison () {
         return () => clearTimeout(t) 
     }, [query])
 
-    const swhitchStep = () => {
-        // e.preventDefault()
-        setStep(2)
+    const switchStep = async () => {
+        setIsLoading(true)
+        if (!marker || marker.lat === undefined || marker.lng === undefined) {
+            setMessage("Veuillez sélectionner un point sur la carte");
+            setIsLoading(false);
+            return;
+        }
+        try{
+            const lieu = await getDetailsPos(marker.lat, marker.lng)
+            setLieu(lieu)
+            setStep(2)
+        } catch (err) {
+            console.log(err)
+            setMessage("Impossible de récupérer la position, vérifiez votre connexion")
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     function choisir(s: Suggestion) {
@@ -46,8 +70,12 @@ export default function AddDetailLivraison () {
     }
 
     return <>
-        <form className="bg-white/50 absolute h-screen top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center gap-4 container-custom py-8 backdrop-blur-sm z-50 md:w-4/5 rounded-xl">
-
+        <form 
+            onSubmit={(e)=>AddDetail(e, navigate, id)}
+            className="bg-white/50 absolute h-screen top-1/2 left-1/2 
+            -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center
+             gap-4 container-custom py-8 backdrop-blur-sm z-50 md:w-4/5 rounded-xl"
+        >
             <div className=" relative center flex-col gap-4 ">
                 <div className={twMerge("center top-4 md:max-w-5/7 lg:max-w-3/7 z-50 bg-input p-4 rounded-xl", step === 1 && 'absolute w-11/12')}>              
                     <div className={("flex gap-4 justify-between")}>
@@ -69,6 +97,16 @@ export default function AddDetailLivraison () {
                         </div>
                     </div>
                 </div>
+                {/* <div className="px-2"> */}
+                    {message &&
+                        <Alert 
+                            className={twMerge("absolute md:max-w-5/7 lg:max-w-3/7 z-50 top-22 w-auto  flex items-center gap-2 justify-self-center  backdrop-blur-xl  animate-scaling ", message.includes("Merci") && "bg-livree-bg/50 text-livree ")}>
+                            {message.includes("succès") && <CircleCheckBig className="shrink-0"/>}
+                            {!message.includes("succès") && <BadgeInfoIcon className="shrink-0"/>}
+                            {message}
+                        </Alert>
+                    }
+                {/* </div> */}
                 { step === 1 &&
                 <div className="w-full h-100 h-[90vh] md:h-[90vh] relative overflow-hidden">
 
@@ -117,10 +155,11 @@ export default function AddDetailLivraison () {
                         </div>
                         <div className=" w-auto pr-4 z-50  justify-self-end">
                             <Button
+                                type="button"
                                 disable = {!Boolean(marker)}
-                                fn={() => swhitchStep()} 
-                                className="bg-white w-12 text-primary backdrop-blur-xl hover:bg-white hover:bg-white/90 disabled:bg-white/50"> 
-                                <ChevronRight className="shrink-0"/>
+                                fn={switchStep} 
+                                className="center bg-white w-12 text-primary backdrop-blur-x hover:bg-white/90 duration-75 disabled:bg-white/50"> 
+                                {!isLoading && <ChevronRight className="shrink-0"/>}
                             </Button>
                         </div>
                     </div>
@@ -129,35 +168,67 @@ export default function AddDetailLivraison () {
                 { step === 2 && <>
                     <div className="bg-white px-8 py-4 flex flex-col md:grid-cols-2 gap-4 w-full md:max-w-5/7 lg:max-w-3/7 rounded-xl shadow-2xl">
                         <div className="flex flex-col gap-1.5 w-full text-neutral">
-                            <label htmlFor="texte" className="font-body font-semibold text-md">Nom</label>
+                            <label htmlFor="nom" className="font-body font-semibold text-md">Nom</label>
                             <div className="relative w-full h-12">
                                 <IdCard  className="absolute top-1/2 -translate-y-1/2 left-4 Text-Black text-secondary"/>
-                                <input type="password" id="password" value={nom_client} className="w-full font-body bg-white shadow-sm/10 h-full pl-[calc(32px+24px)] rounded-xl focus" name="password" placeholder="Entrez votre nom ici" required onChange={(e)=>setNomClient(e.target.value)}/>
+                                <input 
+                                    type="text" 
+                                    id="nom" 
+                                    value={nom_client} 
+                                    className="w-full font-body bg-white shadow-sm/10 
+                                    h-full pl-[calc(32px+24px)] rounded-xl focus" 
+                                    name="nom" 
+                                    placeholder="Entrez votre nom ici" 
+                                    required 
+                                    onChange={(e)=>setNomClient(e.target.value)}/>
                             </div>
                         </div>
                         <div className="flex flex-col gap-1.5 w-full text-neutral">
-                            <label htmlFor="conf_password" className="font-body font-semibold text-md">Prenom</label>
+                            <label htmlFor="prenom" className="font-body font-semibold text-md">Prenom</label>
                             <div className="relative w-full h-12">
                                 <FaceSlightlySmiling  className={twMerge("absolute top-1/2 -translate-y-1/2 left-4 Text-Black text-secondary")}/>
-                                <input type="password" id="conf_password" value={prenom_client} className={twMerge("w-full font-body bg-white shadow-sm/10 h-full pl-[calc(32px+24px)] rounded-xl focus")} name="password" placeholder="Entrez votre prénom ici" required onChange={(e)=>setPrenomClient(e.target.value)}/>
+                                <input type="text" id="prenom" value={prenom_client} className={twMerge("w-full font-body bg-white shadow-sm/10 h-full pl-[calc(32px+24px)] rounded-xl focus")} name="prenom" placeholder="Entrez votre prénom ici" required onChange={(e)=>setPrenomClient(e.target.value)}/>
                             </div>
                         </div>
                         <div className="flex flex-col gap-1.5 w-full text-neutral">
-                            <label htmlFor="conf_password" className="font-body font-semibold text-md">Téléphone</label>
+                            <label htmlFor="telephone" className="font-body font-semibold text-md">Téléphone</label>
                             <div className="relative w-full h-12">
                                 <Phone  className={twMerge("absolute top-1/2 -translate-y-1/2 left-4 Text-Black text-secondary")}/>
-                                <input type="password" id="conf_password" value={telephone_client} className={twMerge("w-full font-body bg-white shadow-sm/10 h-full pl-[calc(32px+24px)] rounded-xl focus")} name="password" placeholder="Entrez votre prénom ici" required onChange={(e)=>setTelephoneClient(e.target.value)}/>
+                                <input 
+                                    type="text" 
+                                    id="telephone" 
+                                    value={telephone_client} 
+                                    className={twMerge("w-full font-body bg-white shadow-sm/10 h-full pl-[calc(32px+24px)] rounded-xl focus")} 
+                                    name="telephone" 
+                                    placeholder="Entrez votre prénom ici" 
+                                    required 
+                                    onChange={(e)=>setTelephoneClient(e.target.value)}/>
                             </div>
                         </div>
                         <div className="flex flex-col gap-1.5 w-full text-neutral">
-                            <label htmlFor="username" className="font-body font-semibold text-md">Repère</label>
+                            <label htmlFor="repere" className="font-body font-semibold text-md">Repère</label>
                             <div className="relative w-full h-12">
                                 <Signpost  className="absolute top-1/2 -translate-y-1/2 left-4 Text-Black text-secondary"/>
-                                <input type="texte" id="username" value={repere} className="w-full font-body bg-white shadow-sm/10 h-full pl-[calc(32px+24px)] rounded-xl focus" name="username" placeholder="Donne nous un repère de position" required onChange={(e)=>setRepere(e.target.value)}/>
+                                <input 
+                                    type="text"
+                                    id="username" 
+                                    value={repere} 
+                                    className="w-full font-body bg-white shadow-sm/10 h-full
+                                     pl-[calc(32px+24px)] rounded-xl focus" 
+                                    name="repere" 
+                                    placeholder="Donne nous un repère de position" 
+                                    required 
+                                    onChange={(e)=>setRepere(e.target.value)}/>
                             </div>
                         </div>
-                        <div className="w-full mt-2 ">
-                            <Button > 
+                        <div className="flex w-full mt-2 gap-2">
+                            <Button
+                                fn={() => setStep(1)} 
+                                className="bg-input w-12 text-primary backdrop-blur-xl
+                                 hover:bg-input/70 duration-75 disabled:bg-input/50"> 
+                                <ChevronLeft className="shrink-0"/>
+                            </Button>
+                            <Button> 
                                 Valider
                                 <Check/>
                             </Button>

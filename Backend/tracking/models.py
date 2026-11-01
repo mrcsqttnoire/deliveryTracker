@@ -56,6 +56,7 @@ class Client(models.Model):
 class Destination(models.Model):
     latitude = models.DecimalField(max_digits=9, decimal_places=6)
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
+    lieu = models.CharField(max_length=50, null=True, blank=True)
     repere = models.CharField(max_length=100, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

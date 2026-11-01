@@ -47,6 +47,12 @@ export type PhotoType = {
     lien: string
 }
 
+export type DestinationType = {
+    latitude: string
+    longitude: string
+    repere: string
+    lieu: string
+}
 
 export type Livraisons = {
     id: string
@@ -58,11 +64,13 @@ export type Livraisons = {
     livreur_nom: string
     livreur_prenom: string
     livreur_telephone: string
+    client: string
     client_nom: string
     client_prenom: string
     destination_lat: string
     destination_long: string
     destination_repere: string
+    destination: DestinationType
     status: string
     photos: PhotoType[]
 }
@@ -163,7 +171,7 @@ type UtilitiesType = {
     copieTexte: (texte: string)=>void
 
     marker: CoordType | null
-    setMarker: (co: CoordType) => void
+    setMarker: (co: CoordType | null) => void
 }
 
 export const UtilitiesContext = createContext<UtilitiesType | null>(null)
@@ -221,9 +229,14 @@ type ClientContextType = {
     prenom_client: string
     setPrenomClient: (val: string) => void
 
+    lieu: string
+    setLieu: (val: string) => void
+
     telephone_client: string
     setTelephoneClient: (val:string) => void
 
+    AddDetail: (e: FormEvent<HTMLFormElement>, nav: NavigateFunction, uuid: string) => void
+    viderChamp: () => void
 }
 
 export const DetailContext = createContext<ClientContextType | null>(null)

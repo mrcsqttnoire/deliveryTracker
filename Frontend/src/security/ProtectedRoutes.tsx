@@ -69,5 +69,5 @@ export function ProtectedRoutes({children}: ProtectedRoutesProps){
         return <LayoutSkeleton/>
     }
 
-    return isAuthorized ? children : <Navigate to="auth/login/"/>
+    return isAuthorized ? children : <Navigate to="/auth/login/"/>
 }

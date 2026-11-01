@@ -17,7 +17,7 @@ export function DetailColis ({designation, photos}: DetailColisProps) {
         <div className="p-4 flex gap-2 justify-between items-center rounded-xl shadow-xl">
             <div className="w-2/3 flex flex-col items-start" >
                 <h1 className="font-heading font-semibold text-xl md:text-2xl">Détail du colis</h1>
-                <p className="font-body font-normal text-md md:text-lg text-secondary break-all">{designation}</p>
+                <p className="font-body font-normal text-md md:text-lg text-secondary break-normal">{designation}</p>
             </div>
             <div className="w-2/6 center relative h-32 md:w-64 lg:w-78 xl:w-96 md:h-38 lg:h-46">
                 {photos && photos.map((p, index) => (

@@ -1,27 +1,33 @@
+
 import { osm_api } from "./customMapHook"
 
-export async function getDetailsPos(latitude: string, longitude: string): Promise<string> {
-  try {
-    if (!latitude.trim() || !longitude.trim()) {
-      console.log("donner un lat et lon")
-      return ""
+export async function getDetailsPos(latitude: number, longitude: number): Promise<string> {
+    if (latitude === null || latitude === null || latitude === undefined || longitude === undefined) {
+        throw new Error("Coordonnées GPS invalides ou manquantes");
     }
 
     const res = await osm_api.get("reverse", {
-      params: { lat: latitude, lon: longitude },
+        params: { 
+            lat: latitude, 
+            lon: longitude 
+        }
     })
 
     const adrs = res.data?.features?.[0]?.properties?.address
-    if (!adrs) return ""
+    if (!adrs) {
+        throw new Error("Aucune adresse trouvée pour ces coordonnées");
+    }
 
-    return adrs.suburb ?? adrs.neighbourhood ?? adrs.road ?? adrs.city ?? adrs.state ?? ""
-  } catch (err) {
-    console.log(err)
-    return ""
-  }
+    // const suburbRoad = `${adrs.suburb} ${adrs.road}`
+    // const suburbVoisin = `${adrs.neighbourhood} ${adrs.road}`
+    return adrs.suburb ?? adrs.neighbourhood ?? adrs.road ?? adrs.city ?? adrs.state ?? "Aucune donnée trouvée"
 }
 
-export type Suggestion = { lat: number; lng: number; nom: string }
+export type Suggestion = { 
+    lat: number
+    lng: number;
+    nom: string 
+}
 
 export async function suggere(q: string): Promise<Suggestion[]> {
     const url = new URL("https://photon.komoot.io/api/")

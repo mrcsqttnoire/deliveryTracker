@@ -1,14 +1,21 @@
-import {MoveRight } from "lucide-react"
+
 // import map from "../../assets/img/map.png"
 // import { MapPublic } from "../../map/map"
 import { lazy, Suspense, useEffect, useState } from "react"
 import { getUserLocation, type UserLocation } from "../../map/customMapHook"
 import { useMap } from "@vis.gl/react-maplibre"
 import Skeleton from "react-loading-skeleton"
-
 const MapPublic = lazy(() => import("../../map/map"))
 
-export function Carte () {
+interface CarteProps {
+  latitude?: string
+  longitude?: string
+  repere?: string
+  lieu?: string
+  heure_l?: string
+}
+
+export function Carte ({latitude, longitude, repere, lieu, heure_l}: CarteProps) {
   const [location, setLocation] = useState<UserLocation | null>(null)
 
   const {map_public} = useMap()
@@ -24,12 +31,18 @@ export function Carte () {
 
   useEffect(() => {
     if (!location || !map_public) return
+    if(!latitude?.trim() || !longitude?.trim()){
+      map_public.flyTo({
+        center: [location.longitude, location.latitude],
+        zoom: 16,
+      })
+      return
+    }
     map_public.flyTo({
-      center: [location.longitude, location.latitude],
+      center: [parseFloat(longitude), parseFloat(latitude)],
       zoom: 16,
     })
-  }, [location, map_public])
-
+  }, [location, map_public, longitude, latitude])
   return <>
     <div className="container-custom ">
       <div className="h-full w-full relative flex justify-center ">
@@ -46,14 +59,14 @@ export function Carte () {
           <div className="text-neutral font-body font-semibold">
             <img src="" alt="" className="w-8" />
             <div className="flex gap-2 ">
-              <p>Analakely</p>
-              <MoveRight />
-              <p>Ambohijatovo</p>
+              {/* <p>Analakely</p> */}
+              {/* <MoveRight /> */}
+              <p>Livraison à {lieu}</p>
             </div>
-            <p className="text-secondary">Repère : Jovena Ambohijatovo</p>
+            <p className="text-secondary">Repère : {repere}</p>
           </div>
           <div className="bg-gradient-right px-2 py-1 text-secondary font-body font-semibold rounded-md">
-            <p>1.8km</p>
+            <p>{heure_l}</p>
           </div>
         </div>
       </div>

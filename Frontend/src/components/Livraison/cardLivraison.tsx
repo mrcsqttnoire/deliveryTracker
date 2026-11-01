@@ -11,6 +11,7 @@ interface CardLivraisonProps {
 
 export function CardLivraison ({data, index}: CardLivraisonProps) {
     const lien = window.location.origin.concat(`/livraison/suivi/${data.id}`)
+    const lien_admin = window.location.origin.concat(`/livraison/admin-suivi/${data.id}`)
     const nom = data.client_nom ?? null
     const prenom = data.client_prenom ?? null
     const nom_complet = (nom || prenom) && nom.concat(` ${prenom}`)
@@ -21,7 +22,7 @@ export function CardLivraison ({data, index}: CardLivraisonProps) {
     useEffect(() => {
         const timer = setTimeout(() => {
             if (data.destination_lat && data.destination_long){
-                getDetailsPos(data.destination_lat, data.destination_long).then(setLieu)
+                getDetailsPos(parseInt(data.destination_lat), parseInt(data.destination_long)).then(setLieu)
             }
         }, index * 1200)
         return () => clearTimeout(timer)
@@ -71,7 +72,7 @@ export function CardLivraison ({data, index}: CardLivraisonProps) {
                     </a>
                 </div>
                 <Button className="w-auto bg-input shrink-0 text-neutral justify-self-end self-center hover:bg-primary/10 hover:text-primary duration-75" noLoading>
-                    <a href={lien} className="w-full h-full flex gap-2">
+                    <a href={lien_admin} className="w-full h-full flex gap-2">
                         <Compass className="text-primary shrink-0"/>
                         Suivi direct
                     </a>

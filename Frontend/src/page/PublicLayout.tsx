@@ -7,7 +7,8 @@ import { LivraisonProvider } from "../provider/LivraisonProvider"
 import { MapProvider } from "@vis.gl/react-maplibre"
 import { useLivraison } from "../provider/CustomizedHooks"
 import { lazy, useEffect } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
+import { twMerge } from "tailwind-merge"
 
 const FormStep = lazy(()=> import("./Clients/livraisonAddons"))
 
@@ -16,6 +17,8 @@ type RouteParams = {
   id: string
 }
 export default function PublicLayout () {
+  const location = useLocation()
+  const page = location.pathname
   const navigate = useNavigate()
   const {id} = useParams<RouteParams>()
   useEffect(()=>{
@@ -26,7 +29,9 @@ export default function PublicLayout () {
    <LivraisonProvider>
     <MapProvider>
       <main className="flex flex-col gap-4">
-        <FormStep/>
+        { !page.includes("admin") && maLivraison && !maLivraison.client &&
+          <FormStep id={id ?? ''}/>
+        }
         <section className="container-custom py-4 flex flex-col justify-center gap-4 shadow-md rounded-b-xl ">
             <div className="flex items-center gap-2">
               <img src={truck} alt="livraison-icon" className="bg-primary-300 p-3 rounded-full" />
@@ -36,7 +41,11 @@ export default function PublicLayout () {
                   <h5 className="font-body font-bold text-tertiary text-lg">En route vers vous </h5>
                 <div className="flex flex-col gap-2">
                   <div className="w-full h-[6px] bg-[#E2E8F8] rounded-xl">
-                    <div className="w-1/2 h-full bg-tertiary origin-left animate-progress-bar rounded-xl"></div>
+                    <div className={twMerge("w-1/2 h-full bg-tertiary origin-left rounded-xl",
+                      maLivraison?.status === 'en_attente' && 'w-1/9',
+                      maLivraison?.status === 'en_route' && 'w-1/2',
+                      maLivraison?.status === 'livree' && 'w-full',
+                      )}></div>
                   </div>
                   <div className="flex justify-between text-tertiary font-body font-bold text-[15px] tracking-[1px]">
                     <p>Préparé</p>
@@ -47,11 +56,18 @@ export default function PublicLayout () {
             </div>
         </section>
         <section className="flex flex-col gap-4">
-          <Carte />
+          <Carte 
+            latitude={maLivraison?.destination.latitude}
+            longitude={maLivraison?.destination.longitude}
+            repere={maLivraison?.destination.repere}
+            lieu={maLivraison?.destination.lieu}
+            heure_l={maLivraison?.heure_livraison}
+          />
           <LivreurDetailMin photo={maLivraison?.livreur_photo ?? ""}
             nom={maLivraison?.livreur_nom ?? ""} 
             prenom={maLivraison?.livreur_prenom ?? ""} 
             tel={maLivraison?.livreur_telephone ?? ""} 
+            status={maLivraison?.status}
           />
           <DetailColis 
             designation={maLivraison?.designation ?? "Il n'y a pas des informations qui sont avec votre colis"} 

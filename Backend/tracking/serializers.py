@@ -204,6 +204,7 @@ class DestinationSerializer(serializers.ModelSerializer):
             'id',
             'latitude',
             'longitude',
+            'lieu',
             'repere',
         ]
         # extra_kwargs = {
