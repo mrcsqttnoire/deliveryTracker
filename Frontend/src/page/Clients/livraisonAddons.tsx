@@ -1,4 +1,4 @@
-import { Check, ChevronRight, FaceSlightlySmiling, IdCard, MapPinned, Phone, Search, Signpost, TruckElectric } from "lucide-react";
+import { Check, ChevronRight, FaceSlightlySmiling, IdCard, MapPinned, Phone, Search, Signpost, TruckElectric, X } from "lucide-react";
 import { lazy, Suspense, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { Button } from "../../components/shared/button";
@@ -46,19 +46,17 @@ export default function AddDetailLivraison () {
     }
 
     return <>
-        <form className="bg-white/50 absolute h-screen top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-4 container-custom py-8 backdrop-blur-sm z-50 md:w-4/5 rounded-xl">
+        <form className="bg-white/50 absolute h-screen top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center gap-4 container-custom py-8 backdrop-blur-sm z-50 md:w-4/5 rounded-xl">
 
-            <div className=" relative container-custom center flex-col gap-4 ">
-                <div className={twMerge("center top-4 w-full z-50 md:max-w-5/7 lg:max-w-3/7", step === 1 && 'absolute')}>              
-                    <div className="flex p-4 justify-between items-center bg-[#F0F3FF]
-                                    font-body font-medium 
-                                    rounded-xl inset-shadow-xl  ">
+            <div className=" relative center flex-col gap-4 ">
+                <div className={twMerge("center top-4 md:max-w-5/7 lg:max-w-3/7 z-50 bg-input p-4 rounded-xl", step === 1 && 'absolute w-11/12')}>              
+                    <div className={("flex gap-4 justify-between")}>
                         <div>
-                            <h4 className="font-heading font-semibold text-neutral text-2xl">
+                            <h4 className="font-heading font-semibold text-neutral text-xl md:text-2xl">
                                 {step === 1 && "Pointez la déstination"}
                                 {step === 2 && "Information supplémentaire"}
                             </h4>
-                            <p className="font-body font-medium text-secondary">
+                            <p className="font-body font-medium text-secondary text-sm md:text-lg break-normal">
                                 {step === 1 && "Pointez le lieu ou on livrera votre colis"}
                                 {step === 2 && "Veuillez compléter les champs suivants s'il vous plait"}
                             </p>
@@ -72,7 +70,7 @@ export default function AddDetailLivraison () {
                     </div>
                 </div>
                 { step === 1 &&
-                <div className="w-full h-100 h-[95vh] relative overflow-hidden">
+                <div className="w-full h-100 h-[90vh] md:h-[90vh] relative overflow-hidden">
 
                     <div 
                         className="bg-linear-to-b from-transparent to-gradient-cart
@@ -98,9 +96,18 @@ export default function AddDetailLivraison () {
                                     bg-white/90 focus backdrop-blur-xl font-body font-medium rounded-xl inset-shadow-sm "                           value={query}
                                     placeholder="Rechercher un quartier"/>
                                     {suggestions.length > 0 && (
-                                        <ul className="absolute bottom-12 mb-2 w-full bg-white/50 rounded-xl shadow z-[999] backdrop-blur-md">
-                                            {suggestions.map((s, i) => (
-                                            <li key={i} onClick={() => choisir(s)} className="px-4 py-2 cursor-pointer hover:bg-white/50 hover:rounded-xl">
+                                        <ul className="absolute bottom-12 mb-2 font-heading  w-full bg-white/50 text-neutral rounded-xl shadow z-[999] backdrop-blur-md">              
+                                        <div className="flex justify-between items-center px-4 bg-input py-2 rounded-tl-xl rounded-tr-xl text-secondary">
+                                            <h5 className="">Suggéstions</h5>
+                                            <div className="w-auto hover:bg-neutral/10 p-1 rounded-full duration-75">
+                                                <X 
+                                                    onClick={()=>setSuggestions([])}
+                                                    className="justify-self-end  rounded-full shrink-0 "
+                                                />
+                                            </div>
+                                        </div>                      
+                                        {suggestions.map((s, i) => (
+                                            <li key={i} onClick={() => choisir(s)} className="px-4 py-2 cursor-pointer hover:bg-white/50">
                                                 {s.nom}
                                             </li>
                                             ))}
