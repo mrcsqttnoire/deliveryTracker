@@ -27,7 +27,7 @@ export function LivreurDetailMin ({photo, nom,  prenom, tel, status}: LivreurPro
                     <div className={twMerge("center w-14 h-14 rounded-full font-heading font-bold",
                         color_code
                     )}>
-                        {photo && <img src={photo} alt="photo livreur" className="w-14 h-14 object-cover rounded-full" />}
+                        {photo && <img src={photo} alt="photo livreur" className="w-14 h-14 object-cover rounded-full shrink-0" />}
                         {!photo && initials}
                     </div>
                     <div>

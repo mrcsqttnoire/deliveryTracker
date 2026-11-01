@@ -186,6 +186,13 @@ class LivreurSerializer(serializers.ModelSerializer):
 class ClientSerializer(serializers.ModelSerializer):
     # proprietaire = ProprietaireSerializer()
     # proprietaire = serializers.CharField(source='proprietaire.nom')
+    livraison_count = serializers.SerializerMethodField(read_only=True)
+
+    def get_livraison_count(self, obj):
+        request   = self.context['request']
+        livraisons = Livraison.objects.filter(client_id=obj.id, client__proprietaire__user=request.user)
+        return livraisons.count()
+
     class Meta:
         model = Client
         fields = [
@@ -193,7 +200,8 @@ class ClientSerializer(serializers.ModelSerializer):
             'nom', 
             'prenom', 
             'telephone', 
-            'proprietaire'
+            'proprietaire',
+            'livraison_count'
         ]
         read_only_fields = ['id', 'proprietaire']
 
@@ -355,3 +363,4 @@ class LivraisonListSerializer(LivraisonSerializer):
             'destination_long',
             'destination_repere',
         ]
+

@@ -219,7 +219,7 @@ export function useLivreur(){
 //     prenom
 // }
 
-type ClientContextType = {
+type DetailContextType = {
     repere: string, 
     setRepere: (val: string) => void,
 
@@ -239,10 +239,36 @@ type ClientContextType = {
     viderChamp: () => void
 }
 
-export const DetailContext = createContext<ClientContextType | null>(null)
+export const DetailContext = createContext<DetailContextType | null>(null)
 
 export function useDetail(){
-    const context: ClientContextType | null = useContext(DetailContext)
+    const context: DetailContextType | null = useContext(DetailContext)
+
+    if (context === null) throw new Error("Aucun provider chargé")
+
+    return context
+}
+
+//---------------------------------
+export type Client = {
+    id: string
+    nom: string
+    prenom: string
+    telephone: string
+    livraison_count: string
+}
+
+type ClientContextType = {
+    clients: Client[] | null
+    setClients: (val: Client[] | null) => void
+
+    getAllClients: () => void
+}
+
+export const ClientContext = createContext<ClientContextType | null>(null)
+
+export function useClient(){
+    const context: ClientContextType | null = useContext(ClientContext)
 
     if (context === null) throw new Error("Aucun provider chargé")
 

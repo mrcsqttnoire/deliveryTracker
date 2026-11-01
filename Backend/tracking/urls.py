@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import include, path, re_path
 from django.conf import settings
-from tracking.views import LivraisonAPIViewSet, AddDetailLivraisonAPIView, LivraisonListAPIView, LivreurAPIViewSet, OneLivraisonAPIView, ProprietaireCreateAPIView, ProprietaireList
+from tracking.views import ClientAPIViewSet, LivraisonAPIViewSet, AddDetailLivraisonAPIView, LivraisonListAPIView, LivreurAPIViewSet, OneLivraisonAPIView, ProprietaireCreateAPIView, ProprietaireList
 from rest_framework.routers import DefaultRouter
 
 urlpatterns = [
@@ -19,3 +19,7 @@ urlpatterns += router.urls
 routerLivraison = DefaultRouter()
 routerLivraison.register('livraison', LivraisonAPIViewSet)
 urlpatterns += routerLivraison.urls
+
+routerClient = DefaultRouter()
+routerClient.register('client', ClientAPIViewSet)
+urlpatterns += routerClient.urls

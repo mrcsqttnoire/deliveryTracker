@@ -60,8 +60,8 @@ class LivreurAPIViewSet(ModelViewSet):
 #         return super().get_queryset().filter(proprietaire__user = self.request.user)
 
 
-class ClientListAPIView(generics.ListCreateAPIView):
-    queryset = Client.objects.all()
+class ClientAPIViewSet(ModelViewSet):
+    queryset = Client.objects.select_related('proprietaire').prefetch_related('livraisons')
     serializer_class = ClientSerializer
     permission_classes = [IsAuthenticated, IsProprietaire]
 

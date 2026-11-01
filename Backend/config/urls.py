@@ -15,7 +15,6 @@ urlpatterns = [
     # path('users/', user_list),
     path('api-auth/', include('rest_framework.urls')),
 
-    path('clients/', ClientListAPIView.as_view()),
     path('tracking-api/', include('tracking.urls')),
 ]
 

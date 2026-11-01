@@ -11,6 +11,7 @@ import { LivreurProvider } from './provider/LivreurProvider';
 import { UtilitiesProvider } from './provider/UtilitiesProvider';
 import { LivraisonProvider } from './provider/LivraisonProvider';
 import { AddDetailProvider } from './provider/AddDetailProvider';
+import { ClientProvider } from './provider/ClientProvider';
 
 function App() {
     return (
@@ -20,11 +21,13 @@ function App() {
             <CompressionImage>
               <LivreurProvider>
                 <LivraisonProvider>
-                  <UserProvider>
-                    <AddDetailProvider>
-                      <RouterProvider router={routes} />
-                    </AddDetailProvider>
-                  </UserProvider>
+                  <ClientProvider>     
+                    <UserProvider>
+                      <AddDetailProvider>
+                        <RouterProvider router={routes} />
+                      </AddDetailProvider>
+                    </UserProvider>
+                  </ClientProvider>
                 </LivraisonProvider>
               </LivreurProvider>
             </CompressionImage>

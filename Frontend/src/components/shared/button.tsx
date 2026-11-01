@@ -18,7 +18,7 @@ export function Button ({children, type="submit", className, fn, id, noLoading=f
     <button 
       onClick={fn} 
       type={type}  
-      className={twMerge("center gap-2 w-full bg-primary px-8 py-3 text-white font-body font-bold rounded-xl cursor-pointer  active:scale-95",!noLoading && "hover:bg-primary/90 duration-50 disabled:bg-primary/65" ,className)} id={id} 
+      className={twMerge("center gap-2 w-full bg-primary px-8 py-3 text-white text-sm md:text- font-body font-bold rounded-xl cursor-pointer  active:scale-95",!noLoading && "hover:bg-primary/90 duration-50 disabled:bg-primary/65" ,className)} id={id} 
       disabled= {isLoading || disable}>
         {!noLoading && isLoading && <SpinLoading/>}
         {children}
