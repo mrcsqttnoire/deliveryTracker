@@ -1,9 +1,10 @@
-import { CircleCheckBig, CirclePlus, Info, Search } from "lucide-react";
+import { CircleCheckBig, CirclePlus, Search } from "lucide-react";
 import { CardLivraison } from "../../components/Livraison/cardLivraison";
 import { HeadPage } from "../../components/shared/headPage";
 import { Filter } from "../../components/shared/filter";
 import { useLivraison, useUtilities } from "../../provider/CustomizedHooks";
 import { useEffect } from "react";
+import { Info } from "../../components/shared/info";
 import { Alert } from "../../components/shared/alert";
 
 export default function Livraison () {

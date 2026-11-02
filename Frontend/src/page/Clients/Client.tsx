@@ -1,8 +1,9 @@
-import { CircleCheckBig, Info, Search } from "lucide-react";
+import { CircleCheckBig, Search } from "lucide-react";
 import { CardClient } from "../../components/client/cardClient";
 import { useEffect } from "react";
 import { useClient, useLoading, useUtilities } from "../../provider/CustomizedHooks";
 import { ClientSkeleton } from "../../skeleton/client/ClientSkeleton";
+import { Info } from "../../components/shared/info";
 import { Alert } from "../../components/shared/alert";
 export default function Clients () {
     const {clients, getAllClients} = useClient()

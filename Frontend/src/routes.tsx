@@ -122,6 +122,12 @@ export const routes = createBrowserRouter([
         ]
     },
     {
+        path: 'auth/login/livreur',
+        element: <>
+            <AuthLayout/>
+        </>
+    },
+    {
         path: 'livraison/suivi/:id',
         element: 
             <SuspenseLayout>

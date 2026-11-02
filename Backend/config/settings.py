@@ -182,6 +182,15 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
 
+
+DJOSER = {
+    'SERIALIZERS': {
+        # 'user': 'accounts.serializers.CustomUserSerializer',          
+        'current_user': 'tracking.serializers.CustomUserSerializer', 
+        # 'user_create': 'accounts.serializers.CustomUserCreateSerializer', 
+    },
+}
+
 ## Configuration cloudinary pour le stockage
 
 # print("Cloudinary env:", os.getenv("CLOUDINARY_CLOUD_NAME"))

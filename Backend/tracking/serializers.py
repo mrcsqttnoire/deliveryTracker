@@ -5,11 +5,12 @@ from rest_framework import serializers
 from rest_framework.exceptions import PermissionDenied
 from .models import Destination, Livraison, Photo, Proprietaire, Livreur, Client
 from django.core.exceptions import ValidationError
+from djoser.serializers import UserSerializer
 
 User = get_user_model()
 # print(User)
 
-class UserSerializer(serializers.ModelSerializer):
+class CustomUserSerializer(serializers.ModelSerializer):
     nom = serializers.SerializerMethodField()
     prenom = serializers.SerializerMethodField()
     role = serializers.SerializerMethodField()
@@ -23,14 +24,14 @@ class UserSerializer(serializers.ModelSerializer):
     def get_role(self, obj):
         return 'Propriétaire' if obj.is_proprietaire else 'Livreur'
     
-    class Meta:
+    class Meta(UserSerializer.Meta):
         model = User
         fields = [
             'id', 
             'nom', 
             'prenom', 
             'username', 
-            'password'
+            'password',
             'role', 
             'photo',
         ]

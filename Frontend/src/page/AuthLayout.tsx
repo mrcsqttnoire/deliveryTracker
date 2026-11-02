@@ -1,12 +1,13 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { SwitchMode } from "../components/Auth/switchMode";
 import { Truck } from "lucide-react";
 import bg_livraison  from "../assets/img/livraison_img.jpg"
 import { useEffect } from "react";
 import { useUser } from "../provider/CustomizedHooks";
+import FormAuth from "../components/Auth/formAuth";
 
 export default function AuthLayout () {
-
+  const location = useLocation()
   const {resetUserForm} = useUser()
 
   useEffect(() => {
@@ -32,7 +33,8 @@ export default function AuthLayout () {
                   <img src={bg_livraison} alt="bg-livraison" className="absolute top-0 w-full h-50 object-cover rounded-xl "/>
                 </div>
               </div>
-              <SwitchMode/>
+              {!location.pathname.includes("livreur") && <SwitchMode/>}
+              {location.pathname.includes("livreur") && <FormAuth/>}
               <Outlet />
           </div>
         </div>

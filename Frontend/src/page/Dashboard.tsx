@@ -1,6 +1,20 @@
 import { Bike, CheckCheck, CircleDot, HeartHandshake, Hourglass, Store, UserGroup } from "lucide-react";
 import { Filter } from "../components/shared/filter";
+import { useLivraison, useLivreur, useUser } from "../provider/CustomizedHooks";
+import { useEffect } from "react";
 export function Dashboard () {
+    const { livraisons, getLivraisons} = useLivraison()
+    const {livreursList, getLivreurs} = useLivreur()
+    const {role} = useUser()
+    useEffect(()=>{
+        getLivraisons()
+        getLivreurs()
+    }, [])
+
+    const lv_en_attente = livraisons.filter((lv)=>lv.status === 'en_attente').length ?? 0
+    const lv_livree = livraisons.filter((lv)=>lv.status === 'livree').length ?? 0
+    const lvr_en_route = livreursList?.filter((lv)=>lv.status === 'occupe').length ?? 0
+    const lvr_dispo = livreursList?.filter((lv)=>lv.status === 'libre').length ?? 0
     return <>
         <section className="container-custom py-4 bg-principale min-h-full">
             <div className="flex flex-col gap-10 ">
@@ -9,7 +23,8 @@ export function Dashboard () {
                         <div className="flex flex-col gap-2">
                             <div className="flex gap-2 text-secondary">
                                 <Store />
-                                <p className="font-body font-medium uppercase">Boutique active</p>
+                                <p className="font-body font-medium uppercase">Boutique active {role
+                                    }</p>
                             </div>
                             <h4 className="font-heading font-semibold text-neutral text-4xl ">Statistiques de vos activités</h4>
                             <div className="flex gap-2 text-secondary -mt-1">
@@ -31,7 +46,7 @@ export function Dashboard () {
                             </div>
                         </div>
                         <div className="flex items-end gap-2 my-2">
-                            <h4 className="font-heading font-semibold text-5xl text-neutral">4</h4>
+                            <h4 className="font-heading font-semibold text-5xl text-neutral">{lv_en_attente}</h4>
                             <p className="font-body font-medium text-secondary text-lg">colis</p>
                         </div>
                         <div className="flex items-center gap-3 text-en_attente">
@@ -47,7 +62,7 @@ export function Dashboard () {
                             </div>
                         </div>
                         <div className="flex items-end gap-2 my-2">
-                            <h4 className="font-heading font-semibold text-5xl text-neutral">6</h4>
+                            <h4 className="font-heading font-semibold text-5xl text-neutral">{lvr_en_route}</h4>
                             <p className="font-body font-medium text-secondary text-lg">livreurs</p>
                         </div>
                         <div className="flex items-center gap-3 text-en_route">
@@ -63,7 +78,7 @@ export function Dashboard () {
                             </div>
                         </div>
                         <div className="flex items-end gap-2 my-2">
-                            <h4 className="font-heading font-semibold text-5xl text-neutral">18</h4>
+                            <h4 className="font-heading font-semibold text-5xl text-neutral">{lv_livree}</h4>
                             <p className="font-body font-medium text-secondary text-lg">réussies</p>
                         </div>
                         <div className="flex items-center gap-3 text-livree">
@@ -79,7 +94,7 @@ export function Dashboard () {
                             </div>
                         </div>
                         <div className="flex items-end gap-2 my-2">
-                            <h4 className="font-heading font-semibold text-5xl text-neutral">3</h4>
+                            <h4 className="font-heading font-semibold text-5xl text-neutral">{lvr_dispo}</h4>
                             <p className="font-body font-medium text-secondary text-lg">disponibles</p>
                         </div>
                         <div className="flex items-center gap-3 text-primary">

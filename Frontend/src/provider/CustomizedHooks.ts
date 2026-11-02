@@ -25,8 +25,15 @@ type ContextType = {
     conf_password: string
     setConfPassword: (value: string) => void
 
+    photo: string
+    setPhoto: (val: string) => void
+
+    role: "Propriétaire" | "Livreur"
+    setRole: (val: "Propriétaire" | "Livreur") => void
+
     resetUserForm: () => void
     s_inscrire: (e: FormEvent, role: RoleType, nav: NavigateFunction) => void
+    seConnecter: (e: FormEvent, navigate: NavigateFunction) => void
   
 }
 

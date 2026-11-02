@@ -31,7 +31,7 @@ export function CardLivraison ({data, index}: CardLivraisonProps) {
     return <> 
         <div className="flex flex-col gap-4 bg-white h-auto rounded-xl shadow-xl p-4 hover:-translate-y-0.5 duration-300">
             <div className="flex justify-between">
-                <h5 className="font-body font-bold text-2xl">{nom_complet ?? "En attente du client..."}</h5>
+                <h5 className="font-body font-bold text-xl md:text-2xl">{nom_complet ?? "En attente du client..."}</h5>
                 <BadgeLivraison type={data.status} />
             </div>
             <div className="flex flex-col gap-1">
@@ -67,7 +67,7 @@ export function CardLivraison ({data, index}: CardLivraisonProps) {
                     <button onClick={()=>copieTexte(lien)} className="p-2 hover:bg-livree-bg hover:text-livree rounded-full active:scale-95">
                         <Copy className="w-6 shrink-0 " size={24}  />  
                     </button>
-                    <a href={lien} className="break-all ">
+                    <a href={lien} className="break-all text-sm md:text[16px]">
                         {lien}
                     </a>
                 </div>
