@@ -353,6 +353,7 @@ class DetailLivraisonSerializer(serializers.ModelSerializer):
 class LivraisonListSerializer(LivraisonSerializer):
     destination_lat = serializers.CharField(source='destination.latitude', read_only=True)
     destination_long = serializers.CharField(source='destination.longitude', read_only=True)
+    destination_lieu = serializers.CharField(source='destination.lieu', read_only=True)
     destination_repere = serializers.CharField(source='destination.repere', read_only=True)
     
     class Meta(LivraisonSerializer.Meta):
@@ -369,6 +370,7 @@ class LivraisonListSerializer(LivraisonSerializer):
             'client_prenom',
             'destination_lat',
             'destination_long',
+            'destination_lieu',
             'destination_repere',
         ]
 

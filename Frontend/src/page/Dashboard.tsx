@@ -1,11 +1,10 @@
 import { Bike, CheckCheck, CircleDot, HeartHandshake, Hourglass, Store, UserGroup } from "lucide-react";
 import { Filter } from "../components/shared/filter";
-import { useLivraison, useLivreur, useUser } from "../provider/CustomizedHooks";
+import { useLivraison, useLivreur } from "../provider/CustomizedHooks";
 import { useEffect } from "react";
 export function Dashboard () {
     const { livraisons, getLivraisons} = useLivraison()
     const {livreursList, getLivreurs} = useLivreur()
-    const {role} = useUser()
     useEffect(()=>{
         getLivraisons()
         getLivreurs()
@@ -23,8 +22,7 @@ export function Dashboard () {
                         <div className="flex flex-col gap-2">
                             <div className="flex gap-2 text-secondary">
                                 <Store />
-                                <p className="font-body font-medium uppercase">Boutique active {role
-                                    }</p>
+                                <p className="font-body font-medium uppercase">Boutique active</p>
                             </div>
                             <h4 className="font-heading font-semibold text-neutral text-4xl ">Statistiques de vos activités</h4>
                             <div className="flex gap-2 text-secondary -mt-1">

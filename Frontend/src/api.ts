@@ -22,9 +22,19 @@ api.interceptors.request.use(
         }
         return config
     },
-    (error) => {
-        return Promise.reject(error
-        )
+    async (error) => {
+        if (error.response?.status === 401 && !error.config.retried) {
+            error.config.retried = true;
+            
+            try {
+                await refreshToken()
+            } catch (refreshError) {
+                localStorage.removeItem(ACCESS_TOKEN)
+                localStorage.removeItem(REFRESH_TOKEN)
+                window.location.href = '/'
+            }
+        }
+        return Promise.reject(error)
     }
 )
 

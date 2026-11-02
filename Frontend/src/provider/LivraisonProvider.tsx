@@ -18,6 +18,7 @@ const transformStyles: ClassNameValue[] = [
 ]
 
 const route = "tracking-api/livraison/"
+const public_route = "tracking-api/list-livraison/"
 const listRoute = "tracking-api/list-livraison/"
 
 
@@ -129,7 +130,7 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
             if (!id.trim()){
                 nav("/")
             }
-            const res = await api.get(`${route}${id}`)
+            const res = await api.get(`${public_route}${id}`,{skipAuth: true})
             if (res && res.status === 200){
                 const data = res.data
                 // console.log(data)

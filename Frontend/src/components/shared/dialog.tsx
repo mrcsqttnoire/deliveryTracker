@@ -1,7 +1,7 @@
 import { Trash, X } from "lucide-react";
 import billi from "../../assets/img/test/billie-3.png";
 import { Button, SpinLoading } from "./button";
-import { useClient, useLoading, useUtilities } from "../../provider/CustomizedHooks";
+import { useClient, useLivreur, useLoading, useUtilities } from "../../provider/CustomizedHooks";
 import { useNavigate } from "react-router-dom";
 
 
@@ -10,6 +10,7 @@ export function Dialog () {
     const {showDialog, setShowDialog} = useUtilities()
     const {isLoading} = useLoading()
     const {deleteClient} = useClient()
+    const {deleteLivreur} = useLivreur()
 
     const annuler = () => setShowDialog({
                         isShow: false,
@@ -17,11 +18,14 @@ export function Dialog () {
                         data: null
                     })
 
-    const supprimer = () => {
+    const supprimer = async () => {
         if (showDialog.type === 'client'){  
-            deleteClient(showDialog.data.id, navigate)
+            await deleteClient(showDialog.data.id, navigate)
+        } else {
+            await deleteLivreur(showDialog.data.id, navigate)
         }
         annuler()
+        navigate(0)
     }
 
     return <>

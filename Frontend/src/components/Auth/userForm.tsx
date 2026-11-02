@@ -2,13 +2,15 @@ import { BadgeInfo, ChevronRight, FaceSlightlySmiling, IdCard, Phone } from "luc
 import { Button } from "../shared/button";
 import { type FormEvent } from "react";
 import { useUser, useUtilities } from "../../provider/CustomizedHooks";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Alert } from "../shared/alert";
 import { twMerge } from "tailwind-merge";
 
 
 export default function UserForm () {
+    const location = useLocation()
     const navigate = useNavigate()
+    const isEdit = Boolean(location.pathname.includes('edit'))
     const {message} = useUtilities()
     const {
         nom, setNom,
@@ -16,18 +18,22 @@ export default function UserForm () {
         telephone, setTelephone,
      } = useUser()
 
-     function nextPage(e:FormEvent){
+    function nextPage(e:FormEvent){
         e.preventDefault()
         navigate("next")
-     }
+    }
 
   return <>
         <form onSubmit={(e) => nextPage(e)} className="center w-full  flex-col gap-4 bg-white p-4 rounded-xl shadow-lg">
-            <Alert className={twMerge( message ? `` : "hidden")}>{message}</Alert>   
+            { !isEdit &&
+                <Alert className={twMerge( (message) ? `` : "hidden")}>
+                    {message}
+                </Alert>   
+            }
             <div className="w-full flex justify-between">
                 <h4 className="flex  gap-2 items-center font-heading font-bold text-xl self-start">
                     <BadgeInfo />
-                    Commencons par vos informations
+                    {isEdit ? "Modification de vos information" : "Commencons par vos informations"}
                 </h4>
                 <p className="text-secondary">1/2</p>
             </div>

@@ -5,9 +5,10 @@ import { useUtilities } from "../../provider/CustomizedHooks";
 interface AlertProps {
     children: ReactNode
     className?: ClassNameValue
+    conserve?: boolean
 }
 
-export function Alert ({children, className}: AlertProps) {
+export function Alert ({children, className, conserve = false}: AlertProps) {
   const {message,setMessage} = useUtilities()
   useEffect(()=>{
     const wait = async () => {
@@ -16,6 +17,7 @@ export function Alert ({children, className}: AlertProps) {
       })
       setMessage("")
     }
+    if(conserve) return
     if (message.trim()) wait()
   }, [message])
   return <>

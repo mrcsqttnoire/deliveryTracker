@@ -5,7 +5,7 @@ import { LivreurDetailMin } from "../components/livreur/livreur.min"
 import { DetailColis } from "../components/Livraison/detailColis"
 import { LivraisonProvider } from "../provider/LivraisonProvider"
 import { MapProvider } from "@vis.gl/react-maplibre"
-import { useLivraison } from "../provider/CustomizedHooks"
+import { useLivraison, type RouteParams } from "../provider/CustomizedHooks"
 import { lazy, useEffect } from "react"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
@@ -13,9 +13,7 @@ import { twMerge } from "tailwind-merge"
 const FormStep = lazy(()=> import("./Clients/livraisonAddons"))
 
 
-type RouteParams = {
-  id: string
-}
+
 export default function PublicLayout () {
   const location = useLocation()
   const page = location.pathname

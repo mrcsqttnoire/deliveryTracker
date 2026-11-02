@@ -1,7 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { ClientContext, useLoading, useUtilities, type Client } from "./CustomizedHooks";
 import api from "../api";
-import type { NavigateFunction } from "react-router-dom";
 import axios from "axios";
 
 export interface ClientProviderProps {
@@ -30,7 +29,7 @@ export function ClientProvider ({children}: ClientProviderProps) {
         }
     }
 
-    async function deleteClient(uuid: string, nav: NavigateFunction ) {
+    async function deleteClient(uuid: string) {
         setIsLoading(true)
         if (!uuid) {
             setMessage("Séléctionner le client à supprimer")
@@ -41,9 +40,9 @@ export function ClientProvider ({children}: ClientProviderProps) {
             const route = `/tracking-api/client/${uuid}/`
             const res = await api.delete(route)
             if(res && res.status === 204){
-                await new Promise(r => setTimeout(r, 1000))
-                nav(0)
                 setMessage("Le client est supprimé avec succès!")
+                return new Promise(r => setTimeout(r, 500))
+                // nav(0)
             }
         } catch (err) {
             if (axios.isAxiosError(err)){

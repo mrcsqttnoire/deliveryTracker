@@ -4,12 +4,13 @@ import api from "../api";
 import { type NavigateFunction } from "react-router-dom";
 import axios from "axios";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constanst";
+import type { User } from "./ModelsType";
 
 interface UserProviderProps {
     children: ReactNode,
 }
 
-
+const route = "tracking-api/livreur/"
 export function UserProvider({children}: UserProviderProps){
     const [photo, setPhoto] = useState<string>("")
     const [nom, setNom] = useState<string>("")
@@ -17,13 +18,12 @@ export function UserProvider({children}: UserProviderProps){
     const [telephone, setTelephone] = useState<string>("")
     const [username, setUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
+    const [userLogedIn, setUserLogedIn] = useState<User | null>(null)
     const [conf_password, setConfPassword] = useState<string>("")
-    const [role, setRole] = useState<"Propriétaire" | "Livreur">("Propriétaire")
 
     const {setMessage} = useUtilities()
     const {setIsLoading} = useLoading()
     const {
-        setImages,
         compressedImg, setCompressedImg,
     } = useCompression()
 
@@ -36,7 +36,7 @@ export function UserProvider({children}: UserProviderProps){
         setConfPassword("")
         setMessage("")
         setCompressedImg([])
-        setImages([])
+        setPhoto("")
     }
     const route_login = "/auth/jwt/create/"
     const seConnecter = async (e: React.FormEvent, navigate: NavigateFunction) => {
@@ -51,7 +51,7 @@ export function UserProvider({children}: UserProviderProps){
                         const refresh_token = res.data.refresh
                         localStorage.setItem(ACCESS_TOKEN, created_token)
                         localStorage.setItem(REFRESH_TOKEN, refresh_token)
-                        takeMe()
+                        getMe()
                         navigate("/")
                     }
                 } else {
@@ -69,17 +69,18 @@ export function UserProvider({children}: UserProviderProps){
         }
     }
 
-    const take_me = "/auth/users/me"
-    const takeMe = async () => {
+    const get_me = "/auth/users/me"
+    const getMe = async () => {
         try{    
-            const res = await api.get(take_me)
+            const res = await api.get(get_me)
             if (res && res.status === 200){
                 const data = res.data
-                setNom(data.nom)
-                setPrenom(data.prenom)
-                setUsername(data.username)
-                setRole(data.role)
-                setPhoto(data.photo)                
+                setUserLogedIn(data)
+                // setNom(data.nom)
+                // setPrenom(data.prenom)
+                // setUsername(data.username)
+                // setRole(data.role)
+                // setPhoto(data.photo)                
             }
         } catch(err) {
             console.log(err)
@@ -153,6 +154,87 @@ export function UserProvider({children}: UserProviderProps){
         }
     }
 
+
+    const getOneLivreur = async (uuid: string, nav: NavigateFunction) => {
+        if (!uuid.trim()){
+            setMessage("Veuillez sélectionner un livreur")
+            return
+        }
+        try{
+            const res = await api.get(route.concat(`${uuid}/`))
+            if (res && res.status === 200){
+                const data = res.data
+                // setLivreur(data)
+                if (data){
+                    setNom(data.nom)
+                    setPrenom(data.prenom)
+                    setTelephone(data.telephone)
+                    setUsername(data.username)
+                    setPhoto(data.optimized_photo)
+                }
+            }
+        } catch (err) {
+            if (axios.isAxiosError(err)){
+                console.log(err)
+                setMessage("Erreur lors du chargement de ce livreur")
+                nav("/livreurs")
+            } else {
+                console.log(err)
+            }
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    async function updateLivreur(e: FormEvent,uuid: string ,nav: NavigateFunction){
+        e.preventDefault()
+        if (!uuid.trim){
+            setMessage("Choisir un livreur à modifier")
+            return
+        }
+        const routes_update = `/tracking-api/livreur/${uuid}/`
+        if (!nom.trim() || !telephone.trim() || !prenom.trim() || !username.trim()){
+            setMessage("Veuillez remplir tous les champs!")
+            return
+        }
+        try {
+            setIsLoading(true)
+            const data = new FormData()
+            data.append('nom', nom)
+            data.append('prenom', prenom)
+            data.append('telephone', telephone)
+            data.append('username', username)
+
+            if(compressedImg && compressedImg.length > 0){
+                // compressedImg.forEach((img) => {
+                //     data.append('photo', img)
+                // })
+                data.append('photo', compressedImg[0])
+            }
+            const res = await api.put(
+                routes_update,
+                data
+            )
+
+            if (res && res.status === 200){
+                setMessage("Livreur modifié avec succès. Vous allez être redirigé!")
+                await new Promise(r => setTimeout(r, 2000))
+                resetUserForm()
+                nav("/livreurs")
+            }
+
+        } catch (err) {
+            if (axios.isAxiosError(err)) {
+                const data = err.response?.data;
+                setMessage(data?.detail ?? JSON.stringify(data) ?? "Erreur lors de la modificaton de ce livreur")
+            } else {
+                setMessage("Une erreur inattendue est survenue")
+            }
+        } finally {
+            setIsLoading(false)
+        }
+        
+    }
     return (
         <UserContext.Provider 
             value={{ 
@@ -163,9 +245,11 @@ export function UserProvider({children}: UserProviderProps){
                 password, setPassword,
                 conf_password, setConfPassword,
                 photo, setPhoto,
-                role, setRole,
+                userLogedIn, setUserLogedIn,
                 seConnecter,
                 s_inscrire,
+                getOneLivreur,
+                updateLivreur,
                 resetUserForm,
             }}>
             {children}

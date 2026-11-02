@@ -2,11 +2,12 @@
 from django.contrib import admin
 from django.urls import include, path, re_path
 from django.conf import settings
-from tracking.views import *
+from tracking.views import CustomRefreshTokenView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path('auth/jwt/refresh/', CustomRefreshTokenView.as_view()),
     re_path(r'^auth/', include('djoser.urls')),
     re_path(r'^auth/', include('djoser.urls.jwt')),
     path('admin/', admin.site.urls),

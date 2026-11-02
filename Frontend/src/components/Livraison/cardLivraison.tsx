@@ -2,31 +2,28 @@ import { Bike, Calendar, Clock, Compass, Copy, Navigation } from "lucide-react";
 import { BadgeLivraison } from "./badge";
 import { Button } from "../shared/button";
 import { useUtilities, type Livraisons } from "../../provider/CustomizedHooks";
-import { useEffect, useState } from "react";
-import { getDetailsPos } from "../../map/nominatim";
 interface CardLivraisonProps {
     data: Livraisons
-    index: number
 }
 
-export function CardLivraison ({data, index}: CardLivraisonProps) {
+export function CardLivraison ({data}: CardLivraisonProps) {
     const lien = window.location.origin.concat(`/livraison/suivi/${data.id}`)
     const lien_admin = window.location.origin.concat(`/livraison/admin-suivi/${data.id}`)
     const nom = data.client_nom ?? null
     const prenom = data.client_prenom ?? null
     const nom_complet = (nom || prenom) && nom.concat(` ${prenom}`)
 
-    const [lieu, setLieu] = useState("")
+    // const [lieu, setLieu] = useState("")
     const {copieTexte} = useUtilities()
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            if (data.destination_lat && data.destination_long){
-                getDetailsPos(parseInt(data.destination_lat), parseInt(data.destination_long)).then(setLieu)
-            }
-        }, index * 1200)
-        return () => clearTimeout(timer)
-    }, [data.destination_lat, data.destination_long])
+    // useEffect(() => {
+    //     const timer = setTimeout(() => {
+    //         if (data.destination_lat && data.destination_long){
+    //             getDetailsPos(parseInt(data.destination_lat), parseInt(data.destination_long)).then(setLieu)
+    //         }
+    //     }, index * 1200)
+    //     return () => clearTimeout(timer)
+    // }, [data.destination_lat, data.destination_long])
 
     return <> 
         <div className="flex flex-col gap-4 bg-white h-auto rounded-xl shadow-xl p-4 hover:-translate-y-0.5 duration-300">
@@ -37,7 +34,7 @@ export function CardLivraison ({data, index}: CardLivraisonProps) {
             <div className="flex flex-col gap-1">
                 <div className="flex gap-2">
                     <Navigation className="text-[#004C6C]"/>
-                    <p className="font-body font-medium text-neutral">{lieu }</p>
+                    <p className="font-body font-medium text-neutral">{data.destination_lieu }</p>
                     <p className="font-body font-medium text-secondary">{data.destination_repere ?? "Donner le lien de cette livraison au client dédié"}</p>
                 </div>
                 <div className="bg-neutral-light flex gap-2 items-center text-secondary p-3 rounded-xl mt-2">

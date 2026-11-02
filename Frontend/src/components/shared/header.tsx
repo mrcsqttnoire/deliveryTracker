@@ -17,8 +17,12 @@ export function Header () {
     if (p === "/"){
       setPage("Acceuil")
     } else {
-      let title = exclude.reduce((p, ex)=>p.replaceAll(ex, ""), p)
-      setPage(title)
+      if(!p.includes('edit')){
+        let title = exclude.reduce((p, ex)=>p.replaceAll(ex, ""), p)
+        setPage(title)
+      } else {
+        setPage("Modification")
+      }
     }
   }, [location])
 

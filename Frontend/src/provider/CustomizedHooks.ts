@@ -1,6 +1,11 @@
 import { createContext, useContext, type ChangeEvent, type FormEvent } from "react"
 import type { NavigateFunction } from "react-router-dom";
 import type { ClassNameValue } from "tailwind-merge";
+import type { User } from "./ModelsType";
+
+export type RouteParams = {
+  id: string
+}
 
 export type RoleType = {
     role: "proprietaire" | "livreur"
@@ -28,12 +33,15 @@ type ContextType = {
     photo: string
     setPhoto: (val: string) => void
 
-    role: "Propriétaire" | "Livreur"
-    setRole: (val: "Propriétaire" | "Livreur") => void
+    userLogedIn: User | null
+    setUserLogedIn: (val: User) => void
 
     resetUserForm: () => void
     s_inscrire: (e: FormEvent, role: RoleType, nav: NavigateFunction) => void
     seConnecter: (e: FormEvent, navigate: NavigateFunction) => void
+
+    getOneLivreur: (uuid: string, nav: NavigateFunction) => void
+    updateLivreur: (e: FormEvent,uuid: string,  nav: NavigateFunction) => void
   
 }
 
@@ -77,6 +85,7 @@ export type Livraisons = {
     destination_lat: string
     destination_long: string
     destination_repere: string
+    destination_lieu: string
     destination: DestinationType
     status: string
     photos: PhotoType[]
@@ -137,8 +146,6 @@ export function useLoading(){
 
 // -------------------------------------------
 type CompressionType = {
-    images: File[] | null
-    setImages: (val: File[] | null) => void
 
     compressedImg: File[] | null,
     setCompressedImg: (val: File[] | null) => void
@@ -214,7 +221,10 @@ export type Livreur = {
 
 type LivreurContextType = {
     livreursList: Livreur[] | null
+    livreurAssigne: Livreur | null
+    setLivreurAssigne: (val: Livreur) => void
     getLivreurs: () => void
+    deleteLivreur: (uuid: string, nav: NavigateFunction) => Promise<any>
 }
 
 export const LivreurContext = createContext<LivreurContextType | null>(null)
@@ -278,7 +288,7 @@ type ClientContextType = {
     setClients: (val: Client[] | null) => void
 
     getAllClients: () => void
-    deleteClient: (uuid: string, nav: NavigateFunction) => void
+    deleteClient: (uuid: string, nav: NavigateFunction) => Promise<any>
 }
 
 export const ClientContext = createContext<ClientContextType | null>(null)

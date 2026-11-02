@@ -33,6 +33,7 @@ export default function NouvelleLivraison () {
     }
 
     const {
+        livreurAssigne,
         livreursList,
         getLivreurs
     } = useLivreur()
@@ -121,14 +122,23 @@ export default function NouvelleLivraison () {
             </div>
             <div className="flex flex-col gap-2">
                 {message && message.includes("passé") &&
-                    <Alert>{message}</Alert>
+                    <Alert                        
+                        conserve={true}
+                    >
+                        {message}
+                    </Alert>
                 }
                 <label htmlFor="livreur" className="font-body font-semibold text-md text-neutral">Assigner un livreur</label>
                 <select onChange={(e)=>setLivreurAssigne(e.target.value)} name="livreur" id="livreur" className="w-full bg-principale min-h-12 max-h-18 px-4 py-2 rounded-xl shadow-sm focus" required> 
                     <option className="text-secondary" value="">Veuiller choisir un livreur</option>
                     {
                         livreursList && livreursList.map((lv) => (
-                            <option key={lv.id} className="text-secondary" value={lv.id}>
+                            <option 
+                                key={lv.id} 
+                                className="text-secondary" 
+                                value={lv.id} 
+                                selected={Boolean(lv.id === livreurAssigne?.id)}
+                            >
                                 <p>{lv.prenom}</p>
                             </option>
                         ))

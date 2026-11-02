@@ -7,7 +7,6 @@ interface CompressionImageProps {
 }
 
 export function CompressionImage ({children}: CompressionImageProps) {
-    const [images, setImages] = useState<File[] | null>(null);
     const [compressedImg, setCompressedImg] = useState<File[] | null>(null);
     const [inCompressing, setInCompressing] = useState<boolean>(false);
     
@@ -54,7 +53,6 @@ export function CompressionImage ({children}: CompressionImageProps) {
 
     return <>
         <CompressionContext.Provider value={{
-            images, setImages,
             compressedImg, setCompressedImg,
             inCompressing,
             deleteImg,

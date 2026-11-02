@@ -223,6 +223,7 @@ export default function AddDetailLivraison ({id}: AddDetailProps) {
                         </div>
                         <div className="flex w-full mt-2 gap-2">
                             <Button
+                                type="button"
                                 fn={() => setStep(1)} 
                                 className="bg-input w-12 text-primary backdrop-blur-xl
                                  hover:bg-input/70 duration-75 disabled:bg-input/50"> 

@@ -89,6 +89,33 @@ export const routes = createBrowserRouter([
                 ]
             },
             {
+                path: 'livreurs/edit/:id',
+                element: 
+                    <SuspenseLayout >
+                        <NouveauLivreur/>
+                    </SuspenseLayout>,
+                children: [
+                    {
+                        path: '',
+                        element: 
+                            <SuspenseLayout>
+                                <UserForm/>
+                            </SuspenseLayout>
+                    },
+                    {
+                        path: 'next',
+                        element: 
+                            <SuspenseLayout>
+                                <UserProfile 
+                                    role="livreur"
+                                    btn="Enregistrer"
+                                    r_path="/livreurs/edit/:id"
+                                />
+                            </SuspenseLayout>
+                    },
+                ]
+            },
+            {
                 path: 'clients',
                 element: 
                 <SuspenseLayout fallback={<ClientSkeleton/>}>

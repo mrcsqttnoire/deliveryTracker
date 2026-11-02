@@ -9,7 +9,7 @@ import { Alert } from "../../components/shared/alert";
 
 export default function Livraison () {
     const {livraisons, getLivraisons} = useLivraison()
-    const {isCopied} = useUtilities()
+    const {isCopied, message} = useUtilities()
 
     useEffect(()=>{
         getLivraisons()
@@ -32,6 +32,13 @@ export default function Livraison () {
                             Lien copié dans le presse papier
                         </Alert>
                     }
+                    {message &&
+                        <Alert 
+                            className="bg-livree-bg/50 w-auto text-livree flex items-center gap-2 justify-self-center  backdrop-blur-xl  animate-scaling ">
+                            <CircleCheckBig className="shrink-0"/>
+                            {message}
+                        </Alert>
+                    }
                 </div>
                 <div className="relative h-12 ">
                     <Search className="absolute top-1/2 -translate-y-1/2 left-4 z-10"/>
@@ -44,14 +51,15 @@ export default function Livraison () {
                 <div className="flex flex-col gap-4">
                     <h3 className="font-body font-semibold text-[16px}">Liste des livraison</h3>
                     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-                    {livraisons && livraisons?.map((livraison, index) => (
-                        <CardLivraison key={livraison.id} data={livraison} index={index} />
+                    {livraisons && livraisons?.map((livraison) => (
+                        <CardLivraison key={livraison.id} data={livraison}/>
                     ))}
                     </div>
                     {livraisons !== null && livraisons.length === 0 && (
                         <Info>Vous n'avez pas encore des courses</Info>
                     )}
                 </div>
+
             </div>
         </section>
     </>

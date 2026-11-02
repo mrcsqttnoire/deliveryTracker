@@ -1,7 +1,8 @@
-import { CircleCheckBig, EllipsisVertical, Navigation, Phone, PhoneCall, UserKey } from "lucide-react"
+import { CircleCheckBig, Navigation, Phone, PhoneCall, Trash, UserKey, UserPen } from "lucide-react"
 import { BadgeLivraison } from "../Livraison/badge"
 import { Button } from "../shared/button"
-import type { Livreur } from "../../provider/CustomizedHooks"
+import { useLivreur, useUtilities, type Livreur } from "../../provider/CustomizedHooks"
+import { useNavigate } from "react-router-dom"
 
 // type Livreur = {
 //     id: string
@@ -21,7 +22,10 @@ interface CardLivreurProps {
 }
 
 export function CardLivreur ({data}: CardLivreurProps) {
-    const initials = `${data.nom.charAt(0)}${data.prenom.charAt(0)}`;
+    const navigate = useNavigate()
+    const initials = `${data.nom.charAt(0)}${data.prenom.charAt(0)}`
+    const {setShowDialog} = useUtilities()
+    const {setLivreurAssigne} = useLivreur()
 
     const type = {
         libre: "livree",
@@ -33,9 +37,13 @@ export function CardLivreur ({data}: CardLivreurProps) {
         occupe: "Occupé",
     }[data.status]
     
+    const Assigner = () => {
+        setLivreurAssigne(data)
+        navigate('/livraisons/create')
+    }
 
   return <>
-    <div className="flex flex-col gap-3 bg-white h-auto rounded-xl shadow-xl p-4 hover:-translate-y-0.5    duration-300">
+    <div className="flex w-full flex-col gap-3 bg-white h-auto rounded-xl shadow-xl p-4 hover:-translate-y-0.5 duration-300">
         <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
                 <div className="center w-12 h-12 rounded-full">
@@ -74,18 +82,47 @@ export function CardLivreur ({data}: CardLivreurProps) {
                 </div>
             </div>
         </div>
-        <div className="flex gap-2">
+        <div className="grid grid-cols-4 md:flex md:justify-around gap-1.5 justify-between w-full min-w-0">
             <a href={`tel:${data.telephone}`} >
-                <Button className="w-auto h-full bg-gradient-right text-primary hover:bg-gradient-right hover:opacity-85"> 
+                {/* <Button className="w-auto h-full bg-gradient-right text-primary hover:bg-gradient-right hover:opacity-85"> 
                     <PhoneCall size={18} />
+                </Button> */}
+                <Button 
+                    className="md:w-10 flex-1 text-livree bg-gradient-right hover:bg-livree-bg hover:text-livree duration-100 ease-in"
+                    noLoading={true}
+                >
+                    <PhoneCall className="shrink-0"/>
                 </Button>
             </a>
-            <Button className="bg-gradient-right text-neutral hover:bg-gradient-right hover:opacity-85 duration-50">
+            {/* <Button className="bg-gradient-right text-neutral hover:bg-gradient-right hover:opacity-85 duration-50">
                 <Navigation className="text-primary"/>
                 Assigner 
+            </Button> */}
+            <Button 
+                fn={Assigner}
+                className="w-auto flex-1  text-secondary bg-gradient-right hover:bg-en_attent-bg hover:text-en_attente duration-100 ease-in"
+                noLoading={true}
+            >
+                <Navigation className="text-en_attente duration-75 shrink-0"/>
+                <p className="hidden md:inline">Assigner</p>
+            </Button>              
+            <Button 
+                fn={() => navigate('edit/'.concat(data.id))}
+                className="md:w-10 flex-1  lg:flex-0 text-secondary bg-gradient-right hover:bg-en_route-bg hover:text-en_route duration-100 ease-in"
+                noLoading={true}
+            >
+                <UserPen className="shrink-0"/>
             </Button>
-            <Button className="w-auto bg-gradient-right text-neutral hover:bg-gradient-right hover:opacity-85"> 
-                <EllipsisVertical size={18} />
+            <Button 
+                fn={() => setShowDialog({
+                    isShow: true,
+                    type: 'livreur',
+                    data: data
+                })}
+                className="md:w-10 md:flex-0 flex-1 text-secondary bg-gradient-right hover:bg-primary/10 hover:text-primary duration-100 ease-in"
+                noLoading={true}
+            >
+                <Trash className="shrink-0"/>
             </Button>
         </div>
     </div>
