@@ -40,7 +40,7 @@ export default function PublicLayout () {
             <div className="p-4 bg-linear-to-tr from-gradient-left to-gradient-right h-27 flex flex-col justify-center gap-4 rounded-xl">
                   <h5 className="font-body font-bold text-tertiary text-lg">En route vers vous </h5>
                 <div className="flex flex-col gap-2">
-                  <div className="w-full h-[6px] bg-[#E2E8F8] rounded-xl">
+                  <div className="w-full h-1.5 bg-[#E2E8F8] rounded-xl">
                     <div className={twMerge("w-1/2 h-full bg-tertiary origin-left rounded-xl",
                       maLivraison?.status === 'en_attente' && 'w-1/9',
                       maLivraison?.status === 'en_route' && 'w-1/2',
@@ -56,13 +56,14 @@ export default function PublicLayout () {
             </div>
         </section>
         <section className="flex flex-col gap-4">
-          <Carte 
-            latitude={maLivraison?.destination.latitude}
-            longitude={maLivraison?.destination.longitude}
-            repere={maLivraison?.destination.repere}
-            lieu={maLivraison?.destination.lieu}
-            heure_l={maLivraison?.heure_livraison}
-          />
+            { 
+              <Carte 
+                latitude={maLivraison?.destination?.latitude}
+                longitude={maLivraison?.destination?.longitude}
+                repere={maLivraison?.destination?.repere}
+                lieu={maLivraison?.destination?.lieu}
+                heure_l={maLivraison?.heure_livraison}
+          />}
           <LivreurDetailMin photo={maLivraison?.livreur_photo ?? ""}
             nom={maLivraison?.livreur_nom ?? ""} 
             prenom={maLivraison?.livreur_prenom ?? ""} 

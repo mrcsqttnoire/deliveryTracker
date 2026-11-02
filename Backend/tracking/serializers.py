@@ -203,7 +203,7 @@ class ClientSerializer(serializers.ModelSerializer):
             'proprietaire',
             'livraison_count'
         ]
-        read_only_fields = ['id', 'proprietaire']
+        read_only_fields = ['id', 'proprietaire', 'livraison_count']
 
 class DestinationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -296,11 +296,18 @@ class LivraisonSerializer(serializers.ModelSerializer):
             'status': {'read_only': True}
         }
 
-
+class ClientForDetail(ClientSerializer):
+    class Meta(ClientSerializer.Meta):
+        fields = [
+            'id', 
+            'nom',
+            'prenom',
+            'telephone',
+        ]
 
 class DetailLivraisonSerializer(serializers.ModelSerializer):
     destination = DestinationSerializer()
-    client = ClientSerializer()
+    client = ClientForDetail()
 
     class Meta:
         model = Livraison

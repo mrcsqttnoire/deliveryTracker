@@ -4,10 +4,10 @@ import { Navigation } from "../components/shared/navigation";
 import { Options } from "../components/shared/option";
 import { useUtilities } from "../provider/CustomizedHooks";
 import { twMerge } from "tailwind-merge";
+import { Dialog } from "../components/shared/dialog";
 
 export default function AppLayout () {
-  const {isOpen} = useUtilities()
-
+  const {isOpen, showDialog}  = useUtilities()
   return <>
       <div className="flex h-dvh flex-col overflow-hidden">
         <Header/>
@@ -18,6 +18,7 @@ export default function AppLayout () {
           <Outlet />  
           {/* <div className="h-16"></div> */}
         </main>
+        {showDialog.isShow && <Dialog/>}
       </div>
       <Navigation/>
   </>

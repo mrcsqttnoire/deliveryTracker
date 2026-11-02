@@ -1,14 +1,15 @@
 import { Package, PackagePlus, Phone, PhoneCall, RotateCwClock, Trash } from "lucide-react"
 
 import { Button } from "../shared/button"
-import type { Client } from "../../provider/CustomizedHooks"
+import { useUtilities, type Client } from "../../provider/CustomizedHooks"
 
 interface CardClientProps {
     data: Client
 }
 
 export function CardClient ({data}: CardClientProps) {
-    const initials = `${data.nom.charAt(0)}${data.prenom.charAt(0)}`;
+    const initials = `${data.nom.charAt(0)}${data.prenom.charAt(0)}`
+    const {setShowDialog} = useUtilities<Client>()
     return <>
         <div className="flex flex-col gap-3 bg-white h-auto rounded-xl shadow-xl p-4 hover:-translate-y-0.5 duration-300">
             <div className="flex justify-between items-center">
@@ -32,6 +33,11 @@ export function CardClient ({data}: CardClientProps) {
                         <RotateCwClock className="shrink-0"/>
                     </Button>
                     <Button 
+                        fn={() => setShowDialog({
+                            isShow: true,
+                            type: 'client',
+                            data: data
+                        })}
                         className="w-3 text-secondary bg-gradient-right hover:bg-primary/10 hover:text-primary duration-100 ease-in"
                         noLoading={true}
                     >
@@ -56,13 +62,15 @@ export function CardClient ({data}: CardClientProps) {
                 </div> */}
             </div>
             <div className="flex gap-2">
-                <Button 
-                    noLoading={true}
-                    fn={()=>navigator.clipboard.writeText(data.telephone)}
-                    className=" bg-gradient-right text-neutral hover:bg-gradient-right hover:opacity-85">
-                    <PhoneCall className="w-5 md:w-6 shrink-0 text-primary" />
-                    Copier numéro
-                </Button>
+                <a href={`tel:${data.telephone}`}>
+                    <Button 
+                        noLoading={true}
+                        fn={()=>navigator.clipboard.writeText(data.telephone)}
+                        className="h-full bg-gradient-right text-neutral hover:bg-gradient-right hover:opacity-85">
+                        <PhoneCall className="w-5 md:w-6 shrink-0 text-primary" />
+                        Appeler
+                    </Button>
+                </a>
                 <Button 
                     noLoading={true}
                     className="bg-gradient-right text-neutral hover:bg-gradient-right hover:opacity-85 duration-50">

@@ -158,8 +158,13 @@ export type CoordType = {
     lat: number
 }
 
+export type ModalType<T = any> = {
+    isShow: boolean
+    type: 'client' | 'livreur'
+    data: T | null
+}
 
-type UtilitiesType = {
+type UtilitiesType<T = any> = {
     message: string
     setMessage: (value: string) => void
 
@@ -172,16 +177,19 @@ type UtilitiesType = {
 
     marker: CoordType | null
     setMarker: (co: CoordType | null) => void
+
+    showDialog: ModalType<T>
+    setShowDialog: (val: ModalType<T>) => void
 }
 
-export const UtilitiesContext = createContext<UtilitiesType | null>(null)
+export const UtilitiesContext = createContext<UtilitiesType<any> | null>(null)
 
-export function useUtilities(){
+export function useUtilities<T = any>(){
     const context: UtilitiesType | null = useContext(UtilitiesContext)
 
     if(context == null) throw new Error("Aucun provider chargé")
 
-        return context
+        return context as UtilitiesType<T>
 }
 
 // ----------------------------------------
@@ -263,6 +271,7 @@ type ClientContextType = {
     setClients: (val: Client[] | null) => void
 
     getAllClients: () => void
+    deleteClient: (uuid: string, nav: NavigateFunction) => void
 }
 
 export const ClientContext = createContext<ClientContextType | null>(null)

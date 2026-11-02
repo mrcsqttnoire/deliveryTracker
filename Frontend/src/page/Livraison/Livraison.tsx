@@ -34,7 +34,7 @@ export default function Livraison () {
                 </div>
                 <div className="relative h-12 ">
                     <Search className="absolute top-1/2 -translate-y-1/2 left-4 z-10"/>
-                    <input type="text" name="livraison-search" className="absolute top-0 left-0 pl-[calc(32px+24px)] h-12 bg-[#F0F3FF] w-full font-body font-medium rounded-xl inset-shadow-sm " placeholder="Rechercher une livraison"/>
+                    <input type="text" name="livraison-search" className="absolute top-0 left-0 pl-14 h-12 bg-[#F0F3FF] w-full font-body font-medium rounded-xl inset-shadow-sm " placeholder="Rechercher une livraison"/>
                 </div>
                 <Filter />
                 {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">

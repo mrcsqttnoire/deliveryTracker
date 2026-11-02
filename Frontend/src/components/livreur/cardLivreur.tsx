@@ -75,8 +75,8 @@ export function CardLivreur ({data}: CardLivreurProps) {
             </div>
         </div>
         <div className="flex gap-2">
-            <a href={`tel:${data.telephone}`}>
-                <Button className="w-auto bg-gradient-right text-primary hover:bg-gradient-right hover:opacity-85"> 
+            <a href={`tel:${data.telephone}`} >
+                <Button className="w-auto h-full bg-gradient-right text-primary hover:bg-gradient-right hover:opacity-85"> 
                     <PhoneCall size={18} />
                 </Button>
             </a>

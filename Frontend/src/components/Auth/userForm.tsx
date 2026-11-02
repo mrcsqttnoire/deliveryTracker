@@ -35,21 +35,21 @@ export default function UserForm () {
                 <label htmlFor="nom" className="font-body font-semibold text-md">Nom</label>
                 <div className="relative w-full h-12">
                     <IdCard className="absolute top-1/2 -translate-y-1/2 left-4 Text-Black text-secondary"/>
-                    <input type="text" id="nom" value={nom} className={("w-full font-body bg-white shadow-sm/10 h-full pl-[calc(32px+24px)] rounded-xl focus")} name="nom" placeholder="ex: RASOAMALALA" required onChange={(e)=>setNom(e.target.value)}/>
+                    <input type="text" id="nom" value={nom} className={("w-full font-body bg-white shadow-sm/10 h-full pl-14 rounded-xl focus")} name="nom" placeholder="ex: RASOAMALALA" required onChange={(e)=>setNom(e.target.value)}/>
                 </div>
             </div>
             <div className="flex flex-col gap-1.5 w-full text-neutral">
                 <label htmlFor="prenom" className="font-body font-semibold text-md">Prénom</label>
                 <div className="relative w-full h-12">
                     <FaceSlightlySmiling className="absolute top-1/2 -translate-y-1/2 left-4 Text-Black text-secondary"/>
-                    <input type="text" id="prenom" value={prenom} className={("w-full font-body bg-white shadow-sm/10 h-full pl-[calc(32px+24px)] rounded-xl focus")} name="prenom" placeholder="ex: Marie sophie" required onChange={(e)=>setPrenom(e.target.value)}/>
+                    <input type="text" id="prenom" value={prenom} className={("w-full font-body bg-white shadow-sm/10 h-full pl-14 rounded-xl focus")} name="prenom" placeholder="ex: Marie sophie" required onChange={(e)=>setPrenom(e.target.value)}/>
                 </div>
             </div>
             <div className="flex flex-col gap-1.5 w-full text-neutral">
                 <label htmlFor="telephone" className="font-body font-semibold text-md">Téléphone</label>
                 <div className="relative w-full h-12">
                     <Phone  className="absolute top-1/2 -translate-y-1/2 left-4 Text-Black text-secondary"/>
-                    <input type="text" id="telephone" value={telephone} className={("w-full font-body bg-white shadow-sm/10 h-full pl-[calc(32px+24px)] rounded-xl focus")} name="telephone" placeholder="ex: 0333169049" required onChange={(e)=>setTelephone(e.target.value)}/>
+                    <input type="text" id="telephone" value={telephone} className={("w-full font-body bg-white shadow-sm/10 h-full pl-14 rounded-xl focus")} name="telephone" placeholder="ex: 0333169049" required onChange={(e)=>setTelephone(e.target.value)}/>
                 </div>
             </div>
             <div className="w-full mt-2">

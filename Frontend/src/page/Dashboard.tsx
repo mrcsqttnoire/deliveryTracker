@@ -1,7 +1,5 @@
 import { Bike, CheckCheck, CircleDot, HeartHandshake, Hourglass, Store, UserGroup } from "lucide-react";
 import { Filter } from "../components/shared/filter";
-// import { Button } from "../components/shared/button";
-
 export function Dashboard () {
     return <>
         <section className="container-custom py-4 bg-principale min-h-full">

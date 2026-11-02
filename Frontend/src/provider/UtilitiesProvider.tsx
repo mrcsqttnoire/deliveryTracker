@@ -1,17 +1,22 @@
 import { useState, type ReactNode } from "react";
-import { UtilitiesContext, type CoordType } from "./CustomizedHooks";
+import { UtilitiesContext, type CoordType, type ModalType } from "./CustomizedHooks";
 import type { ClassNameValue } from "tailwind-merge";
 
 interface UtilitiesProviderProps {
     children: ReactNode
 }
-
+const defaultModal: ModalType = {
+    isShow: false,
+    type: 'client',
+    data: null
+}
 export function UtilitiesProvider ({children}: UtilitiesProviderProps) {
     
     const [message, setMessage] = useState<string>("")
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isCopied, setIsCopied] = useState<boolean>(false)
     const [marker, setMarker] = useState<CoordType | null>(null)
+    const [showDialog, setShowDialog] = useState<ModalType>(defaultModal)
 
     async function copieTexte(texte: string) {
         setIsCopied(true)
@@ -37,7 +42,8 @@ export function UtilitiesProvider ({children}: UtilitiesProviderProps) {
             message, setMessage,
             isOpen, setIsOpen,
             isCopied, copieTexte,
-            marker, setMarker
+            marker, setMarker,
+            showDialog, setShowDialog,
         }}>
             {children}
         </UtilitiesContext.Provider>
