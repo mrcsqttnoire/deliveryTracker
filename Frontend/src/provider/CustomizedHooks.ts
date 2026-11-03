@@ -1,7 +1,7 @@
 import { createContext, useContext, type ChangeEvent, type FormEvent } from "react"
 import type { NavigateFunction } from "react-router-dom";
 import type { ClassNameValue } from "tailwind-merge";
-import type { User } from "./ModelsType";
+import type { Livraisons, Livreur, User } from "./ModelsType";
 
 export type RouteParams = {
   id: string
@@ -60,39 +60,10 @@ export function useUser() {
 
 // -----------------------------------------------
 
-export type PhotoType = {
-    id: number
-    lien: string
-}
 
-export type DestinationType = {
-    latitude: string
-    longitude: string
-    repere: string
-    lieu: string
-}
 
-export type Livraisons = {
-    id: string
-    designation: string
-    date_livraison: string
-    heure_livraison: string
-    livreur: string
-    livreur_photo: string
-    livreur_nom: string
-    livreur_prenom: string
-    livreur_telephone: string
-    client: string
-    client_nom: string
-    client_prenom: string
-    destination_lat: string
-    destination_long: string
-    destination_repere: string
-    destination_lieu: string
-    destination: DestinationType
-    status: string
-    photos: PhotoType[]
-}
+
+
 
 type LivraisonType = {
     designation: string
@@ -109,6 +80,7 @@ type LivraisonType = {
 
     livraisons: Livraisons[]
     maLivraison: Livraisons | null
+    livraisonChargee: boolean
 
     setLivraisons: (val: []) => void
     getLivraisons: () => void
@@ -211,16 +183,7 @@ export function useUtilities<T = any>(){
 
 // ----------------------------------------
 
-export type Livreur = {
-    id: string,
-    nom: string,
-    prenom: string,
-    telephone: string,
-    username: string,
-    optimized_photo: string,
-    photo: string,
-    status: string
-}   
+  
 
 type LivreurContextType = {
     livreursList: Livreur[] | null

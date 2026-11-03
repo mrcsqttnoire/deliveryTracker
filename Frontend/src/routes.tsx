@@ -169,6 +169,15 @@ export const routes = createBrowserRouter([
                     <PublicLayout/>
                 </SuspenseLayout>
             </ProtectedRoutes>,
+    },
+    {
+        path: 'livraison/delivery-suivi/:id',
+        element: 
+            <ProtectedRoutes>
+                <SuspenseLayout>
+                    <PublicLayout/>
+                </SuspenseLayout>
+            </ProtectedRoutes>,
     }
 ])
 

@@ -4,7 +4,8 @@ import api from "../api";
 import { type NavigateFunction } from "react-router-dom";
 import axios from "axios";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constanst";
-import { DefaultUser, type User } from "./ModelsType";
+import { type User } from "./ModelsType";
+import { DefaultUser } from "./DefaultValue";
 
 interface UserProviderProps {
     children: ReactNode,

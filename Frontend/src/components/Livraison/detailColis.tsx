@@ -1,5 +1,6 @@
 import { twMerge } from "tailwind-merge"
-import { useLivraison, type PhotoType } from "../../provider/CustomizedHooks"
+import { useLivraison } from "../../provider/CustomizedHooks"
+import type { PhotoType } from "../../provider/ModelsType"
 
 
 

@@ -1,8 +1,9 @@
 import { CircleCheckBig, Navigation, Phone, PhoneCall, Trash, UserKey, UserPen } from "lucide-react"
 import { BadgeLivraison } from "../Livraison/badge"
 import { Button } from "../shared/button"
-import { useLivreur, useUtilities, type Livreur } from "../../provider/CustomizedHooks"
+import { useLivreur, useUtilities } from "../../provider/CustomizedHooks"
 import { useNavigate } from "react-router-dom"
+import type { Livreur } from "../../provider/ModelsType"
 
 // type Livreur = {
 //     id: string

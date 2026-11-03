@@ -3,12 +3,13 @@ import truck from "../assets/icons/truck.svg"
 import  {Carte}  from "../components/Livraison/carte"
 import { LivreurDetailMin } from "../components/livreur/livreur.min"
 import { DetailColis } from "../components/Livraison/detailColis"
-import { LivraisonProvider } from "../provider/LivraisonProvider"
 import { MapProvider } from "@vis.gl/react-maplibre"
 import { useLivraison, type RouteParams } from "../provider/CustomizedHooks"
 import { lazy, useEffect } from "react"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
+import { ClientDetailMin } from "../components/client/client.min"
+import { Loading } from "../components/shared/loading"
 
 const FormStep = lazy(()=> import("./Clients/livraisonAddons"))
 
@@ -19,12 +20,14 @@ export default function PublicLayout () {
   const page = location.pathname
   const navigate = useNavigate()
   const {id} = useParams<RouteParams>()
+  const {getSelectedLivraison, maLivraison, livraisonChargee} = useLivraison()
   useEffect(()=>{
-    getSelectedLivraison(id ?? '', navigate)
+      getSelectedLivraison(id ?? '', navigate)
   }, [])
-  const {getSelectedLivraison, maLivraison} = useLivraison()
-  return <>
-   <LivraisonProvider>
+
+  if (!livraisonChargee) return <Loading/>
+  if (!maLivraison) return <p>Livraison introuvable.</p>
+  return <>{
     <MapProvider>
       <main className="flex flex-col gap-4">
         { !page.includes("admin") && maLivraison && !maLivraison.client &&
@@ -54,26 +57,16 @@ export default function PublicLayout () {
             </div>
         </section>
         <section className="flex flex-col gap-4">
-            { 
-              <Carte 
-                latitude={maLivraison?.destination?.latitude}
-                longitude={maLivraison?.destination?.longitude}
-                repere={maLivraison?.destination?.repere}
-                lieu={maLivraison?.destination?.lieu}
-                heure_l={maLivraison?.heure_livraison}
-          />}
-          <LivreurDetailMin photo={maLivraison?.livreur_photo ?? ""}
-            nom={maLivraison?.livreur_nom ?? ""} 
-            prenom={maLivraison?.livreur_prenom ?? ""} 
-            tel={maLivraison?.livreur_telephone ?? ""} 
-            status={maLivraison?.status}
-          />
+          {<Carte data={maLivraison}/>}
+          <LivreurDetailMin data={maLivraison}/>
+          { location.pathname.includes('delivery') &&
+            <ClientDetailMin data={maLivraison}/>
+          }
           <DetailColis 
-            designation={maLivraison?.designation ?? "Il n'y a pas des informations qui sont avec votre colis"} 
-            photos={maLivraison?.photos}/>
+            designation={maLivraison.designation.trim() ?? "Il n'y a pas des informations qui sont avec votre colis"} 
+            photos={maLivraison.photos}/>
         </section>
       </main>
-    </MapProvider>
-   </LivraisonProvider>
+    </MapProvider>}
   </>
 }

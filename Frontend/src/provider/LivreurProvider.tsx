@@ -1,7 +1,8 @@
 import { useState, type ReactNode } from "react";
-import { LivreurContext, useLoading, useUtilities, type Livreur } from "./CustomizedHooks";
+import { LivreurContext, useLoading, useUtilities } from "./CustomizedHooks";
 import api from "../api";
 import axios from "axios";
+import type { Livreur } from "./ModelsType";
 
 
 interface LivreurProviderProps {

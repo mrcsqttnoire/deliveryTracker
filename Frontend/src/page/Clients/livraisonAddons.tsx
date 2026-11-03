@@ -9,7 +9,7 @@ import { useMap } from "@vis.gl/react-maplibre";
 import { useNavigate } from "react-router-dom";
 import { Alert } from "../../components/shared/alert";
 
-const Carte = lazy(()=>import("../../map/map"))
+const Carte = lazy(()=>import("../../map/map_public"))
 
 interface AddDetailProps {
     id: string

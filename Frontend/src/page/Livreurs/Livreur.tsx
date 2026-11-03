@@ -1,7 +1,7 @@
 import { UserPlus } from "lucide-react";
 import { HeadPage } from "../../components/shared/headPage";
 import { CardLivreur } from "../../components/livreur/cardLivreur";
-import { useLivreur, useLoading, type Livreur } from "../../provider/CustomizedHooks";
+import { useLivreur, useLoading } from "../../provider/CustomizedHooks";
 import { Info } from "../../components/shared/info";
 import { useEffect } from "react";
 import { LivreurSkeleton } from "../../skeleton/livreur/LivreurSkeleton";

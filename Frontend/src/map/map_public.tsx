@@ -2,8 +2,8 @@ import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 import {FullscreenControl, GeolocateControl, Map, Marker} from '@vis.gl/react-maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { setWorkerUrl, type MapLayerMouseEvent} from 'maplibre-gl';
-import { MapPin } from 'lucide-react';
 import { useUtilities } from '../provider/CustomizedHooks';
+import { PinPointer } from './pin_marker';
 
 setWorkerUrl(workerUrl);
 interface MapPublicProps{
@@ -26,17 +26,16 @@ export default function MapPublic({id}: MapPublicProps) {
             initialViewState={{
             longitude: 47.5216,
             latitude: -18.9137,
-            zoom: 15,
+            zoom: 16,
+            pitch: 70,
             }}
+            minPitch={50}
             style={{
                 borderRadius: "12px",
             }}
-            mapStyle="https://tiles.openfreemap.org/styles/bright"
+            mapStyle="https://tiles.openfreemap.org/styles/liberty"
             onClick={createMarker}
         >
-            {/* <Marker longitude={47.5216} latitude={-18.9137}>
-                <Bike></Bike>
-            </Marker> */}
             <FullscreenControl
                 position='bottom-right'
                 style={{
@@ -50,10 +49,11 @@ export default function MapPublic({id}: MapPublicProps) {
                 <Marker 
                     latitude={marker.lat} 
                     longitude={marker.lng}
-                > 
-                    <div className='p-2 bg-primary/20 rounded-full backdrop-blur-sm'>
-                        <MapPin size={32} className='shrink-0 text-primary'/>
-                    </div>
+                    anchor='bottom'
+                    draggable
+                    onDragEnd={(e) => setMarker({ lat: e.lngLat.lat, lng: e.lngLat.lng })}
+                >     
+                    <PinPointer/>
                 </Marker>
             }
         </Map>

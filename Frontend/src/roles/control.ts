@@ -8,6 +8,7 @@ import { LivraisonActionAdmin } from "./admin/livraisonAction";
 import { LivraisonActionDelivery } from "./delivery/livraisonAction";
 
 type Role = "proprietaire" | "livreur"
+
 export const HEADER_DASHBOARD: Record<Role, React.ComponentType> = {
     proprietaire: HeadDashboardAdmin,
     livreur: HeadDashboardDelivery

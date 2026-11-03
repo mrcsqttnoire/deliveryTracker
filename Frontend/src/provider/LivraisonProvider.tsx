@@ -1,11 +1,12 @@
 import { useState, type FormEvent, type ReactNode } from "react";
 import type { ClassNameValue } from "tailwind-merge";
-import { LivraisonContext, useCompression, useLoading, useUser, useUtilities, type Livraisons } from "./CustomizedHooks";
+import { LivraisonContext, useCompression, useLoading, useUser, useUtilities} from "./CustomizedHooks";
 import api from "../api";
 import axios from "axios";
 import type { NavigateFunction } from "react-router-dom";
 import { isBefore, isSunday, parse } from "date-fns";
 import { LIVRAISON_ROUTES } from "../api_routes";
+import type { Livraisons } from "./ModelsType";
 // import api from "../api";
 
 interface LivraisonProviderProps {
@@ -32,7 +33,10 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
     const {setIsLoading} = useLoading()
     const {compressedImg, setCompressedImg} = useCompression()
     const [livraisons, setLivraisons] = useState<Livraisons[]>([])
+
     const [maLivraison, setMaLivraison] = useState<Livraisons | null>(null)
+    const [livraisonChargee, setLivraisonChargee] = useState(false)
+
     const {isProprietaire, userLogedIn} = useUser()
     
     const createLivraison = async (e: FormEvent<HTMLFormElement>, nav: NavigateFunction) => {
@@ -130,6 +134,7 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
     }
 
     const getSelectedLivraison = async (id: string, nav: NavigateFunction) => {
+        setLivraisonChargee(false)
         setIsLoading(true)
         try{
             if (!id.trim()){
@@ -150,6 +155,7 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
             }
         } finally {
             setIsLoading(false)
+            setLivraisonChargee(true)
         }
     }
 
@@ -162,6 +168,7 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
             livreurAssigne, setLivreurAssigne, 
             livraisons, setLivraisons,
             viderChamp, maLivraison,
+            livraisonChargee,
             createLivraison, getLivraisons,
             getSelectedLivraison,
         }}>

@@ -259,6 +259,7 @@ class LivraisonSerializer(serializers.ModelSerializer):
     livreur_telephone = serializers.CharField(source='livreur.user.telephone', read_only=True)
     client = ClientProprietaireField(required=False, read_only=True)
     client_nom = serializers.CharField(source='client.nom' ,read_only=True)
+    client_telephone = serializers.CharField(source='client.telephone', read_only=True)
     client_prenom = serializers.CharField(source='client.prenom', read_only=True)
     destination = DestinationSerializer(read_only=True)
     photos = PhotoLivraisonSerializer(many=True, read_only=True) 
@@ -290,6 +291,7 @@ class LivraisonSerializer(serializers.ModelSerializer):
             'client',
             'client_nom',
             'client_prenom',
+            'client_telephone',
             'destination',
             'photos',
             'uploaded_photos',
@@ -369,6 +371,7 @@ class LivraisonListSerializer(LivraisonSerializer):
             'livreur_telephone',
             'client_nom',
             'client_prenom',
+            'client_telephone',
             'destination_lat',
             'destination_long',
             'destination_lieu',

@@ -5,7 +5,7 @@ import type { CardLivraisonProps } from "../interface"
 
 export const LivraisonActionDelivery = ({data}: CardLivraisonProps) => {
     
-    const lien = window.location.origin.concat(`/livraison/suivi/${data.id}`)
+    const lien = window.location.origin.concat(`/livraison/delivery-suivi/${data.id}`)
     return  <>
         <a href={lien} className="flex-1">
             <Button

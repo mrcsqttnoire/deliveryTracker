@@ -1,7 +1,8 @@
 import { Navigation } from "lucide-react";
 import { BadgeLivraison } from "./badge";
-import { useUser, type Livraisons } from "../../provider/CustomizedHooks";
+import { useUser } from "../../provider/CustomizedHooks";
 import { ACTION_LIVRAISON, CARD_LIVRAISON } from "../../roles/control";
+import type { Livraisons } from "../../provider/ModelsType";
 
 interface CardLivraisonProps {
     data: Livraisons

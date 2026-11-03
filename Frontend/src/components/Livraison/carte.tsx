@@ -5,20 +5,20 @@ import { lazy, Suspense, useEffect, useState } from "react"
 import { getUserLocation, type UserLocation } from "../../map/customMapHook"
 import { useMap } from "@vis.gl/react-maplibre"
 import Skeleton from "react-loading-skeleton"
-const MapPublic = lazy(() => import("../../map/map"))
+import type { Livraisons } from "../../provider/ModelsType"
+import { useUtilities } from "../../provider/CustomizedHooks"
+const MapSuivi = lazy(() => import("../../map/map_suivi"))
 
 interface CarteProps {
-  latitude?: string
-  longitude?: string
-  repere?: string
-  lieu?: string
-  heure_l?: string
+  data: Livraisons
 }
 
-export function Carte ({latitude, longitude, repere, lieu, heure_l}: CarteProps) {
+export function Carte ({data}: CarteProps) {
+  const lat = Number(data.destination?.latitude)
+  const lng = Number(data.destination?.longitude)
+  const {setMarker} = useUtilities()
   const [location, setLocation] = useState<UserLocation | null>(null)
-
-  const {map_public} = useMap()
+  const {map_suivi} = useMap()
 
   useEffect(()=>{
     const fetchLocation = async ()=>{
@@ -27,23 +27,27 @@ export function Carte ({latitude, longitude, repere, lieu, heure_l}: CarteProps)
       setLocation(coords ?? null)
     }
     fetchLocation()
-  }, [map_public])
-
+  }, [map_suivi])
+  
   useEffect(() => {
-    if (!location || !map_public) return
-    if (latitude === null || longitude === null) return
-    if(!latitude?.trim() || !longitude?.trim()){
-      map_public.flyTo({
+    if (!location || !map_suivi) return 
+    if(!Number.isFinite(lat) || !Number.isFinite(lng)){
+      map_suivi.flyTo({
         center: [location.longitude, location.latitude],
-        zoom: 16,
+        zoom: 17,
       })
       return
     }
-    map_public.flyTo({
-      center: [parseFloat(longitude), parseFloat(latitude)],
-      zoom: 16,
+    map_suivi.flyTo({
+      center: [lng, lat],
+      zoom: 17,
+      pitch: 70, bearing: -20, duration: 2500,
     })
-  }, [location, map_public, longitude, latitude])
+    setMarker({
+      lat: lat,
+      lng: lng
+    })
+  }, [location, map_suivi, lat, lng])
   return <>
     <div className="container-custom ">
       <div className="h-full w-full relative flex justify-center ">
@@ -52,7 +56,7 @@ export function Carte ({latitude, longitude, repere, lieu, heure_l}: CarteProps)
           {/* <img src={map} alt="carte" className="w-full h-full rounded-2xl object-cover "/> */}
           <div className="w-full h-full rounded-2xl object-cover">
             <Suspense fallback={<Skeleton className="w-full h-full"/>}>
-              <MapPublic id="map_public"/>
+              <MapSuivi id="map_suivi"/>
             </Suspense>
           </div>
         </div>
@@ -62,12 +66,12 @@ export function Carte ({latitude, longitude, repere, lieu, heure_l}: CarteProps)
             <div className="flex gap-2 ">
               {/* <p>Analakely</p> */}
               {/* <MoveRight /> */}
-              <p>Livraison à {lieu}</p>
+              <p>Livraison à {data.destination?.lieu}</p>
             </div>
-            <p className="text-secondary">Repère : {repere}</p>
+            <p className="text-secondary">Repère : {data.destination?.repere}</p>
           </div>
           <div className="bg-gradient-right px-2 py-1 text-secondary font-body font-semibold rounded-md">
-            <p>{heure_l}</p>
+            <p>{data.heure_livraison}</p>
           </div>
         </div>
       </div>
