@@ -22,7 +22,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
         return obj.proprietaire.prenom if obj.is_proprietaire else obj.livreur.prenom
 
     def get_role(self, obj):
-        return 'Propriétaire' if obj.is_proprietaire else 'Livreur'
+        return 'proprietaire' if obj.is_proprietaire else 'livreur'
     
     class Meta(UserSerializer.Meta):
         model = User
@@ -33,6 +33,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
             'username', 
             'password',
             'role', 
+            'is_proprietaire',
             'photo',
         ]
         extra_kwargs = {

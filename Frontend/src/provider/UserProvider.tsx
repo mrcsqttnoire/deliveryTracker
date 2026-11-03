@@ -4,7 +4,7 @@ import api from "../api";
 import { type NavigateFunction } from "react-router-dom";
 import axios from "axios";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constanst";
-import type { User } from "./ModelsType";
+import { DefaultUser, type User } from "./ModelsType";
 
 interface UserProviderProps {
     children: ReactNode,
@@ -18,8 +18,9 @@ export function UserProvider({children}: UserProviderProps){
     const [telephone, setTelephone] = useState<string>("")
     const [username, setUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
-    const [userLogedIn, setUserLogedIn] = useState<User | null>(null)
     const [conf_password, setConfPassword] = useState<string>("")
+    const [userLogedIn, setUserLogedIn] = useState<User>(DefaultUser)
+    const [isProprietaire, setIsProprietaire] = useState<boolean>(true)
 
     const {setMessage} = useUtilities()
     const {setIsLoading} = useLoading()
@@ -51,7 +52,6 @@ export function UserProvider({children}: UserProviderProps){
                         const refresh_token = res.data.refresh
                         localStorage.setItem(ACCESS_TOKEN, created_token)
                         localStorage.setItem(REFRESH_TOKEN, refresh_token)
-                        getMe()
                         navigate("/")
                     }
                 } else {
@@ -69,23 +69,6 @@ export function UserProvider({children}: UserProviderProps){
         }
     }
 
-    const get_me = "/auth/users/me"
-    const getMe = async () => {
-        try{    
-            const res = await api.get(get_me)
-            if (res && res.status === 200){
-                const data = res.data
-                setUserLogedIn(data)
-                // setNom(data.nom)
-                // setPrenom(data.prenom)
-                // setUsername(data.username)
-                // setRole(data.role)
-                // setPhoto(data.photo)                
-            }
-        } catch(err) {
-            console.log(err)
-        }
-    }
 
     const s_inscrire = async ( e: FormEvent, {role}: RoleType, nav: NavigateFunction) => { 
         e.preventDefault()
@@ -246,6 +229,7 @@ export function UserProvider({children}: UserProviderProps){
                 conf_password, setConfPassword,
                 photo, setPhoto,
                 userLogedIn, setUserLogedIn,
+                isProprietaire, setIsProprietaire,
                 seConnecter,
                 s_inscrire,
                 getOneLivreur,

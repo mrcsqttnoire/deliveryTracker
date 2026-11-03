@@ -1,41 +1,32 @@
-import { Bike, CheckCheck, CircleDot, HeartHandshake, Hourglass, Store, UserGroup } from "lucide-react";
+import { Bike, CheckCheck, CircleDot, Hourglass, UserGroup } from "lucide-react";
 import { Filter } from "../components/shared/filter";
-import { useLivraison, useLivreur } from "../provider/CustomizedHooks";
+import { useLivraison, useLivreur, useUser } from "../provider/CustomizedHooks";
 import { useEffect } from "react";
+import { HEADER_DASHBOARD } from "../roles/control";
+import { twMerge } from "tailwind-merge";
 export function Dashboard () {
+    const {isProprietaire, userLogedIn} = useUser()
     const { livraisons, getLivraisons} = useLivraison()
     const {livreursList, getLivreurs} = useLivreur()
+
     useEffect(()=>{
+        if (isProprietaire) getLivreurs()
         getLivraisons()
-        getLivreurs()
     }, [])
 
     const lv_en_attente = livraisons.filter((lv)=>lv.status === 'en_attente').length ?? 0
     const lv_livree = livraisons.filter((lv)=>lv.status === 'livree').length ?? 0
     const lvr_en_route = livreursList?.filter((lv)=>lv.status === 'occupe').length ?? 0
     const lvr_dispo = livreursList?.filter((lv)=>lv.status === 'libre').length ?? 0
+    
+    const HeadDashboard = HEADER_DASHBOARD[userLogedIn.role]
     return <>
         <section className="container-custom py-4 bg-principale min-h-full">
-            <div className="flex flex-col gap-10 ">
+            <div className="flex flex-col justify-center gap-10 ">
                 <div>
-                    <div className=" bg-white p-4 rounded-xl ">
-                        <div className="flex flex-col gap-2">
-                            <div className="flex gap-2 text-secondary">
-                                <Store />
-                                <p className="font-body font-medium uppercase">Boutique active</p>
-                            </div>
-                            <h4 className="font-heading font-semibold text-neutral text-4xl ">Statistiques de vos activités</h4>
-                            <div className="flex gap-2 text-secondary -mt-1">
-                                <HeartHandshake className="text-primary/70"/>
-                                <p className="font-body">Bienvenue dans votre boutique</p>
-                            </div>
-                        </div>
-                    </div>
-                    {/* <Button className="flex text-sm md:text-lg md:w-1/2 md:justify-self-end">
-                        Nouvelle livraison
-                    </Button> */}
+                    <HeadDashboard/>
                 </div>
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-2 gap-x-4">
+                <div className={twMerge("grid grid-cols-2 lg:grid-cols-4 gap-y-2 gap-x-4", !isProprietaire && "lg:grid-cols-2")}>
                     <div className="bg-white p-4 rounded-xl shadow-xl hover:-translate-y-0.5 duration-300">
                         <div className="flex justify-between items-center">
                             <h5 className="font-body font-bold text-secondary">En attente</h5>
@@ -52,22 +43,24 @@ export function Dashboard () {
                             <p className=" font-body font-bold">A expédier</p>
                         </div>
                     </div>
-                    <div className="bg-white p-4 rounded-xl shadow-xl  hover:-translate-y-0.5 duration-300">
-                        <div className="flex justify-between items-center">
-                            <h5 className="font-body font-bold text-secondary">En route</h5>
-                            <div className="w-10 h-10 bg-en_route-bg place-content-center rounded-full">
-                                <Bike size={20} className="text-en_route shrink-0 justify-self-center"/>
+                    { isProprietaire &&
+                        <div className="bg-white p-4 rounded-xl shadow-xl  hover:-translate-y-0.5 duration-300">
+                            <div className="flex justify-between items-center">
+                                <h5 className="font-body font-bold text-secondary">En route</h5>
+                                <div className="w-10 h-10 bg-en_route-bg place-content-center rounded-full">
+                                    <Bike size={20} className="text-en_route shrink-0 justify-self-center"/>
+                                </div>
+                            </div>
+                            <div className="flex items-end gap-2 my-2">
+                                <h4 className="font-heading font-semibold text-5xl text-neutral">{lvr_en_route}</h4>
+                                <p className="font-body font-medium text-secondary text-lg">livreurs</p>
+                            </div>
+                            <div className="flex items-center gap-3 text-en_route">
+                                <CircleDot size={16} className=""/>
+                                <p className=" font-body font-bold">Géolocalisé</p>
                             </div>
                         </div>
-                        <div className="flex items-end gap-2 my-2">
-                            <h4 className="font-heading font-semibold text-5xl text-neutral">{lvr_en_route}</h4>
-                            <p className="font-body font-medium text-secondary text-lg">livreurs</p>
-                        </div>
-                        <div className="flex items-center gap-3 text-en_route">
-                            <CircleDot size={16} className=""/>
-                            <p className=" font-body font-bold">Géolocalisé</p>
-                        </div>
-                    </div>
+                    }
                     <div className="bg-white p-4 rounded-xl shadow-xl  hover:-translate-y-0.5 duration-300">
                         <div className="flex justify-between items-center">
                             <h5 className="font-body font-bold text-secondary">Livrées</h5>
@@ -84,22 +77,24 @@ export function Dashboard () {
                             <p className=" font-body font-bold">Succès 100%</p>
                         </div>
                     </div>
-                    <div className="bg-white p-4 rounded-xl shadow-xl  hover:-translate-y-0.5 duration-300">
-                        <div className="flex justify-between items-center">
-                            <h5 className="font-body font-bold text-secondary">Livreurs</h5>
-                            <div className="w-10 h-10 bg-primary/15 place-content-center rounded-full">
-                                <UserGroup size={20} className="text-primary shrink-0 justify-self-center"/>
+                    {   isProprietaire &&
+                        <div className="bg-white p-4 rounded-xl shadow-xl  hover:-translate-y-0.5 duration-300">
+                            <div className="flex justify-between items-center">
+                                <h5 className="font-body font-bold text-secondary">Livreurs</h5>
+                                <div className="w-10 h-10 bg-primary/15 place-content-center rounded-full">
+                                    <UserGroup size={20} className="text-primary shrink-0 justify-self-center"/>
+                                </div>
+                            </div>
+                            <div className="flex items-end gap-2 my-2">
+                                <h4 className="font-heading font-semibold text-5xl text-neutral">{lvr_dispo}</h4>
+                                <p className="font-body font-medium text-secondary text-lg">disponibles</p>
+                            </div>
+                            <div className="flex items-center gap-3 text-primary">
+                                <CircleDot size={16} className=""/>
+                                <p className=" font-body font-bold">Libre (comme l'air)</p>
                             </div>
                         </div>
-                        <div className="flex items-end gap-2 my-2">
-                            <h4 className="font-heading font-semibold text-5xl text-neutral">{lvr_dispo}</h4>
-                            <p className="font-body font-medium text-secondary text-lg">disponibles</p>
-                        </div>
-                        <div className="flex items-center gap-3 text-primary">
-                            <CircleDot size={16} className=""/>
-                            <p className=" font-body font-bold">Libre (comme l'air)</p>
-                        </div>
-                    </div>
+                    }
                 </div>
                 <div className="flex flex-col gap-6" >
                     <div className="flex justify-between">

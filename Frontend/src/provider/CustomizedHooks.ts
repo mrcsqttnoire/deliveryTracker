@@ -33,8 +33,11 @@ type ContextType = {
     photo: string
     setPhoto: (val: string) => void
 
-    userLogedIn: User | null
+    userLogedIn: User
     setUserLogedIn: (val: User) => void
+
+    isProprietaire: boolean
+    setIsProprietaire: (val: boolean) => void
 
     resetUserForm: () => void
     s_inscrire: (e: FormEvent, role: RoleType, nav: NavigateFunction) => void

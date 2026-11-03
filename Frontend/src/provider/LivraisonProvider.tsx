@@ -1,10 +1,11 @@
 import { useState, type FormEvent, type ReactNode } from "react";
 import type { ClassNameValue } from "tailwind-merge";
-import { LivraisonContext, useCompression, useLoading, useUtilities, type Livraisons } from "./CustomizedHooks";
+import { LivraisonContext, useCompression, useLoading, useUser, useUtilities, type Livraisons } from "./CustomizedHooks";
 import api from "../api";
 import axios from "axios";
 import type { NavigateFunction } from "react-router-dom";
 import { isBefore, isSunday, parse } from "date-fns";
+import { LIVRAISON_ROUTES } from "../api_routes";
 // import api from "../api";
 
 interface LivraisonProviderProps {
@@ -19,7 +20,6 @@ const transformStyles: ClassNameValue[] = [
 
 const route = "tracking-api/livraison/"
 const public_route = "tracking-api/list-livraison/"
-const listRoute = "tracking-api/list-livraison/"
 
 
 export function LivraisonProvider({children}: LivraisonProviderProps){
@@ -33,14 +33,16 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
     const {compressedImg, setCompressedImg} = useCompression()
     const [livraisons, setLivraisons] = useState<Livraisons[]>([])
     const [maLivraison, setMaLivraison] = useState<Livraisons | null>(null)
+    const {isProprietaire, userLogedIn} = useUser()
     
     const createLivraison = async (e: FormEvent<HTMLFormElement>, nav: NavigateFunction) => {
-        setIsLoading(true)
         e.preventDefault()
-        
+        if (!isProprietaire){
+            setMessage("Vous n'avez pas le droit de créer une livraison")
+            return
+        }
         if(!designation || !dateLivraison || !heureLivraison || !livreurAssigne){
             setMessage("Veuillez compléter tous les champs s'il vous plait!")
-            setIsLoading(false)
             return
         }
 
@@ -52,17 +54,16 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
 
         if(isBefore(dateHeure, new Date)){
             setMessage("La date ne peut pas être dans le passé")
-            setIsLoading(false)
             return
         }
 
         if(isSunday(dateHeure)){
             setMessage("Nous ne travaillons pas le dimanche")
-            setIsLoading(false)
             return
         }
         
-        try {
+        try {     
+            setIsLoading(true)
             const data = new FormData()
             data.append('designation', designation)
             data.append('date_livraison', dateLivraison)
@@ -105,7 +106,11 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
         setCompressedImg([])
     }
 
+    
+    const listRoute = userLogedIn ? LIVRAISON_ROUTES[userLogedIn.role] : null
+
     const getLivraisons = async () => {
+        if (!listRoute) return
         setIsLoading(true)
         try{
             const res = await api.get(listRoute)

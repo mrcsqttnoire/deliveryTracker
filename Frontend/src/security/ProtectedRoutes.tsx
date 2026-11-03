@@ -4,6 +4,7 @@ import { jwtDecode } from "jwt-decode";
 import api from "../api";
 import { LayoutSkeleton } from "../skeleton/LayoutSkeleton";
 import { Navigate } from "react-router-dom";
+import { useUser } from "../provider/CustomizedHooks";
 
 type ProtectedRoutesProps = {
     children: ReactNode,
@@ -11,6 +12,7 @@ type ProtectedRoutesProps = {
 
 export function ProtectedRoutes({children}: ProtectedRoutesProps){
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null)
+    const {setUserLogedIn, setIsProprietaire} = useUser()
     // const location = useLocation()
 
     useEffect(() => {
@@ -19,22 +21,22 @@ export function ProtectedRoutes({children}: ProtectedRoutesProps){
 
     const refreshToken = async () => {
         const refreshToken: string | null = localStorage.getItem(REFRESH_TOKEN)
-            try{
-                const res = await api.post(
-                    "/auth/jwt/refresh/", 
-                    {'refresh' : refreshToken},
-                    {skipAuth : true}
-                )
-                if (res.status === 200){
-                    localStorage.setItem(ACCESS_TOKEN, res.data.access)
-                    setIsAuthorized(true)
-                }else {
-                    setIsAuthorized(false)
-                }
-            } catch (e) {
-                console.log(e)
+        try{
+            const res = await api.post(
+                "/auth/jwt/refresh/", 
+                {'refresh' : refreshToken},
+                {skipAuth : true}
+            )
+            if (res.status === 200){
+                localStorage.setItem(ACCESS_TOKEN, res.data.access)
+                setIsAuthorized(true)
+            }else {
                 setIsAuthorized(false)
             }
+        } catch (e) {
+            console.log(e)
+            setIsAuthorized(false)
+        }
     }
 
     const auth = async () => {
@@ -47,10 +49,27 @@ export function ProtectedRoutes({children}: ProtectedRoutesProps){
         const now: number = Date.now() / 1000
         if(decoded_token.exp && decoded_token.exp < now){
             await refreshToken()
+            await getMe()
         } else {
+            await getMe()
             setIsAuthorized(true)
         }
 
+    }
+
+    
+    const get_me = "/auth/users/me"
+    const getMe = async () => {
+        try{    
+            const res = await api.get(get_me)
+            if (res && res.status === 200){
+                const data = res.data
+                setUserLogedIn(data)
+                setIsProprietaire(data.is_proprietaire)    
+            }
+        } catch(err) {
+            console.log(err)
+        }
     }
 
     if(isAuthorized === null){

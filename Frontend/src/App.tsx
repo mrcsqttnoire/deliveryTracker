@@ -14,22 +14,22 @@ import { AddDetailProvider } from './provider/AddDetailProvider';
 import { ClientProvider } from './provider/ClientProvider';
 
 function App() {
-    return (
-      <SkeletonTheme baseColor="#DCE3F2" highlightColor="#F4F7FF">
+  return (
+    <SkeletonTheme baseColor="#DCE3F2" highlightColor="#F4F7FF">
         <UtilitiesProvider>
           <LoadingProvider>
             <CompressionImage>
-              <LivreurProvider>
-                <LivraisonProvider>
-                  <ClientProvider>     
-                    <UserProvider>
-                      <AddDetailProvider>
-                        <RouterProvider router={routes} />
-                      </AddDetailProvider>
-                    </UserProvider>
-                  </ClientProvider>
-                </LivraisonProvider>
-              </LivreurProvider>
+              <UserProvider>
+                <LivreurProvider>
+                  <LivraisonProvider>
+                    <ClientProvider>     
+                        <AddDetailProvider>
+                          <RouterProvider router={routes} />
+                        </AddDetailProvider>
+                    </ClientProvider>
+                  </LivraisonProvider>
+                </LivreurProvider>
+              </UserProvider>
             </CompressionImage>
           </LoadingProvider>
         </UtilitiesProvider>

@@ -2,7 +2,7 @@ import { CircleCheckBig, CirclePlus, Search } from "lucide-react";
 import { CardLivraison } from "../../components/Livraison/cardLivraison";
 import { HeadPage } from "../../components/shared/headPage";
 import { Filter } from "../../components/shared/filter";
-import { useLivraison, useUtilities } from "../../provider/CustomizedHooks";
+import { useLivraison, useUser, useUtilities } from "../../provider/CustomizedHooks";
 import { useEffect } from "react";
 import { Info } from "../../components/shared/info";
 import { Alert } from "../../components/shared/alert";
@@ -10,6 +10,7 @@ import { Alert } from "../../components/shared/alert";
 export default function Livraison () {
     const {livraisons, getLivraisons} = useLivraison()
     const {isCopied, message} = useUtilities()
+    const {isProprietaire} = useUser()
 
     useEffect(()=>{
         getLivraisons()
@@ -44,12 +45,14 @@ export default function Livraison () {
                     <Search className="absolute top-1/2 -translate-y-1/2 left-4 z-10"/>
                     <input type="text" name="livraison-search" className="absolute top-0 left-0 pl-14 h-12 bg-[#F0F3FF] w-full font-body font-medium rounded-xl inset-shadow-sm " placeholder="Rechercher une livraison"/>
                 </div>
-                <Filter />
+                {isProprietaire && <Filter />}
                 {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <CardLivraison data={livraisons}></CardLivraison>
                 </div> */}
                 <div className="flex flex-col gap-4">
-                    <h3 className="font-body font-semibold text-[16px}">Liste des livraison</h3>
+                    <h3 className="font-body font-semibold text-[16px}">
+                        {isProprietaire ? "Liste des livraison" : "Liste des livraisons à faire"}
+                    </h3>
                     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                     {livraisons && livraisons?.map((livraison) => (
                         <CardLivraison key={livraison.id} data={livraison}/>

@@ -1,6 +1,7 @@
 import { Button } from "./button";
 import { useNavigate } from "react-router-dom";
 import type { ReactNode } from "react";
+import { useUser } from "../../provider/CustomizedHooks";
 
 interface HeadPageProps {
     children: ReactNode
@@ -10,7 +11,7 @@ interface HeadPageProps {
 }
 
 export function HeadPage ({children,desc, title, btn_title}: HeadPageProps) {
-
+    const {isProprietaire} = useUser()
     const navigate = useNavigate()
     function createPage(){
         navigate("create")
@@ -22,10 +23,12 @@ export function HeadPage ({children,desc, title, btn_title}: HeadPageProps) {
             <p className="font-body font-medium text-secondary">{desc}</p>
             <h4 className="font-heading font-semibold text-neutral text-2xl">{title}</h4>
         </div>
-        <Button fn={createPage} className="flex text-sm md:text-lg md:w-1/2 md:justify-self-end">
-            {children}
-            {btn_title}
-        </Button>
+        {   isProprietaire && 
+            <Button fn={createPage} className="flex text-sm md:text-lg md:w-1/2 md:justify-self-end">
+                {children}
+                {btn_title}
+            </Button>
+        }
     </div>
   </>
 }

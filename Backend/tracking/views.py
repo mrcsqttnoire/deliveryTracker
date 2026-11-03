@@ -131,3 +131,16 @@ class AddDetailLivraisonAPIView(generics.RetrieveUpdateAPIView):
     # def get_queryset(self):
     #     return super().get_queryset().filter(proprietaire__user = self.request.user)
 
+# --------------------- COTE LIVREUR
+
+class LivraisonLivreurListAPIVIew(generics.ListAPIView):
+    queryset = (Livraison.objects
+                .select_related('client','proprietaire', 'destination', 'proprietaire')
+                .prefetch_related('photos')
+                .all().reverse()
+                )
+    serializer_class = LivraisonListSerializer
+    permission_classes = [IsAuthenticated]
+    def get_queryset(self):
+        return super().get_queryset().filter(client__isnull = False, livreur__user = self.request.user)
+
