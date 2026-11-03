@@ -7,6 +7,7 @@ import type { NavigateFunction } from "react-router-dom";
 import { isBefore, isSunday, parse } from "date-fns";
 import { LIVRAISON_ROUTES } from "../api_routes";
 import type { Livraisons } from "./ModelsType";
+import { getUserLocation } from "../map/customMapHook";
 // import api from "../api";
 
 interface LivraisonProviderProps {
@@ -159,6 +160,32 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
         }
     }
 
+    async function demarrerUneCourse(uuid: string, nav: NavigateFunction){
+        if (!uuid.trim()){
+            setMessage("Veuillez choisir la livraison à démarre!")
+            return
+        }
+        setIsLoading(true)
+        const route_demarer = `tracking-api/livraison/${uuid}/demarrer/`
+        try {
+            await api.post(route_demarer)
+            getUserLocation()
+            setMessage("Course démarée, vous allez être rredirigé")
+
+            nav(`/livraison/delivery-suivi/${uuid}`)
+        } catch (err) {
+            if (axios.isAxiosError(err)){
+                const message = err.response?.data.detail
+                setMessage(message)
+            } else {
+                console.log(err)
+            }
+        } finally {
+            setIsLoading(false)
+            setLivraisonChargee(true)
+        }
+    }
+
     return <>
         <LivraisonContext.Provider value={{
             transformStyles,
@@ -171,6 +198,7 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
             livraisonChargee,
             createLivraison, getLivraisons,
             getSelectedLivraison,
+            demarrerUneCourse,
         }}>
             {children}
         </LivraisonContext.Provider>

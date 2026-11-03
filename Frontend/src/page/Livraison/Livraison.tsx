@@ -1,4 +1,4 @@
-import { CircleCheckBig, CirclePlus, Search } from "lucide-react";
+import { AlertCircle, CircleCheckBig, CirclePlus, Search } from "lucide-react";
 import { CardLivraison } from "../../components/Livraison/cardLivraison";
 import { HeadPage } from "../../components/shared/headPage";
 import { Filter } from "../../components/shared/filter";
@@ -6,6 +6,7 @@ import { useLivraison, useUser, useUtilities } from "../../provider/CustomizedHo
 import { useEffect } from "react";
 import { Info } from "../../components/shared/info";
 import { Alert } from "../../components/shared/alert";
+import { twMerge } from "tailwind-merge";
 
 export default function Livraison () {
     const {livraisons, getLivraisons} = useLivraison()
@@ -35,8 +36,9 @@ export default function Livraison () {
                     }
                     {message &&
                         <Alert 
-                            className="bg-livree-bg/50 w-auto text-livree flex items-center gap-2 justify-self-center  backdrop-blur-xl  animate-scaling ">
-                            <CircleCheckBig className="shrink-0"/>
+                            className={twMerge(" w-auto flex items-center gap-2 justify-self-center  backdrop-blur-xl  animate-scaling ", message.includes("succès") && "bg-livree-bg/50 text-livree")}>
+                            {message.includes("succès") && <CircleCheckBig className="shrink-0"/>}
+                            {!message.includes("succès") && <AlertCircle className="shrink-0"/>}
                             {message}
                         </Alert>
                     }

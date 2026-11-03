@@ -2,6 +2,7 @@ from django.db import transaction
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
@@ -10,9 +11,10 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenRefreshView
 from rest_framework_simplejwt.exceptions import InvalidToken
+from rest_framework.exceptions import ValidationError
 from tracking.permissions import IsProprietaire
-from tracking.models import Client, Destination, Livraison, Proprietaire, Livreur
-from tracking.serializers import DestinationSerializer, DetailLivraisonSerializer, LivraisonListSerializer, LivraisonSerializer, LivreurSerializer, ProprietaireInscriptionSerializer, ProprietaireSerializer, UserSerializer, ClientSerializer
+from tracking.models import Client, Destination, Livraison, Position, Proprietaire, Livreur
+from tracking.serializers import DestinationSerializer, DetailLivraisonSerializer, LivraisonListSerializer, LivraisonSerializer, LivreurSerializer, PositionSerializer, ProprietaireInscriptionSerializer, ProprietaireSerializer, UserSerializer, ClientSerializer
 # Create your views here.
 User = get_user_model()
 
@@ -143,4 +145,59 @@ class LivraisonLivreurListAPIVIew(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     def get_queryset(self):
         return super().get_queryset().filter(client__isnull = False, livreur__user = self.request.user)
+
+class DemarerCourseAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request, livraison_uuid):
+        with transaction.atomic():
+            qs = (Livraison.objects
+                .select_for_update(of=('self',))
+                .select_related('livreur', 'destination'))
+            livraison = get_object_or_404(qs, id=livraison_uuid, livreur__user=request.user)
+
+            if livraison.status != Livraison.Status.EN_ATTENTE:
+                raise ValidationError({"detail": "Cette livraison est déjà démarée ou terminée"})
+
+            if livraison.livreur.status != Livreur.Status.LIBRE:
+                raise ValidationError({"detail": "Vous avez encore une course en cours"})
+
+            if not livraison.client:
+                raise ValidationError({"detail": "Aucun client commande cette livraison!"})
+
+            if not livraison.destination:
+                raise ValidationError({"detail": "Le client n'a pas encore défini la destination de cette livraison"})
+
+
+            livraison.status = Livraison.Status.EN_ROUTE
+            livraison.save(update_fields=['status'])
+
+            livreur = livraison.livreur
+            livreur.status = Livreur.Status.OCCUPE
+            livreur.save(update_fields=['status'])
+
+        return Response({"id": livraison.id, "status": livraison.status})
+
+class PositionLivraisonListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Position.objects.all()
+    serializer_class = PositionSerializer
+    
+    def get_queryset(self):
+        livraison_id = self.kwargs['pk']
+        qs = super().get_queryset().filter(livraison_id=livraison_id)
+        return qs
+    
+    def perform_create(self, serializer):
+        livraison_id = self.kwargs['pk']
+        with transaction.atomic():
+            livraison = get_object_or_404(
+                Livraison.objects.select_for_update(), 
+                id=livraison_id
+            )
+
+            if (livraison.status != Livraison.Status.EN_ROUTE):
+                raise ValidationError({"detail": "Impossible d'enregistrer la position car la livraison n'est pas en route"})
+        
+            serializer.save(livraison=livraison)
+
+
 

@@ -22,7 +22,9 @@ export default function MapSuivi({id}: MapPublicProps) {
                 zoom: 16,
                 pitch: 85,
                 bearing: -20
+                
             }}
+            dragRotate={false}
             style={{
                 borderRadius: "12px",
             }}

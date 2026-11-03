@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.db import transaction
 from rest_framework import serializers
 from rest_framework.exceptions import PermissionDenied
-from .models import Destination, Livraison, Photo, Proprietaire, Livreur, Client
+from .models import Destination, Livraison, Photo, Position, Proprietaire, Livreur, Client
 from django.core.exceptions import ValidationError
 from djoser.serializers import UserSerializer
 
@@ -378,3 +378,15 @@ class LivraisonListSerializer(LivraisonSerializer):
             'destination_repere',
         ]
 
+
+class PositionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Position
+        fields = [
+            'latitude',
+            'longitude',
+            'livraison',
+        ]
+        extra_kwargs = {
+            'livraison': {'read_only': True}
+        }

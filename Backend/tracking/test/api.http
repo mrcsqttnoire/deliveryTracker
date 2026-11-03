@@ -18,8 +18,8 @@ POST http://localhost:8000/auth/jwt/create/
 Content-Type: application/json
 
 {
-    "username": "sophie@gmail.com",
-    "password": "password123"
+    "username": "heri@gmail.com",
+    "password": "12345678"
 }
 
 ### 
@@ -54,3 +54,16 @@ Content-Type: image/jpeg
 
 < D:/VE/Photo-2/django_2.jpg
 ------boundaryLimit--
+
+###
+POST http://192.168.43.76:8000/tracking-api/livraison/98910c20-49a1-4249-a57c-3f93ee57de58/demarrer/
+Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzkzNzMwMDAyLCJpYXQiOjE3OTM3Mjk3MDIsImp0aSI6IjcyNTAxZTc1OGFlZTRiZDk5ZGE0OTA4MjRkZmJmMmExIiwidXNlcl9pZCI6IjYyIn0.-QgobNcNpK4Y1dNdPTLT2npoWpc4WrYNQv0tK3MruNI
+
+### 
+POST  http://localhost:8000/tracking-api/delivery/position/e83cd0a4-8cd2-49f4-a50f-330233b1ca8a/
+Content-Type: application/json
+
+{
+    "latitude": "-18.512354",
+    "longitude": "47.201365"
+}

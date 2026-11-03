@@ -44,9 +44,9 @@ export function getUserLocation(): Promise<UserLocation> {
     }
 
     const options: PositionOptions = {
-      enableHighAccuracy: true, // Demande une précision maximale (GPS si disponible)
-      timeout: 5000,            // Temps d'attente maximum en millisecondes
-      maximumAge: 0             // Ne pas utiliser de position en cache
+      enableHighAccuracy: true, 
+      timeout: 5000,    
+      maximumAge: 0
     };
 
     navigator.geolocation.getCurrentPosition(

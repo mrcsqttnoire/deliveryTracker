@@ -105,6 +105,7 @@ class Position(models.Model):
                 name="position_livraison_date_idx"
             ),
         ]
+        ordering = ["created_at"]
 
     def __str__(self):
         value = f"Position {self.id} (Latitude:  {self.latitude}, Longitude: {self.longitude})"
