@@ -168,10 +168,12 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
         setIsLoading(true)
         const route_demarer = `tracking-api/livraison/${uuid}/demarrer/`
         try {
-            await api.post(route_demarer)
-            getUserLocation()
+            const [res, position] = await Promise.all([
+                api.post(route_demarer),
+                getUserLocation(),
+            ])
+            
             setMessage("Course démarée, vous allez être rredirigé")
-
             nav(`/livraison/delivery-suivi/${uuid}`)
         } catch (err) {
             if (axios.isAxiosError(err)){

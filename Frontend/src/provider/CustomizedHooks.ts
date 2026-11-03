@@ -267,3 +267,22 @@ export function useClient(){
 
     return context
 }
+
+//--------------------------------
+
+type PositionContextType = {
+    lastPosition: GeolocationPosition | null
+    setLastPosition: (val: GeolocationPosition) => void
+
+    sendPosition: (uuid: string, position: GeolocationPosition) => Promise<any>
+}
+
+export const PositionContext = createContext<PositionContextType | null>(null)
+
+export function usePosition(){
+    const context: PositionContextType | null = useContext(PositionContext)
+
+    if (context === null) throw new Error("Aucun provider chargé")
+
+    return context
+}

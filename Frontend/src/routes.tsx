@@ -7,6 +7,9 @@ import { LayoutSkeleton } from "./skeleton/LayoutSkeleton";
 import { LivreurSkeleton } from "./skeleton/livreur/LivreurSkeleton";
 import { Dashboard } from "./page/Dashboard";
 import { ProtectedRoutes } from "./security/ProtectedRoutes";
+import Skeleton from "react-loading-skeleton";
+import CartePageDemarre from "./roles/delivery/cartePage";
+import { MapProvider } from "@vis.gl/react-maplibre";
 
 const AppLayout = lazy(() => import('./page/Applayout'))
 const AuthLayout = lazy(() => import('./page/AuthLayout'))
@@ -121,7 +124,16 @@ export const routes = createBrowserRouter([
                 <SuspenseLayout fallback={<ClientSkeleton/>}>
                     <Clients />
                 </SuspenseLayout>
-            }
+            },
+            {
+                path: 'carte',
+                element: 
+                <SuspenseLayout fallback={<Skeleton className="w-11/12 h-90vh"/>}>
+                    <MapProvider>
+                        <CartePageDemarre/>
+                    </MapProvider>
+                </SuspenseLayout>
+            },   
         ]
     },
     {
@@ -178,6 +190,6 @@ export const routes = createBrowserRouter([
                     <PublicLayout/>
                 </SuspenseLayout>
             </ProtectedRoutes>,
-    }
+    }, 
 ])
 

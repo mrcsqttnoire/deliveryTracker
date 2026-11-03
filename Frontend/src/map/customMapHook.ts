@@ -32,9 +32,9 @@ export type coordoneeType = {
 }
 
 export type UserLocation = {
-  latitude: number;
-  longitude: number;
-  accuracy: number;
+  latitude: number
+  longitude: number
+  accuracy: number
 }
 
 export function getUserLocation(): Promise<UserLocation> {
@@ -45,9 +45,9 @@ export function getUserLocation(): Promise<UserLocation> {
 
     const options: PositionOptions = {
       enableHighAccuracy: true, 
-      timeout: 5000,    
+      timeout: 10000,    
       maximumAge: 0
-    };
+    }
 
     navigator.geolocation.getCurrentPosition(
       (position: GeolocationPosition) => {
@@ -55,25 +55,27 @@ export function getUserLocation(): Promise<UserLocation> {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
           accuracy: position.coords.accuracy
-        });
+        })
       },
       (error: GeolocationPositionError) => {
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            reject(new Error("L'utilisateur a refusé la demande de géolocalisation."));
-            break;
+            reject(new Error("L'utilisateur a refusé la demande de géolocalisation"))
+            break
           case error.POSITION_UNAVAILABLE:
-            reject(new Error("Les informations de position ne sont pas disponibles."));
-            break;
+            reject(new Error("Les informations de position ne sont pas disponibles"))
+            break
           case error.TIMEOUT:
-            reject(new Error("La demande pour obtenir la position a expiré."));
-            break;
+            reject(new Error("La demande pour obtenir la position a expiré"));
+            break
           default:
-            reject(new Error("Une erreur inconnue est survenue."));
-            break;
+            reject(new Error("Une erreur inconnue est survenue"))
+            break
         }
       },
       options
-    );
-  });
+    )
+  })
 }
+
+
