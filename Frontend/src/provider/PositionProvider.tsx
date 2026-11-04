@@ -2,24 +2,25 @@ import { useState, type ReactNode } from "react"
 import { PositionContext, useUtilities } from "./CustomizedHooks"
 import api from "../api"
 import axios from "axios"
+import type { UserLocation } from "./ModelsType"
 
 export interface PosiitonProviderProps {
     children: ReactNode
 }
 
 export function PosiitonProvider ({children}:PosiitonProviderProps) {
-    const [lastPosition, setLastPosition] = useState<GeolocationPosition | null>(null)
+    const [lastPosition, setLastPosition] = useState<UserLocation | null>(null)
     const {setMessage} = useUtilities()
 
-    function sendPosition(uuid: string, position: GeolocationPosition): Promise<any> {
-        const route_send = `tracking_api/delivery/position/${uuid}/`
+    function sendPosition(uuid: string, position: UserLocation): Promise<any> {
+        const route_send = `tracking-api/delivery/position/${uuid}/`
         return new Promise((resolve, reject)=>{
             try { 
                 const lastPosition = api.post(
                     route_send,
                     {
-                        "latitude": position.coords.latitude,
-                        "longitude": position.coords.longitude
+                        "latitude": position.latitude,
+                        "longitude": position.longitude
                     }
                 )
                 setLastPosition(position)

@@ -1,6 +1,6 @@
 import { useState, type FormEvent, type ReactNode } from "react";
 import type { ClassNameValue } from "tailwind-merge";
-import { LivraisonContext, useCompression, useLoading, useUser, useUtilities} from "./CustomizedHooks";
+import { LivraisonContext, useCompression, useLoading, usePosition, useUser, useUtilities} from "./CustomizedHooks";
 import api from "../api";
 import axios from "axios";
 import type { NavigateFunction } from "react-router-dom";
@@ -35,10 +35,11 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
     const {compressedImg, setCompressedImg} = useCompression()
     const [livraisons, setLivraisons] = useState<Livraisons[]>([])
 
-    const [maLivraison, setMaLivraison] = useState<Livraisons | null>(null)
+    const [maLivraison, setMaLivraison] = useState<Livraisons[]>([])
     const [livraisonChargee, setLivraisonChargee] = useState(false)
-
     const {isProprietaire, userLogedIn} = useUser()
+    const {sendPosition} = usePosition()
+
     
     const createLivraison = async (e: FormEvent<HTMLFormElement>, nav: NavigateFunction) => {
         e.preventDefault()
@@ -145,7 +146,7 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
             if (res && res.status === 200){
                 const data = res.data
                 // console.log(data)
-                setMaLivraison(data)
+                setMaLivraison(Array.isArray(data) ? data : [data])
                 // setLivraisons(data)    
             }
         } catch (err) {
@@ -159,7 +160,6 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
             setLivraisonChargee(true)
         }
     }
-
     async function demarrerUneCourse(uuid: string, nav: NavigateFunction){
         if (!uuid.trim()){
             setMessage("Veuillez choisir la livraison à démarre!")
@@ -168,13 +168,14 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
         setIsLoading(true)
         const route_demarer = `tracking-api/livraison/${uuid}/demarrer/`
         try {
-            const [res, position] = await Promise.all([
+            const [, position] = await Promise.all([
                 api.post(route_demarer),
                 getUserLocation(),
             ])
-            
-            setMessage("Course démarée, vous allez être rredirigé")
-            nav(`/livraison/delivery-suivi/${uuid}`)
+            console.log(position)
+            await sendPosition(uuid, position)
+            setMessage("Course démarée avec succès, vous allez être rredirigé")
+            nav(`/carte/${uuid}`)
         } catch (err) {
             if (axios.isAxiosError(err)){
                 const message = err.response?.data.detail
@@ -184,7 +185,6 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
             }
         } finally {
             setIsLoading(false)
-            setLivraisonChargee(true)
         }
     }
 

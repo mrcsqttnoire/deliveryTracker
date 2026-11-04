@@ -54,3 +54,9 @@ export type Livreur = {
     photo: string,
     status: string
 } 
+
+export type UserLocation = {
+  latitude: number
+  longitude: number
+  accuracy: number
+}

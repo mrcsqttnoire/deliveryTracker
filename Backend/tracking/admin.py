@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Livraison, User, Proprietaire, Livreur ,Client
+from .models import Livraison, Position, User, Proprietaire, Livreur ,Client
 # Register your models here.
 
 # class LivraisonProprietaire(admin.TabularInline):
@@ -12,4 +12,4 @@ from .models import Livraison, User, Proprietaire, Livreur ,Client
 
 
 # admin.site.register(Proprietaire, ProprietaireAdmin)
-admin.site.register([User, Proprietaire, Livreur, Client, Livraison])
+admin.site.register([User, Proprietaire, Livreur, Client, Livraison, Position])

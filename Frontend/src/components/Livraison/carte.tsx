@@ -2,10 +2,10 @@
 // import map from "../../assets/img/map.png"
 // import { MapPublic } from "../../map/map"
 import { lazy, Suspense, useEffect, useState } from "react"
-import { getUserLocation, type UserLocation } from "../../map/customMapHook"
+import { getUserLocation } from "../../map/customMapHook"
 import { Marker, useMap } from "@vis.gl/react-maplibre"
 import Skeleton from "react-loading-skeleton"
-import type { Livraisons } from "../../provider/ModelsType"
+import type { Livraisons, UserLocation } from "../../provider/ModelsType"
 import { useUtilities } from "../../provider/CustomizedHooks"
 import { LivraisonIci } from "../../map/pin_marker"
 const MapSuivi = lazy(() => import("../../map/map_suivi"))
@@ -36,6 +36,8 @@ export function Carte ({data}: CarteProps) {
       map_suivi.flyTo({
         center: [location.longitude, location.latitude],
         zoom: 17,
+        
+        duration: 1000,
       })
       return
     }

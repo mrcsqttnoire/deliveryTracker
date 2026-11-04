@@ -7,10 +7,11 @@ import type { ReactNode } from 'react';
 setWorkerUrl(workerUrl);
 interface MapPublicProps{
     id: string
+    rotate?: boolean
     children: ReactNode
 }
 
-export default function MapSuivi({id, children}: MapPublicProps) {
+export default function MapSuivi({id, rotate=false, children}: MapPublicProps) {
 
     return <>
         <Map
@@ -23,7 +24,7 @@ export default function MapSuivi({id, children}: MapPublicProps) {
                 bearing: -20
                 
             }}
-            dragRotate={false}
+            dragRotate={rotate}
             style={{
                 borderRadius: "12px",
             }}

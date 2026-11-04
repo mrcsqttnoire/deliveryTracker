@@ -1,7 +1,7 @@
 import { createContext, useContext, type ChangeEvent, type FormEvent } from "react"
 import type { NavigateFunction } from "react-router-dom";
 import type { ClassNameValue } from "tailwind-merge";
-import type { Livraisons, Livreur, User } from "./ModelsType";
+import type { Livraisons, Livreur, User, UserLocation } from "./ModelsType";
 
 export type RouteParams = {
   id: string
@@ -79,7 +79,7 @@ type LivraisonType = {
     setLivreurAssigne: (val: string) => void
 
     livraisons: Livraisons[]
-    maLivraison: Livraisons | null
+    maLivraison: Livraisons[]
     livraisonChargee: boolean
 
     setLivraisons: (val: []) => void
@@ -271,10 +271,10 @@ export function useClient(){
 //--------------------------------
 
 type PositionContextType = {
-    lastPosition: GeolocationPosition | null
-    setLastPosition: (val: GeolocationPosition) => void
+    lastPosition: UserLocation | null
+    setLastPosition: (val: UserLocation) => void
 
-    sendPosition: (uuid: string, position: GeolocationPosition) => Promise<any>
+    sendPosition: (uuid: string, position: UserLocation) => Promise<any>
 }
 
 export const PositionContext = createContext<PositionContextType | null>(null)

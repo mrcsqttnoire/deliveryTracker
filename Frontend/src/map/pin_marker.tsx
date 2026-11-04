@@ -1,4 +1,4 @@
-import { House, Package } from "lucide-react";
+import { Bike, House, Package } from "lucide-react";
 import { useUtilities } from "../provider/CustomizedHooks";
 
 export function LivraisonIci() {
@@ -50,4 +50,23 @@ export function BoxMarker() {
                 </div>
         </div>}
     </>
+}
+
+
+export default function PinLivreur({ nom }: { nom?: string }) {
+  return (
+    <div className="relative flex flex-col items-center">
+      {nom && (
+        <span className="mb-1 rounded-full bg-white px-2 py-0.5 text-xs font-semibold text-neutral shadow">
+          {nom}
+        </span>
+      )}
+      <div className="relative flex h-12 w-12 items-center justify-center">
+        <span className="absolute inset-0 rounded-full bg-blue-500/30 animate-ping" />
+        <div className="relative flex h-12 w-12 items-center justify-center rounded-full border-4 border-white bg-blue-600 text-white shadow-xl">
+          <Bike size={22} />
+        </div>
+      </div>
+    </div>
+  )
 }

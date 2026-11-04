@@ -1,4 +1,5 @@
 import axios from "axios";
+import type { UserLocation } from "../provider/ModelsType";
 
 export const osm_api = axios.create({
     baseURL: import.meta.env.VITE_OSM_URL_NOMINATIM
@@ -31,11 +32,6 @@ export type coordoneeType = {
     road: string
 }
 
-export type UserLocation = {
-  latitude: number
-  longitude: number
-  accuracy: number
-}
 
 export function getUserLocation(): Promise<UserLocation> {
   return new Promise((resolve, reject) => {

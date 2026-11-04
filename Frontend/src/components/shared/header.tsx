@@ -1,28 +1,26 @@
 import { useEffect, useState } from 'react';
 import logo from '../../assets/img/logo.png'
 import billi from '../../assets/img/test/billie-3.png'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useUtilities } from '../../provider/CustomizedHooks';
 import { twMerge } from 'tailwind-merge';
 
-const exclude = ["/", "create", "next"]
 
+const exclude = ["/", "create", "next"]
 export function Header () {
   const location = useLocation()
   const [page, setPage] = useState<string>("")
   const {isOpen, setIsOpen} = useUtilities()
+  const {id} = useParams()
+  if (id) exclude.push(id)
 
   useEffect(()=>{
     const p: string = location.pathname
     if (p === "/"){
       setPage("Acceuil")
     } else {
-      if(!p.includes('edit')){
-        let title = exclude.reduce((p, ex)=>p.replaceAll(ex, ""), p)
-        setPage(title)
-      } else {
-        setPage("Modification")
-      }
+      const title = exclude.reduce((p, ex)=>p.replaceAll(ex, ""), p)
+      setPage(title)
     }
   }, [location])
 

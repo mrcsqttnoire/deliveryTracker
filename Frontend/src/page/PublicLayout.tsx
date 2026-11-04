@@ -27,10 +27,11 @@ export default function PublicLayout () {
 
   if (!livraisonChargee) return <Loading/>
   if (!maLivraison) return <p>Livraison introuvable.</p>
+  const Livraison = maLivraison[0]
   return <>{
     <MapProvider>
       <main className="flex flex-col gap-4">
-        { !page.includes("admin") && maLivraison && !maLivraison.client &&
+        { !page.includes("admin") && Livraison && !Livraison.client &&
           <FormStep id={id ?? ''}/>
         }
         <section className="container-custom py-4 flex flex-col justify-center gap-4 shadow-md rounded-b-xl ">
@@ -43,9 +44,9 @@ export default function PublicLayout () {
                 <div className="flex flex-col gap-2">
                   <div className="w-full h-1.5 bg-[#E2E8F8] rounded-xl">
                     <div className={twMerge("w-1/2 h-full bg-tertiary origin-left rounded-xl",
-                      maLivraison?.status === 'en_attente' && 'w-1/9',
-                      maLivraison?.status === 'en_route' && 'w-1/2',
-                      maLivraison?.status === 'livree' && 'w-full',
+                      Livraison?.status === 'en_attente' && 'w-1/9',
+                      Livraison?.status === 'en_route' && 'w-1/2',
+                      Livraison?.status === 'livree' && 'w-full',
                       )}></div>
                   </div>
                   <div className="flex justify-between text-tertiary font-body font-bold text-[15px] tracking-[1px]">
@@ -57,14 +58,14 @@ export default function PublicLayout () {
             </div>
         </section>
         <section className="flex flex-col gap-4">
-          {<Carte data={maLivraison}/>}
-          <LivreurDetailMin data={maLivraison}/>
+          {<Carte data={Livraison}/>}
+          <LivreurDetailMin data={Livraison}/>
           { location.pathname.includes('delivery') &&
-            <ClientDetailMin data={maLivraison}/>
+            <ClientDetailMin data={Livraison}/>
           }
           <DetailColis 
-            designation={maLivraison.designation.trim() ?? "Il n'y a pas des informations qui sont avec votre colis"} 
-            photos={maLivraison.photos}/>
+            designation={Livraison.designation.trim() ?? "Il n'y a pas des informations qui sont avec votre colis"} 
+            photos={Livraison.photos}/>
         </section>
       </main>
     </MapProvider>}
