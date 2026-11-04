@@ -1,4 +1,4 @@
-asgiref==3.12.1
+﻿asgiref==3.12.1
 certifi==2026.10.19
 cffi==2.1.1
 charset-normalizer==3.5.2
@@ -15,6 +15,7 @@ djangorestframework==3.18.3
 djangorestframework_simplejwt==5.5.1
 djoser==2.3.5
 gunicorn==26.2.0
+haversine==2.9.0
 idna==3.20
 oauthlib==4.0.0
 phonenumbers==9.0.41
@@ -34,3 +35,4 @@ sqlparse==0.6.0
 tzdata==2026.5
 urllib3==2.8.0
 whitenoise==6.12.0
+%
