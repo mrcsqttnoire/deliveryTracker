@@ -20,8 +20,8 @@ export function PosiitonProvider ({children}:PosiitonProviderProps) {
                 const lastPosition = api.post(
                     route_send,
                     {
-                        "latitude": position.latitude,
-                        "longitude": position.longitude
+                        "latitude": position.latitude.toFixed(6),
+                        "longitude": position.longitude.toFixed(6)
                     }
                 )
                 setLastPosition(position)

@@ -1,35 +1,11 @@
 import { Bike, Box, ClockFading, LayoutGridCircles, Map, Users } from "lucide-react";
-import { NavLink, useLocation, useParams } from "react-router-dom";
-import { useLivraison, usePosition, useUser } from "../../provider/CustomizedHooks";
-import { useEffect } from "react";
-import { getUserLocation } from "../../map/customMapHook";
+import { NavLink } from "react-router-dom";
+import { useUser } from "../../provider/CustomizedHooks";
+import { useSendPosition } from "../../map/polling";
 
 export function Navigation () {
-  const location = useLocation()
   const {isProprietaire} = useUser()
-  const {maLivraison} = useLivraison()
-  const {sendPosition, setLastPosition} = usePosition()
-  const {id} = useParams()
-
-  useEffect(()=>{
-    const EnRoute = maLivraison.filter((l)=>l.status === "en_route")
-    let actif = Boolean(EnRoute)
-    if (isProprietaire && !EnRoute) return
-    const envoiePosition = async () => {
-      while(actif){
-        try{
-            const positon = await getUserLocation()
-            await sendPosition(EnRoute[0].id ?? "", positon)
-            setLastPosition(positon)
-          } catch (err) { console.log(err)
-        }
-        await new Promise((r) => setTimeout(r, 5000))
-      }
-    }
-    envoiePosition()
-    return () => { actif = false }
-  }, [isProprietaire, location, id, maLivraison])
-    
+  useSendPosition()
   return <>
     <footer className="container-custom w-full">
       <nav className="bg-white-500 w-full h-16 grid grid-cols-4 items-center fixed inset-x-0 md:left-1/2 md:-translate-x-1/2 bottom-0 responsive-nav z-50 bg- text-secondary backdrop-blur-md rounded-t-xl shadow-[0_-10px_25px_rgba(0,0,0,0.15)] md:w-4/7 xl:w-3/7" id="linkNav">

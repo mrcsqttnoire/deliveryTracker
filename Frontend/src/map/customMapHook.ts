@@ -44,7 +44,6 @@ export function getUserLocation(): Promise<UserLocation> {
       timeout: 10000,    
       maximumAge: 0
     }
-
     navigator.geolocation.getCurrentPosition(
       (position: GeolocationPosition) => {
         resolve({
