@@ -10,7 +10,7 @@ export default function CartePageDemarre () {
     const navigate = useNavigate()
     const {affiche_all} = useMap()
     const {id} = useParams()
-    const {lastPosition, setLastPosition, getLastPosition} = usePosition()
+    const {lastPosition, getLastPosition} = usePosition()
     const {
         livraisons, getLivraisons,
         maLivraison, getSelectedLivraison
@@ -26,29 +26,31 @@ export default function CartePageDemarre () {
     }, [affiche_all])
     
     const data = id?.trim() ? maLivraison : livraisons
-    console.log(lastPosition)
-    useEffect(() => {
-    if (!affiche_all || data.length === 0 || !lastPosition) return
-    const lngs = data.map((l) => Number(l.destination_long ?? l.destination?.longitude))
-    const lats = data.map((l) => Number(l.destination_lat  ?? l.destination?.latitude))
-
-    if(lastPosition){
-        lngs.push(lastPosition.longitude)
-        lats.push(lastPosition.latitude)
-    }
-
-    affiche_all.fitBounds(
-        [
-            [Math.min(...lngs), Math.min(...lats)], 
-            [Math.max(...lngs), Math.max(...lats)],
-        ],
-        {
-            padding: { top: 60, bottom: 60, left: 40, right: 40 },
-            maxZoom: 16,
-            duration: 3500,
-        }
+    const destinations = data.filter(
+        (l) => (l.destination_lat ?? l.destination?.latitude) != null
     )
-    }, [affiche_all, data, lastPosition])
+    useEffect(() => {
+        if (!affiche_all || destinations.length === 0 || !lastPosition) return
+        const lngs = destinations.map((l) => Number(l.destination_long ?? l.destination?.longitude))
+        const lats = destinations.map((l) => Number(l.destination_lat  ?? l.destination?.latitude))
+        
+        if(lastPosition){
+            lngs.push(Number(lastPosition.longitude))
+            lats.push(Number(lastPosition.latitude))
+        }
+
+        affiche_all.fitBounds(
+            [
+                [Math.min(...lngs), Math.min(...lats)], 
+                [Math.max(...lngs), Math.max(...lats)],
+            ],
+            {
+                padding: { top: 60, bottom: 60, left: 40, right: 40 },
+                maxZoom: 16,
+                duration: 3500,
+            }
+        )
+    }, [affiche_all, destinations, lastPosition])
     return <>
         <div className="container-custom flex flex-col gap-2 items-center pt-4 w-full h-full"> 
             <div className="flex p-4 justify-between items-center bg-[#F0F3FF] w-full font-body font-medium rounded-xl inset-shadow-sm ">
@@ -66,19 +68,17 @@ export default function CartePageDemarre () {
             >
                 {   data &&
                     data.map((l)=>(
-                        <>
-                            <Marker
-                                latitude={Number(l.destination_lat ?? l.destination?.latitude)}
-                                longitude={(Number(l.destination_long ?? l.destination?.longitude))}
-                                anchor="bottom"
-                            >
-                                <div  key={l.id} className="flex flex-col items-center">
-                                    <LivraisonIci/>
-                                    <BoxMarker />
-                                </div>
-
-                            </Marker>
-                        </>
+                        <Marker
+                            key={l.id}
+                            latitude={Number(l.destination_lat ?? l.destination?.latitude)}
+                            longitude={(Number(l.destination_long ?? l.destination?.longitude))}
+                            anchor="bottom"
+                        >
+                            <div className="flex flex-col items-center">
+                                <LivraisonIci/>
+                                <BoxMarker />
+                            </div>
+                        </Marker>
                     ))
                 }
                 {   lastPosition &&

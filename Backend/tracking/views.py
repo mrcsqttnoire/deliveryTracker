@@ -199,5 +199,11 @@ class PositionLivraisonListCreateAPIView(generics.ListCreateAPIView):
         
             serializer.save(livraison=livraison)
 
+    def list(self, request, *args, **kwargs):
+        derniere = self.get_queryset().order_by("-created_at").first()
+        if not derniere:
+            return Response(status=204)
+        return Response(self.get_serializer(derniere).data)
+
 
 
