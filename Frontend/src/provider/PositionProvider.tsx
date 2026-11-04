@@ -58,8 +58,8 @@ export function PosiitonProvider ({children}:PosiitonProviderProps) {
         // })
         const res = await api.get(rout_get)
         if(res && res.status === 200){
-            const data = res
-            setLastPosition(res.data)
+            const data = res.data
+            setLastPosition(data)
         } 
     }
 
