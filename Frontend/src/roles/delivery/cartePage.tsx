@@ -10,7 +10,7 @@ export default function CartePageDemarre () {
     const navigate = useNavigate()
     const {affiche_all} = useMap()
     const {id} = useParams()
-    const {lastPosition} = usePosition()
+    const {lastPosition, setLastPosition, getLastPosition} = usePosition()
     const {
         livraisons, getLivraisons,
         maLivraison, getSelectedLivraison
@@ -19,15 +19,16 @@ export default function CartePageDemarre () {
     useEffect(()=>{
         if (id?.trim()){
             getSelectedLivraison(id, navigate)
+            getLastPosition(id)
         } else {
             getLivraisons()
         }
     }, [affiche_all])
     
     const data = id?.trim() ? maLivraison : livraisons
-
+    console.log(lastPosition)
     useEffect(() => {
-    if (!affiche_all || data.length === 0) return
+    if (!affiche_all || data.length === 0 || !lastPosition) return
     const lngs = data.map((l) => Number(l.destination_long ?? l.destination?.longitude))
     const lats = data.map((l) => Number(l.destination_lat  ?? l.destination?.latitude))
 
@@ -47,7 +48,7 @@ export default function CartePageDemarre () {
             duration: 3500,
         }
     )
-    }, [affiche_all, data])
+    }, [affiche_all, data, lastPosition])
     return <>
         <div className="container-custom flex flex-col gap-2 items-center pt-4 w-full h-full"> 
             <div className="flex p-4 justify-between items-center bg-[#F0F3FF] w-full font-body font-medium rounded-xl inset-shadow-sm ">

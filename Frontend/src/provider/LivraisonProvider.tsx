@@ -168,11 +168,14 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
         setIsLoading(true)
         const route_demarer = `tracking-api/livraison/${uuid}/demarrer/`
         try {
-            const [, position] = await Promise.all([
-                api.post(route_demarer),
-                getUserLocation(),
-            ])
-            console.log(position)
+            const position = await getUserLocation()
+            if (!position) {
+                setMessage("Impossible de récupérer votre position, vérifiez votre connexion")
+                setIsLoading(false)
+                return
+            }
+            await api.post(route_demarer)
+            // console.log(position)
             await sendPosition(uuid, position)
             setMessage("Course démarée avec succès, vous allez être rredirigé")
             nav(`/carte/${uuid}`)

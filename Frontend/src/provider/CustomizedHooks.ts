@@ -275,6 +275,7 @@ type PositionContextType = {
     setLastPosition: (val: UserLocation) => void
 
     sendPosition: (uuid: string, position: UserLocation) => Promise<any>
+    getLastPosition: (uuid: string) => void
 }
 
 export const PositionContext = createContext<PositionContextType | null>(null)
