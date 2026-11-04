@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
+from haversine import haversine, Unit
 from rest_framework import status
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from rest_framework import generics
@@ -177,6 +178,8 @@ class DemarerCourseAPIView(APIView):
 
         return Response({"id": livraison.id, "status": livraison.status})
 
+
+MIN_METRE = 10
 class PositionLivraisonListCreateAPIView(generics.ListCreateAPIView):
     queryset = Position.objects.all()
     serializer_class = PositionSerializer
@@ -186,19 +189,35 @@ class PositionLivraisonListCreateAPIView(generics.ListCreateAPIView):
         qs = super().get_queryset().filter(livraison_id=livraison_id)
         return qs
     
-    def perform_create(self, serializer):
-        livraison_id = self.kwargs['pk']
+    def create(self,  request, *args, **kwargs):    
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        new_position = (float(serializer.validated_data["latitude"]), float(serializer.validated_data["longitude"]))
+        livraison_id = self.kwargs['pk']    
+
         with transaction.atomic():
             livraison = get_object_or_404(
                 Livraison.objects.select_for_update(), 
-                id=livraison_id
+                id=livraison_id,
+                livreur__user=request.user, 
             )
 
             if (livraison.status != Livraison.Status.EN_ROUTE):
                 raise ValidationError({"detail": "Impossible d'enregistrer la position car la livraison n'est pas en route"})
-        
+
+            data_position = livraison.positions.order_by("-created_at").first()
+
+            if data_position:
+                last_position = (data_position.latitude, data_position.longitude)
+                d = haversine(new_position, last_position, unit=Unit.METERS)
+                print(d)
+                if (d < MIN_METRE):
+                    return Response(status=204)
+                
             serializer.save(livraison=livraison)
 
+        return Response(serializer.data, status=201)
+    
     def list(self, request, *args, **kwargs):
         derniere = self.get_queryset().order_by("-created_at").first()
         if not derniere:
