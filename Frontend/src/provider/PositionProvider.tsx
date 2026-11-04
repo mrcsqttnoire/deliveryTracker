@@ -13,8 +13,9 @@ export function PosiitonProvider ({children}:PosiitonProviderProps) {
     const {setMessage} = useUtilities()
 
     function sendPosition(uuid: string, position: UserLocation): Promise<any> {
-        const route_send = `tracking-api/delivery/position/${uuid}/`
         return new Promise((resolve, reject)=>{
+            if (!uuid.trim()) reject() 
+            const route_send = `tracking-api/delivery/position/${uuid}/`
             try { 
                 const lastPosition = api.post(
                     route_send,

@@ -5,24 +5,30 @@ import { useLivraison, usePosition } from "../../provider/CustomizedHooks";
 import PinLivreur, { BoxMarker, LivraisonIci } from "../../map/pin_marker";
 import { Map } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
+import { getUserLocation } from "../../map/customMapHook";
 
 export default function CartePageDemarre () {
     const navigate = useNavigate()
     const {affiche_all} = useMap()
     const {id} = useParams()
-    const {lastPosition, getLastPosition} = usePosition()
+    const {lastPosition, setLastPosition, getLastPosition} = usePosition()
     const {
         livraisons, getLivraisons,
         maLivraison, getSelectedLivraison
     } = useLivraison()
 
     useEffect(()=>{
-        if (id?.trim()){
-            getSelectedLivraison(id, navigate)
-            getLastPosition(id)
-        } else {
-            getLivraisons()
+        const loadData = async () => {
+            if (id?.trim()){
+                getSelectedLivraison(id, navigate)
+                getLastPosition(id)
+            } else {
+                getLivraisons()
+                const position = await getUserLocation()
+                setLastPosition(position)
+            }
         }
+        loadData()
     }, [affiche_all])
     
     const data = id?.trim() ? maLivraison : livraisons
@@ -75,7 +81,9 @@ export default function CartePageDemarre () {
                             anchor="bottom"
                         >
                             <div className="flex flex-col items-center">
-                                <LivraisonIci/>
+                                <LivraisonIci
+                                    hidden_ping={true}
+                                />
                                 <BoxMarker />
                             </div>
                         </Marker>
@@ -87,7 +95,16 @@ export default function CartePageDemarre () {
                         longitude={(Number(lastPosition.longitude))}
                         anchor="bottom"
                     >
-                        <PinLivreur/>
+
+                        <div className="flex flex-col items-center">
+                            <LivraisonIci
+                                className="bg-blue-600"
+                                hidden_ping={true}
+                            >
+                                Vous
+                            </LivraisonIci>
+                            <PinLivreur />
+                        </div>
                     </Marker>
                 }
             </MapSuivi>

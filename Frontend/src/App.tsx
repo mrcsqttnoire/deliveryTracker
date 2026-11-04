@@ -14,7 +14,7 @@ import { AddDetailProvider } from './provider/AddDetailProvider';
 import { ClientProvider } from './provider/ClientProvider';
 import { PosiitonProvider } from './provider/PositionProvider';
 
-function App() {
+function App() {  
   return (
     <SkeletonTheme baseColor="#DCE3F2" highlightColor="#F4F7FF">
         <UtilitiesProvider>

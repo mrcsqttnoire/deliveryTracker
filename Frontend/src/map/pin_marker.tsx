@@ -1,19 +1,26 @@
 import { Bike, House, Package } from "lucide-react";
 import { useUtilities } from "../provider/CustomizedHooks";
+import type { ReactNode } from "react";
+import { twMerge, type ClassNameValue } from "tailwind-merge";
 
-export function LivraisonIci() {
+interface LivraisonIciProps {
+  children?: ReactNode
+  className?: ClassNameValue
+  hidden_ping?: boolean
+}
+export function LivraisonIci({children, className, hidden_ping=false}: LivraisonIciProps) {
   return (
     <>
       <div className="flex flex-col  justify-center items-center">
         {
           <div className="flex flex-col items-center drop-shadow-lg">
-            <div className="flex flex-col items-center animate-pin-float">
-              <div className=" rounded-xl bg-[#E1312F] px-3 py-1.5 text-sm font-semibold text-white">
-                Livraison ici
+            <div className={"flex flex-col items-center animate-pin-float"}>
+              <div className={twMerge(" rounded-xl bg-[#E1312F] px-3 py-1.5 text-sm font-semibold text-white", className)}>
+                {children ?? "Livraison ici"}
               </div>
-              <div className="h-0 w-0 border-x-8 border-t-8 border-x-transparent border-t-primary" />
+              <div className={twMerge("h-0 w-0 border-x-8 border-t-8 border-x-transparent border-t-primary" )}/>
             </div>
-            <span className="mt-1 h-2 w-2 rounded-full bg-primary ring-4 ring-primary/30 animate-ping" />
+            <span className={twMerge("mt-1 h-2 w-2 rounded-full bg-primary ring-4 ring-primary/30 animate-ping")} hidden={hidden_ping} />
           </div>
         }
       </div>
