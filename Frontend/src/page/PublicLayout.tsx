@@ -10,6 +10,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
 import { ClientDetailMin } from "../components/client/client.min"
 import { Loading } from "../components/shared/loading"
+import { useGetPosition } from "../map/polling"
 
 const FormStep = lazy(()=> import("./Clients/livraisonAddons"))
 
@@ -24,7 +25,7 @@ export default function PublicLayout () {
   useEffect(()=>{
       getSelectedLivraison(id ?? '', navigate)
   }, [])
-  // useGetPosition()
+  useGetPosition()
   if (!livraisonChargee) return <Loading/>
   if (!maLivraison) return <p>Livraison introuvable.</p>
   const Livraison = maLivraison[0]

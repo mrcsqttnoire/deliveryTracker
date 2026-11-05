@@ -42,11 +42,25 @@ export function Carte ({data}: CarteProps) {
       })
       return
     }
-    map_suivi.flyTo({
-      center: [lng, lat],
-      zoom: 17,
-      pitch: 70, bearing: -20, duration: 2500,
-    })
+    if (lastPosition){
+      map_suivi.fitBounds(
+        [
+          [lastPosition?.longitude, lastPosition?.latitude],
+          [lng, lat], 
+        ],
+        {
+            padding: { top: 60, bottom: 60, left: 40, right: 40 },
+            maxZoom: 16,
+            duration: 3500,
+        }
+      )
+    } else {
+      map_suivi.flyTo({
+        center: [lng, lat],
+        zoom: 17,
+        pitch: 70, bearing: -20, duration: 2500,
+      })
+    }
     setMarker({
       lat: lat,
       lng: lng
