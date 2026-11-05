@@ -183,11 +183,17 @@ MIN_METRE = 10
 class PositionLivraisonListCreateAPIView(generics.ListCreateAPIView):
     queryset = Position.objects.all()
     serializer_class = PositionSerializer
+    permission_classes = [AllowAny]
     
     def get_queryset(self):
         livraison_id = self.kwargs['pk']
         qs = super().get_queryset().filter(livraison_id=livraison_id)
         return qs
+
+    def get_permissions(self):
+        if self.request.method == "post":
+            return IsAuthenticated()
+        return super().get_permissions()
     
     def create(self,  request, *args, **kwargs):    
         serializer = self.get_serializer(data=request.data)
@@ -210,7 +216,7 @@ class PositionLivraisonListCreateAPIView(generics.ListCreateAPIView):
             if data_position:
                 last_position = (data_position.latitude, data_position.longitude)
                 d = haversine(new_position, last_position, unit=Unit.METERS)
-                print(d)
+                # print(d)
                 if (d < MIN_METRE):
                     return Response(status=204)
                 

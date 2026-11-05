@@ -32,13 +32,42 @@ export function useSendPosition() {
                     const positon = await getUserLocation()
                     if (actif && positon.accuracy <= 5000){
                         const d =  lastPos.current ? Haversine(positon, lastPos.current) : Infinity
-                        console.log(d)
                         if (d > 10){
                             await sendPosition(livraisonId, positon)
                             setLastPosition(positon)
                         }
                         lastPos.current = positon
                     }
+                } catch (err) { console.log(err)}
+                await new Promise((r) => setTimeout(r, 5000))
+            }
+        }
+        boucle()
+        return () => { actif = false }
+    }, [isProprietaire, livraisonId])
+}
+
+export function useGetPosition() {
+    const {isProprietaire} = useUser()
+    const {maLivraison} = useLivraison()
+    const {getLastPosition} = usePosition()
+    // const lastPos = useRef<UserLocation | null>(null)
+
+    const livraisonId = maLivraison.find((l) => l.status === "en_route")?.id
+
+    useEffect(()=>{
+        if (!livraisonId) return
+        let actif = true
+
+        const boucle = async () => {
+            while(actif){
+                try{
+                    // const positon = await getUserLocation()
+                    // if (actif && positon.accuracy <= 5000){
+                        getLastPosition(livraisonId)
+                        // setLastPosition(positon)
+                        // lastPos.current = positon
+                    // }
                 } catch (err) { console.log(err)}
                 await new Promise((r) => setTimeout(r, 5000))
             }

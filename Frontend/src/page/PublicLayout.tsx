@@ -24,7 +24,7 @@ export default function PublicLayout () {
   useEffect(()=>{
       getSelectedLivraison(id ?? '', navigate)
   }, [])
-
+  // useGetPosition()
   if (!livraisonChargee) return <Loading/>
   if (!maLivraison) return <p>Livraison introuvable.</p>
   const Livraison = maLivraison[0]
@@ -40,7 +40,7 @@ export default function PublicLayout () {
               <h3 className="font-heading text-2xl font-bold capitalize text-neutral font">Votre livraison</h3>
             </div>
             <div className="p-4 bg-linear-to-tr from-gradient-left to-gradient-right h-27 flex flex-col justify-center gap-4 rounded-xl">
-                  <h5 className="font-body font-bold text-tertiary text-lg">En route vers vous </h5>
+                <h5 className="font-body font-bold text-tertiary text-lg">En route vers vous </h5>
                 <div className="flex flex-col gap-2">
                   <div className="w-full h-1.5 bg-[#E2E8F8] rounded-xl">
                     <div className={twMerge("w-1/2 h-full bg-tertiary origin-left rounded-xl",
@@ -50,9 +50,9 @@ export default function PublicLayout () {
                       )}></div>
                   </div>
                   <div className="flex justify-between text-tertiary font-body font-bold text-[15px] tracking-[1px]">
-                    <p>Préparé</p>
+                    <p>Préparée</p>
                     <p>En route</p>
-                    <p className="text-mist-500">Livré</p>
+                    <p className="text-mist-500">Livrée</p>
                   </div>
                 </div>
             </div>

@@ -6,8 +6,8 @@ import { getUserLocation } from "../../map/customMapHook"
 import { Marker, useMap } from "@vis.gl/react-maplibre"
 import Skeleton from "react-loading-skeleton"
 import type { Livraisons, UserLocation } from "../../provider/ModelsType"
-import { useUtilities } from "../../provider/CustomizedHooks"
-import { LivraisonIci } from "../../map/pin_marker"
+import { usePosition, useUtilities } from "../../provider/CustomizedHooks"
+import PinLivreur, { LivraisonIci } from "../../map/pin_marker"
 const MapSuivi = lazy(() => import("../../map/map_suivi"))
 
 interface CarteProps {
@@ -18,6 +18,7 @@ export function Carte ({data}: CarteProps) {
   const lat = Number(data.destination?.latitude)
   const lng = Number(data.destination?.longitude)
   const {setMarker, marker} = useUtilities()
+  const {lastPosition} = usePosition()
   const [location, setLocation] = useState<UserLocation | null>(null)
   const {map_suivi} = useMap()
 
@@ -67,6 +68,15 @@ export function Carte ({data}: CarteProps) {
                       anchor="bottom"
                   > 
                       <LivraisonIci/>
+                  </Marker>
+                }
+                { lastPosition && 
+                  <Marker 
+                      latitude={lastPosition.latitude} 
+                      longitude={lastPosition.longitude}
+                      anchor="bottom"
+                  > 
+                      <PinLivreur/>
                   </Marker>
                 }
               </MapSuivi>
