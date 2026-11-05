@@ -23,14 +23,20 @@ export function useSendPosition() {
     const livraisonId = maLivraison.find((l) => l.status === "en_route")?.id
 
     useEffect(()=>{
+        let wakeLock: any
         if (isProprietaire || !livraisonId) return
         let actif = true
 
         const boucle = async () => {
+            try {
+                wakeLock = await navigator.wakeLock.request()
+            } catch(err) {
+                console.log(err)
+            }
             while(actif){
                 try{
                     const positon = await getUserLocation()
-                    if (actif && positon.accuracy <= 50){
+                    if (actif && positon.accuracy <= 500){
                         const d =  lastPos.current ? Haversine(positon, lastPos.current) : Infinity
                         if (d > 10){
                             await sendPosition(livraisonId, positon)
@@ -43,7 +49,10 @@ export function useSendPosition() {
             }
         }
         boucle()
-        return () => { actif = false }
+        return () => { 
+            actif = false;
+             if (wakeLock) wakeLock.release() 
+            }
     }, [isProprietaire, livraisonId])
 }
 
