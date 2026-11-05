@@ -30,7 +30,7 @@ export function useSendPosition() {
             while(actif){
                 try{
                     const positon = await getUserLocation()
-                    if (actif && positon.accuracy <= 5000){
+                    if (actif && positon.accuracy <= 50){
                         const d =  lastPos.current ? Haversine(positon, lastPos.current) : Infinity
                         if (d > 10){
                             await sendPosition(livraisonId, positon)
