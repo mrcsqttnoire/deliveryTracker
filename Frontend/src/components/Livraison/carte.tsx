@@ -21,7 +21,6 @@ export function Carte ({data}: CarteProps) {
   const {lastPosition} = usePosition()
   const [location, setLocation] = useState<UserLocation | null>(null)
   const {map_suivi} = useMap()
-
   useEffect(()=>{
     const fetchLocation = async ()=>{
       const coords = await getUserLocation()
@@ -43,14 +42,16 @@ export function Carte ({data}: CarteProps) {
       return
     }
     if (lastPosition){
+      const fitLat = [lat, lastPosition?.latitude]
+      const fitLng = [lng, lastPosition?.longitude]
       map_suivi.fitBounds(
         [
-          [lastPosition?.longitude, lastPosition?.latitude],
-          [lng, lat], 
+          [Math.min(...fitLng), Math.min(...fitLat)],
+          [Math.max(...fitLng), Math.max(...fitLat)]
         ],
         {
-            padding: { top: 60, bottom: 60, left: 40, right: 40 },
-            maxZoom: 16,
+            padding: { top: 20, bottom: 100, left: 40, right: 40 },
+            maxZoom: 16.5,
             duration: 3500,
         }
       )
