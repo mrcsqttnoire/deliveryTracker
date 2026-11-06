@@ -22,9 +22,11 @@ export default function PublicLayout () {
   const navigate = useNavigate()
   const {id} = useParams<RouteParams>()
   const {getSelectedLivraison, maLivraison, livraisonChargee} = useLivraison()
+
   useEffect(()=>{
       getSelectedLivraison(id ?? '', navigate)
   }, [])
+  
   useGetPosition()
   if (!livraisonChargee) return <Loading/>
   if (!maLivraison) return <p>Livraison introuvable.</p>

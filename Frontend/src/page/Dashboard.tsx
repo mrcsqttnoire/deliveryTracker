@@ -4,12 +4,13 @@ import { useEffect } from "react";
 import { HEADER_DASHBOARD } from "../roles/control";
 import { twMerge } from "tailwind-merge";
 import MapSuivi from "../map/map_suivi";
-import { Marker } from "@vis.gl/react-maplibre";
+import { Marker, useMap } from "@vis.gl/react-maplibre";
 import { BoxMarker, LivraisonIci } from "../map/pin_marker";
 export function Dashboard () {
     const {isProprietaire, userLogedIn} = useUser()
     const { livraisons, getLivraisons} = useLivraison()
     const {livreursList, getLivreurs} = useLivreur()
+    const {dashboard_map} = useMap()
 
     useEffect(()=>{
         if (isProprietaire) getLivreurs()
@@ -23,6 +24,25 @@ export function Dashboard () {
     
     const HeadDashboard = HEADER_DASHBOARD[userLogedIn.role]
     
+    const lats = livraisons.filter((l)=>l.status !== "livree").map((l)=>Number(l.destination_lat))
+    const lngs = livraisons.filter((l)=>l.status !== "livree").map((l)=>Number(l.destination_long))
+    
+    console.log(lats, lngs)
+    useEffect(() => {
+        if (!dashboard_map) return 
+        dashboard_map.fitBounds(
+            [
+                [Math.min(...lngs), Math.min(...lats)], 
+                [Math.max(...lngs), Math.max(...lats)],
+            ],
+            {
+                padding: { top: 40, bottom: 40, left: 20, right: 20 },
+                maxZoom: 17,
+                duration: 3500,
+            }
+        )
+    }, [dashboard_map, lngs, lats])
+
     return <>
         <section className="container-custom py-4 bg-principale min-h-full">
             <div className="flex flex-col justify-center gap-5 md:gap-10 ">
@@ -100,36 +120,34 @@ export function Dashboard () {
                     }
                 </div>
                 <div className="flex flex-col gap-6" >
-                    <div className="flex justify-between">
+                    {/* <div className="flex justify-between">
                         <h4 className="font-heading font-bold text-xl sm:text-2xl text-neutral">Course recente</h4>
                         <a href="/livraison" className="text-primary font-body font-semibold">Tout voir</a>
-                    </div>
-                    <MapSuivi
-                        id="dashboard_map"
-                        rotate={true}
-                    >
-                        {   livraisons &&
-                            livraisons.filter((l)=>l.status !== "livree").map((l)=>(
-                                <Marker
-                                    key={l.id}
-                                    latitude={Number(l.destination_lat ?? l.destination?.latitude)}
-                                    longitude={(Number(l.destination_long ?? l.destination?.longitude))}
-                                    anchor="bottom"
-                                >
-                                    <div className="flex flex-col items-center">
-                                        <LivraisonIci
-                                            hidden_ping={true}
-                                        />
-                                        <BoxMarker />
-                                    </div>
-                                </Marker>
-                            ))
-                        }
-                    </MapSuivi>
-                    {/* <Filter/> */}
-                    <div className="grid grid-cols-1 lg:grid lg:grid-cols-2 gap-4">
-                        {/* <CardLivraison data={[]}></CardLivraison> */}
-                    </div>
+                    </div> */}
+                    {isProprietaire && <div className="relative h-[400px] w-full">
+                        <MapSuivi
+                            id="dashboard_map"
+                            rotate={true}
+                        >
+                            {   livraisons &&
+                                livraisons.filter((l)=>l.status !== "livree").map((l)=>(
+                                    <Marker
+                                        key={l.id}
+                                        latitude={Number(l.destination_lat ?? l.destination?.latitude)}
+                                        longitude={(Number(l.destination_long ?? l.destination?.longitude))}
+                                        anchor="bottom"
+                                    >
+                                        <div className="flex flex-col items-center">
+                                            <LivraisonIci
+                                                hidden_ping={true}
+                                            />
+                                            <BoxMarker />
+                                        </div>
+                                    </Marker>
+                                ))
+                            }
+                        </MapSuivi>
+                    </div>}
                 </div>
             </div>
         </section>

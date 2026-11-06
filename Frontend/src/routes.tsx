@@ -42,7 +42,10 @@ export const routes = createBrowserRouter([
         children:[
             {
                 path: '',
-                element: <Dashboard/>
+                element: 
+                    <MapProvider>
+                        <Dashboard/>
+                    </MapProvider>
             },
             {
                 path: 'livraisons',
