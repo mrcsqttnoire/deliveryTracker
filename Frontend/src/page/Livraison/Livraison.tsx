@@ -7,8 +7,10 @@ import { useEffect } from "react";
 import { Info } from "../../components/shared/info";
 import { Alert } from "../../components/shared/alert";
 import { twMerge } from "tailwind-merge";
+import { useLocation } from "react-router-dom";
 
 export default function Livraison () {
+    const location = useLocation()
     const {livraisons, getLivraisons} = useLivraison()
     const {isCopied, message} = useUtilities()
     const {isProprietaire} = useUser()
@@ -16,7 +18,7 @@ export default function Livraison () {
     useEffect(()=>{
         getLivraisons()
     }, [])
-
+    const historique = Boolean(location.pathname.includes("historiques"))
     return <>
         <section className="container-custom py-4 bg-bg-principale">
             <div className="relative flex flex-col gap-4">
@@ -56,7 +58,10 @@ export default function Livraison () {
                         {isProprietaire ? "Liste des livraison" : "Liste des livraisons à faire"}
                     </h3>
                     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-                    {livraisons && livraisons?.map((livraison) => (
+                    {!historique && livraisons && livraisons?.filter((l)=>l.status !== "livree").map((livraison) => (
+                        <CardLivraison key={livraison.id} data={livraison}/>
+                    ))}
+                    {(isProprietaire || historique) && livraisons && livraisons?.filter((l)=>l.status === "livree").map((livraison) => (
                         <CardLivraison key={livraison.id} data={livraison}/>
                     ))}
                     </div>

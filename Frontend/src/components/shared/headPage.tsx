@@ -24,7 +24,7 @@ export function HeadPage ({children,desc, title, btn_title}: HeadPageProps) {
             <h4 className="font-heading font-semibold text-neutral text-2xl">{title}</h4>
         </div>
         {   isProprietaire && 
-            <Button fn={createPage} className="flex text-sm md:text-lg md:w-1/2 md:justify-self-end">
+            <Button noLoading={true} fn={createPage} className="flex text-sm md:text-lg md:w-1/2 md:justify-self-end">
                 {children}
                 {btn_title}
             </Button>

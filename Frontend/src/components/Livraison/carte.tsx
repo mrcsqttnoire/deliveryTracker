@@ -8,6 +8,7 @@ import Skeleton from "react-loading-skeleton"
 import type { Livraisons, UserLocation } from "../../provider/ModelsType"
 import { usePosition, useUtilities } from "../../provider/CustomizedHooks"
 import PinLivreur, { LivraisonIci } from "../../map/pin_marker"
+import { CircleCheck } from "lucide-react"
 const MapSuivi = lazy(() => import("../../map/map_suivi"))
 
 interface CarteProps {
@@ -82,7 +83,10 @@ export function Carte ({data}: CarteProps) {
                       longitude={marker.lng}
                       anchor="bottom"
                   > 
-                      <LivraisonIci/>
+                      <LivraisonIci className={data.status === "livree" && "bg-livree flex items-center gap-2"}>
+                        {data.status === "livree" && <CircleCheck></CircleCheck>}
+                        {data.status === "livree" ? "livraison terminée" : "livraison ici"}
+                      </LivraisonIci>
                   </Marker>
                 }
                 { lastPosition && 

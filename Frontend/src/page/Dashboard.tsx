@@ -1,9 +1,11 @@
 import { Bike, CheckCheck, CircleDot, Hourglass, UserGroup } from "lucide-react";
-import { Filter } from "../components/shared/filter";
 import { useLivraison, useLivreur, useUser } from "../provider/CustomizedHooks";
 import { useEffect } from "react";
 import { HEADER_DASHBOARD } from "../roles/control";
 import { twMerge } from "tailwind-merge";
+import MapSuivi from "../map/map_suivi";
+import { Marker } from "@vis.gl/react-maplibre";
+import { BoxMarker, LivraisonIci } from "../map/pin_marker";
 export function Dashboard () {
     const {isProprietaire, userLogedIn} = useUser()
     const { livraisons, getLivraisons} = useLivraison()
@@ -102,7 +104,29 @@ export function Dashboard () {
                         <h4 className="font-heading font-bold text-2xl text-neutral">Course recente</h4>
                         <a href="/livraison" className="text-primary font-body font-semibold">Tout voir</a>
                     </div>
-                    <Filter/>
+                    <MapSuivi
+                        id="affiche_all"
+                        rotate={true}
+                    >
+                        {   livraisons &&
+                            livraisons.filter((l)=>l.status !== "livree").map((l)=>(
+                                <Marker
+                                    key={l.id}
+                                    latitude={Number(l.destination_lat ?? l.destination?.latitude)}
+                                    longitude={(Number(l.destination_long ?? l.destination?.longitude))}
+                                    anchor="bottom"
+                                >
+                                    <div className="flex flex-col items-center">
+                                        <LivraisonIci
+                                            hidden_ping={true}
+                                        />
+                                        <BoxMarker />
+                                    </div>
+                                </Marker>
+                            ))
+                        }
+                    </MapSuivi>
+                    {/* <Filter/> */}
                     <div className="grid grid-cols-1 lg:grid lg:grid-cols-2 gap-4">
                         {/* <CardLivraison data={[]}></CardLivraison> */}
                     </div>

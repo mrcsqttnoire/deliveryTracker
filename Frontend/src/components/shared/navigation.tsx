@@ -36,7 +36,7 @@ export function Navigation () {
               <Map strokeWidth={3}/>
               Carte
             </NavLink>
-            <NavLink to="/clients" className={({isActive})=> `center nav hover:scale-110 hover:-translate-y-1 duration-200 ease-in-out ${isActive ? "active-nav" : "inactive-nav"}`}>
+            <NavLink to="/historiques" className={({isActive})=> `center nav hover:scale-110 hover:-translate-y-1 duration-200 ease-in-out ${isActive ? "active-nav" : "inactive-nav"}`}>
               <ClockFading strokeWidth={3}/>
               Historique
             </NavLink>

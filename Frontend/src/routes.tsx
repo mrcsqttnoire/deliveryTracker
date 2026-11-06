@@ -143,6 +143,13 @@ export const routes = createBrowserRouter([
                     </MapProvider>
                 </SuspenseLayout>
             },   
+            {
+                path: 'historiques/',
+                element: 
+                <SuspenseLayout fallback={<Skeleton className="w-11/12 h-90vh"/>}>
+                    <Livraison/>
+                </SuspenseLayout>
+            },   
         ]
     },
     {

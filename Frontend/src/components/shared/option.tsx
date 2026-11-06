@@ -1,7 +1,6 @@
 import { LucideLogOut, User } from "lucide-react";
 import { twMerge, type ClassNameValue } from "tailwind-merge";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../constanst";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { SpinLoading } from "./button";
 import { useLoading, useUtilities } from "../../provider/CustomizedHooks";
@@ -12,7 +11,6 @@ interface OptionsProps {
 export function Options ({className}: OptionsProps) {
     const [isLoad, setIsLoad] = useState<boolean>(false)
     const {setIsOpen} = useUtilities()
-    const nav = useNavigate()
     // const { coordonees ,getDetailsPos} = useMap()
     const {isLoading} = useLoading()
 
@@ -26,7 +24,7 @@ export function Options ({className}: OptionsProps) {
         setIsOpen(false)
         setIsLoad(false)
         // console.log("logout")
-        nav("/auth/login")
+        window.location.href = "/auth/login"
     }
 
     return <>
