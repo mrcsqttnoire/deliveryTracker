@@ -15,7 +15,7 @@ export function LivraisonIci({children, className, hidden_ping=false}: Livraison
         {
           <div className="flex flex-col items-center drop-shadow-lg">
             <div className={"flex flex-col items-center animate-pin-float"}>
-              <div className={twMerge(" rounded-xl bg-[#E1312F] px-3 py-1.5 text-sm font-semibold text-white", className)}>
+              <div className={twMerge(" rounded-xl bg-primary px-3 py-1.5 text-sm font-semibold text-white", className)}>
                 {children ?? "Livraison ici"}
               </div>
               <div className={twMerge("h-0 w-0 border-x-8 border-t-8 border-x-transparent border-t-primary" )}/>
@@ -51,8 +51,8 @@ export function PinPointer() {
 export function BoxMarker() {
     return <>
         {<div className="relative flex h-12 w-12 items-center justify-center">
-                <span className="absolute inset-0 rounded-full bg-[#E1312F]/25 animate-ping" />
-                <div className="relative flex h-12 w-12 items-center justify-center rounded-full border-4 border-white bg-[#E1312F] text-white shadow-xl">
+                <span className="absolute inset-0 rounded-full bg-primary/25 animate-ping" />
+                <div className="relative flex h-12 w-12 items-center justify-center rounded-full border-4 border-white bg-primary text-white shadow-xl">
                     <Package size={22} />
                 </div>
         </div>}

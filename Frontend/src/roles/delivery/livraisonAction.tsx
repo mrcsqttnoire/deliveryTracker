@@ -33,7 +33,7 @@ export const LivraisonActionDelivery = ({data}: CardLivraisonProps) => {
         <div className="flex flex-1 gap-2 justify-between">
             {data.status == "en_attente" &&  <Button
                 fn={demarrer}
-                className="flex-1 bg-en_route-bg flex-1 text-en_route justify-self-end hover:bg-en_route-bg hover:text-en_route duration-75"
+                className="bg-en_route-bg flex-1 text-en_route justify-self-end hover:bg-en_route-bg hover:text-en_route duration-75"
                 noLoading
                 disable={isLoading}
             >
@@ -45,7 +45,7 @@ export const LivraisonActionDelivery = ({data}: CardLivraisonProps) => {
                 <>  
                     <Button
                         fn={terminer}
-                        className="flex-1 bg-livree-bg flex-1 text-livree  justify-self-end hover:bg-livree-bg hover:text-livee duration-75"
+                        className="bg-livree-bg flex-1 text-livree  justify-self-end hover:bg-livree-bg hover:text-livee duration-75"
                         noLoading
                         disable={isLoading}
                     >
