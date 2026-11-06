@@ -18,8 +18,8 @@ export const LivraisonActionAdmin = ({data}: CardLivraisonProps) => {
                 {lien}
             </a>
         </div>
-        <Button className="w-auto bg-input shrink-0 text-neutral justify-self-end self-center hover:bg-primary/10 hover:text-primary duration-75" noLoading>
-            <a href={lien_admin} className="w-full h-full flex gap-2">
+        <Button className="w-auto flex-1 bg-input shrink-0 text-neutral justify-self-end self-center hover:bg-primary/10 hover:text-primary duration-75" noLoading>
+            <a href={lien_admin} className="w-full center h-full gap-2">
                 <Compass className="text-primary shrink-0"/>
                 Suivi direct
             </a>

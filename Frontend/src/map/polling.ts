@@ -36,7 +36,7 @@ export function useSendPosition() {
             while(actif){
                 try{
                     const positon = await getUserLocation()
-                    if (actif && positon.accuracy <= 500){
+                    if (actif && positon.accuracy <= 100){
                         const d =  lastPos.current ? Haversine(positon, lastPos.current) : Infinity
                         if (d > 10){
                             await sendPosition(livraisonId, positon)
@@ -51,8 +51,8 @@ export function useSendPosition() {
         boucle()
         return () => { 
             actif = false;
-             if (wakeLock) wakeLock.release() 
-            }
+            if (wakeLock) wakeLock.release(); wakeLock = null
+        }
     }, [isProprietaire, livraisonId])
 }
 

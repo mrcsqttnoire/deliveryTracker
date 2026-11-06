@@ -86,6 +86,7 @@ type LivraisonType = {
     getLivraisons: () => void
     createLivraison: (e: FormEvent<HTMLFormElement>, nav: NavigateFunction) => void
     getSelectedLivraison: (id: string, nav: NavigateFunction) => void
+    filterLivraison: (filter: string, nav: NavigateFunction) => void
     demarrerUneCourse: (uuid: string, nav: NavigateFunction) => void
 
     viderChamp: () => void

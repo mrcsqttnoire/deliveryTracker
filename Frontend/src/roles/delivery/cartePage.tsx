@@ -73,7 +73,7 @@ export default function CartePageDemarre () {
                 rotate={true}
             >
                 {   data &&
-                    data.map((l)=>(
+                    data.filter((l)=>l.status !== "livree").map((l)=>(
                         <Marker
                             key={l.id}
                             latitude={Number(l.destination_lat ?? l.destination?.latitude)}

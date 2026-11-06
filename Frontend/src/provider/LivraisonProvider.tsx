@@ -126,7 +126,7 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
             }
         } catch (err) {
             if (axios.isAxiosError(err)){
-                setMessage("Erreur lors du chargement des données")
+                setMessage(err.response?.data.detail ?? "Erreur lors du chargement des données")
             } else {
                 console.log(err)
             }
@@ -151,7 +151,7 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
             }
         } catch (err) {
             if (axios.isAxiosError(err)){
-                setMessage("Erreur lors du chargement des données")
+                setMessage(err.response?.data.detail ?? "Erreur lors du chargement des données")
             } else {
                 console.log(err)
             }
@@ -160,6 +160,27 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
             setLivraisonChargee(true)
         }
     }
+
+    const filterLivraison = async (filter: string, nav: NavigateFunction) => {
+        try{
+            if (!listRoute) return
+            setIsLoading(true)
+            if (!filter) nav(0)
+            const res = await api.get(listRoute?.concat(`?status__iexact=${filter}`))
+            const data = res.data
+            setLivraisons(data)
+        } catch (err) {
+            if (axios.isAxiosError(err)){
+                setMessage(err.response?.data.detail ?? "Erreur lors du chargement des données")
+            } else {
+                console.log(err)
+            }
+        } finally {
+            setIsLoading(false)
+            setLivraisonChargee(true)
+        }
+    }
+
     async function demarrerUneCourse(uuid: string, nav: NavigateFunction){
         if (!uuid.trim()){
             setMessage("Veuillez choisir la livraison à démarre!")
@@ -201,6 +222,7 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
             livraisons, setLivraisons,
             viderChamp, maLivraison,
             livraisonChargee,
+            filterLivraison,
             createLivraison, getLivraisons,
             getSelectedLivraison,
             demarrerUneCourse,
