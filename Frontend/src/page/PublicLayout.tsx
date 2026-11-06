@@ -1,5 +1,4 @@
 
-import truck from "../assets/icons/truck.svg"
 import  {Carte}  from "../components/Livraison/carte"
 import { LivreurDetailMin } from "../components/livreur/livreur.min"
 import { DetailColis } from "../components/Livraison/detailColis"

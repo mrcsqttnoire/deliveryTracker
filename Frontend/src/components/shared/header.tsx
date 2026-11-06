@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import logo from '../../assets/img/logo.png'
-import billi from '../../assets/img/test/billie-3.png'
 import { useLocation, useParams } from 'react-router-dom';
 import { useUser, useUtilities } from '../../provider/CustomizedHooks';
 import { twMerge } from 'tailwind-merge';
