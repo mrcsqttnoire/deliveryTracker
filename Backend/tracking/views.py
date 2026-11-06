@@ -13,6 +13,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenRefreshView
 from rest_framework_simplejwt.exceptions import InvalidToken
 from rest_framework.exceptions import ValidationError
+from .filters import LivraisonFilter
 from tracking.permissions import IsProprietaire
 from tracking.models import Client, Destination, Livraison, Position, Proprietaire, Livreur
 from tracking.serializers import DestinationSerializer, DetailLivraisonSerializer, LivraisonListSerializer, LivraisonSerializer, LivreurSerializer, PositionSerializer, ProprietaireInscriptionSerializer, ProprietaireSerializer, UserSerializer, ClientSerializer
@@ -112,6 +113,7 @@ class LivraisonListAPIView(generics.ListAPIView):
                 )
     serializer_class = LivraisonListSerializer
     permission_classes = [IsAuthenticated, IsProprietaire]
+    filterset_class = LivraisonFilter
     def get_queryset(self):
         return super().get_queryset().filter(proprietaire__user = self.request.user)
     
@@ -174,6 +176,40 @@ class DemarerCourseAPIView(APIView):
 
             livreur = livraison.livreur
             livreur.status = Livreur.Status.OCCUPE
+            livreur.save(update_fields=['status'])
+
+        return Response({"id": livraison.id, "status": livraison.status})
+
+MIN_DISTANCE = 50
+class TerminerCourseAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request, livraison_uuid):
+        with transaction.atomic():
+            qs = (Livraison.objects
+                .select_for_update(of=('self',))
+                .select_related('livreur', 'destination'))
+            livraison = get_object_or_404(qs, id=livraison_uuid, livreur__user=request.user)
+
+
+            if livraison.status != Livraison.Status.EN_ROUTE:
+                raise ValidationError({"detail": "Cette course n'est pas en cours ou déjà terminée"})
+
+            position = (
+                livraison.positions.filter().order_by("-created_at").first()
+            )
+            livreurPosition = (position.latitude, position.longitude)
+            destination = (livraison.destination.latitude, livraison.destination.longitude)
+
+            d = haversine(livreurPosition, destination, unit=Unit.METERS) 
+            print(d)
+            if d > MIN_DISTANCE:
+                raise ValidationError({"detail": "Vous n'êtes pas encore arrivés"})
+
+            livraison.status = Livraison.Status.LIVRE
+            livraison.save(update_fields=["status"])
+
+            livreur = livraison.livreur
+            livreur.status = Livreur.Status.LIBRE
             livreur.save(update_fields=['status'])
 
         return Response({"id": livraison.id, "status": livraison.status})
