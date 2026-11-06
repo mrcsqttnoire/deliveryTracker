@@ -212,6 +212,29 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
         }
     }
 
+    async function terminerUneCourse(uuid: string, nav: NavigateFunction){
+        if (!uuid.trim()){
+            setMessage("Veuillez choisir la livraison à terminer!")
+            return
+        }
+        setIsLoading(true)
+        const route_demarer = `tracking-api/livraison/${uuid}/terminer/`
+        try {
+            await api.post(route_demarer)
+            setMessage("Course terminée avec succès")
+            nav(0)
+        } catch (err) {
+            if (axios.isAxiosError(err)){
+                const message = err.response?.data.detail
+                setMessage(message)
+            } else {
+                console.log(err)
+            }
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
     return <>
         <LivraisonContext.Provider value={{
             transformStyles,
@@ -226,6 +249,7 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
             createLivraison, getLivraisons,
             getSelectedLivraison,
             demarrerUneCourse,
+            terminerUneCourse,
         }}>
             {children}
         </LivraisonContext.Provider>

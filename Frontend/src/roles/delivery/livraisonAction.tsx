@@ -8,7 +8,7 @@ import { useLivraison, useLoading } from "../../provider/CustomizedHooks"
 export const LivraisonActionDelivery = ({data}: CardLivraisonProps) => {
     const navigate = useNavigate()
     const {isLoading} = useLoading()
-    const {demarrerUneCourse} = useLivraison()
+    const {demarrerUneCourse, terminerUneCourse} = useLivraison()
     const lien = window.location.origin.concat(`/livraison/delivery-suivi/${data.id}`)
 
     const demarrer = () => {
@@ -18,6 +18,7 @@ export const LivraisonActionDelivery = ({data}: CardLivraisonProps) => {
 
     const terminer = () => {
         if (!data.id?.trim()) return
+        terminerUneCourse(data.id, navigate)
     }
     
     return  <>

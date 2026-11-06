@@ -88,6 +88,7 @@ type LivraisonType = {
     getSelectedLivraison: (id: string, nav: NavigateFunction) => void
     filterLivraison: (filter: string, nav: NavigateFunction) => void
     demarrerUneCourse: (uuid: string, nav: NavigateFunction) => void
+    terminerUneCourse: (uuid: string, nav: NavigateFunction) => void
 
     viderChamp: () => void
 
