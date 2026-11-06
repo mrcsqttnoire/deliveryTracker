@@ -56,7 +56,7 @@ export const LivraisonActionDelivery = ({data}: CardLivraisonProps) => {
                     </Button><Button
                         noLoading={true}
                         fn={() => navigate(`/carte/${data.id}`)}
-                        className="bg-input w-10  text-neutral justify-self-end hover:bg-en_route-bg hover:text-en_route duration-75"
+                        className="bg-input w-10 text-neutral justify-self-end hover:bg-en_route-bg hover:text-en_route duration-75"
                     >
                             <Map className="shrink-0" />
                     </Button>

@@ -21,7 +21,7 @@ export default function Livraison () {
     const historique = Boolean(location.pathname.includes("historiques"))
     return <>
         <section className="container-custom py-4 bg-bg-principale">
-            <div className="relative flex flex-col gap-4">
+            <div className="relative flex flex-col gap-3 sm:gap-4">
                 <HeadPage 
                     title="Mission du jour"
                     desc="Delivery Tracker"

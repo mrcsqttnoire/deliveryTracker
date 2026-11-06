@@ -12,7 +12,7 @@ export const InfoSuppDelivery = ({data}: CardLivraisonProps) => {
                     <p className="font-body font-bold text-sm">{data.date_livraison}</p>
                 </div>
                 <div className="w-auto flex gap-2 items-center">
-                    <p className="font-body font-bold text-sm md:text[16px]">{data.heure_livraison}</p>
+                    <p className="font-body font-bold text-sm md:text-base">{data.heure_livraison}</p>
                     <Clock/>
                 </div>
             </div>

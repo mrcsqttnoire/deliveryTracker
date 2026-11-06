@@ -15,8 +15,8 @@ export function BadgeLivraison ({title, type, className}: badgeType) {
     }[type]
 
   return <>
-    <div className={twMerge("flex", type, className)}>
-        <p>{title ? title : status}</p>
+    <div className={twMerge("flex items-center", type, className)}>
+        <p className="text-sm sm:text-base">{title ? title : status}</p>
     </div>
   </>
 }

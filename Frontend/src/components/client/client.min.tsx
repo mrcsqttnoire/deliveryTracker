@@ -28,7 +28,7 @@ export function ClientDetailMin ({data}: ClientDetailMinProps) {
                     </div>
                     <div>
                         <h4 className="font-heading font-semibold text-neutral md:text-xl break-normal"> 
-                            {data.client_nom} {data.client_prenom}
+                            <span className="hidden sm:inline">{data.client_nom}</span> {data.client_prenom}
                         </h4>
                         <p className="font-body font-normal text-secondary md:text-lg" > {data.client_telephone} </p>
                     </div>
@@ -40,7 +40,7 @@ export function ClientDetailMin ({data}: ClientDetailMinProps) {
                                                 hover:opacity-70 duration-75"
                 >
                     <PhoneCall size={18} strokeWidth={2}/>
-                    Appeler
+                    <span className="hidden sm:inline">Appeler</span>
                 </a>
                 </div>
             </div>

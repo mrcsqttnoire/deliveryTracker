@@ -28,7 +28,7 @@ export function LivreurDetailMin ({data}: LivreurProps) {
                         {!data.livreur_photo && initials}
                     </div>
                     <div>
-                        <h4 className="font-heading font-semibold text-neutral md:text-xl break-normal"> {data.livreur_nom} {data.livreur_prenom}</h4>
+                        <h4 className="font-heading font-semibold min-w-0 text-neutral md:text-xl break-normal"> <span className="hidden sm:inline">{data.livreur_nom}</span> {data.livreur_prenom}</h4>
                         <p className="font-body font-normal text-secondary  md:text-lg" > {data.livreur_telephone} </p>
                     </div>
                 </div>
@@ -39,7 +39,7 @@ export function LivreurDetailMin ({data}: LivreurProps) {
                                                 hover:opacity-70 duration-75"
                 >
                     <PhoneCall size={18}/>
-                    Appeler
+                    <span className="hidden sm:inline">Appeler</span>
                 </a>
                 </div>
             </div>

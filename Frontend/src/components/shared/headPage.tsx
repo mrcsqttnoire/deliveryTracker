@@ -18,15 +18,15 @@ export function HeadPage ({children,desc, title, btn_title}: HeadPageProps) {
     }
 
   return <>
-    <div className="grid grid-cols-2 ">
+    <div className="grid grid-cols-2 items-center">
         <div>
-            <p className="font-body font-medium text-secondary">{desc}</p>
-            <h4 className="font-heading font-semibold text-neutral text-2xl">{title}</h4>
+            <p className="font-body font-medium text-secondary text-base">{desc}</p>
+            <h4 className="font-heading font-semibold text-neutral text-xl sm:text-2xl">{title}</h4>
         </div>
         {   isProprietaire && 
-            <Button noLoading={true} fn={createPage} className="flex text-sm md:text-lg md:w-1/2 md:justify-self-end">
-                {children}
-                {btn_title}
+            <Button noLoading={true} fn={createPage} className="flex text-sm md:text-lg md:w-1/2 md:justify-self-end    ">
+                <span>{children}</span>
+                <p className="">{btn_title}</p>
             </Button>
         }
     </div>

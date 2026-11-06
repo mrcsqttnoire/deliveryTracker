@@ -17,11 +17,11 @@ export function CardClient ({data}: CardClientProps) {
                     <div className="center w-12 h-12 rounded-full bg-livree-bg shrink-0">
                         <p className="font-heading font-semibold text-xl text-livree">{initials}</p>
                     </div>
-                    <div>
-                        <h3 className="font-heading font-semibold text-xl text-neutral">{`${data.nom} ${data.prenom}`}</h3>
+                    <div className="min-w-0">
+                        <h3 className="font-heading font-semibold text-lg min-w-0 sm:text-2xl text-neutral "><span className="hidden sm:inline">{data.nom}</span> {data.prenom}</h3>
                         <div className="flex gap-2 items-center font-body font-medium text-secondary">
-                            <Phone size={18}/>
-                            <p>{data.telephone}</p>
+                            <Phone size={18} className="hidden sm:inline"/>
+                            <p className="min-w-0">{data.telephone}</p>
                         </div>
                     </div>
                 </div>
@@ -61,8 +61,8 @@ export function CardClient ({data}: CardClientProps) {
                     </div>
                 </div> */}
             </div>
-            <div className="flex gap-2">
-                <a href={`tel:${data.telephone}`}>
+            <div className="flex gap-2 items-center flex-wrap">
+                <a href={`tel:${data.telephone}`} className="flex-1 h-full">
                     <Button 
                         noLoading={true}
                         fn={()=>navigator.clipboard.writeText(data.telephone)}
@@ -73,7 +73,7 @@ export function CardClient ({data}: CardClientProps) {
                 </a>
                 <Button 
                     noLoading={true}
-                    className="bg-gradient-right text-neutral hover:bg-gradient-right hover:opacity-85 duration-50">
+                    className="bg-gradient-right flex-1 text-neutral hover:bg-gradient-right hover:opacity-85 duration-50">
                     <PackagePlus className="w-5 md:w-6 shrink-0 text-primary"/>
                     Nouvelle course 
                 </Button>

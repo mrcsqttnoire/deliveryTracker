@@ -47,17 +47,17 @@ export function CardLivreur ({data}: CardLivreurProps) {
     <div className="flex w-full flex-col gap-3 bg-white h-auto rounded-xl shadow-xl p-4 hover:-translate-y-0.5 duration-300">
         <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
-                <div className="center w-12 h-12 rounded-full">
+                <div className="center w-12 h-12 rounded-full shrink-0">
                     {data.optimized_photo ? (
                         <img src={data.optimized_photo} alt="profile" className="w-12 h-12 rounded-full object-cover"/>
                     ):
                         <p>{initials}</p>
                     }
                 </div>
-                <div>
-                    <h3 className="font-heading font-semibold text-xl text-neutral">{data.nom} {data.prenom}</h3>
-                    <div className="flex gap-2 items-center font-body font-medium text-secondary">
-                        <UserKey size={18}/>
+                <div className="min-w-0">
+                    <h3 className="font-heading font-semibold text-lg  sm:text-2xl text-neutral"><span className="hidden sm:inline">{data.nom}</span> {data.prenom}</h3>
+                    <div className="flex gap-2 items-center font-body font-medium text-sm sm:text-base text-secondary">
+                        <UserKey size={18} className="hidden sm:inline"/>
                         <p>{data.username}</p>
                     </div>
                 </div>
@@ -69,14 +69,14 @@ export function CardLivreur ({data}: CardLivreurProps) {
         </div>
         <div className="bg-input flex justify-between items-center px-4 py-2 rounded-xl">
             <div className="flex text-secondary items-center gap-2">
-                <CircleCheckBig/>
+                <CircleCheckBig className="shrink-0 hidden sm:inline"/>
                 <div >
                     <h5 className="font-body font-bold text-sm">Course terminées</h5>
-                    <p className="font-body font-bold text-neutral">5 livraison(s)</p>
+                    <p className="font-body font-bold text-neutral">{data.livraison_count} livraison(s)</p>
                 </div>
             </div>
             <div className="flex  text-secondary items-center gap-2">
-                <Phone/>
+                <Phone className="shrink-0 hidden sm:inline"/>
                 <div>
                     <h5 className="font-body font-bold text-sm">Téléphone</h5>
                     <p className="font-body font-bold text-neutral"> {data.telephone}</p>

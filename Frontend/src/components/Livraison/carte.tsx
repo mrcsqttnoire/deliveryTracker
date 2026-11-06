@@ -83,7 +83,7 @@ export function Carte ({data}: CarteProps) {
                       longitude={marker.lng}
                       anchor="bottom"
                   > 
-                      <LivraisonIci className={data.status === "livree" && "bg-livree flex items-center gap-2"}>
+                      <LivraisonIci className={data.status === "livree" && "bg-livree-bg text-livree flex items-center gap-2"}>
                         {data.status === "livree" && <CircleCheck></CircleCheck>}
                         {data.status === "livree" ? "livraison terminée" : "livraison ici"}
                       </LivraisonIci>
@@ -102,7 +102,7 @@ export function Carte ({data}: CarteProps) {
             </Suspense>
           </div>
         </div>
-        <div className="bg-white p-4 absolute w-11/12 bottom-4 flex items-center justify-between rounded-xl z-20">
+        <div className="bg-white/70 p-4 absolute w-11/12 bottom-4 flex items-center justify-between rounded-xl z-20 backdrop-blur-xl">
           <div className="text-neutral font-body font-semibold">
             <img src="" alt="" className="w-8" />
             <div className="flex gap-2 ">

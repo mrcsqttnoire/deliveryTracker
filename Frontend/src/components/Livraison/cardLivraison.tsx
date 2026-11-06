@@ -19,13 +19,13 @@ export function CardLivraison ({data}: CardLivraisonProps) {
     const Action = ACTION_LIVRAISON[userLogedIn.role]
 
     return <> 
-        <div className="flex flex-col gap-4 flex-1 w-full bg-white h-auto rounded-xl shadow-xl p-4 hover:-translate-y-0.5 duration-300">
+        <div className="flex flex-col gap-1.5 sm:gap-4 flex-1 w-full bg-white h-auto rounded-xl shadow-xl p-4 hover:-translate-y-0.5 duration-300">
             <div className="flex justify-between">
-                <h5 className="font-body font-bold text-xl md:text-2xl">{nom_complet ?? "En attente du client..."}</h5>
+                <h5 className="font-body font-bold text-lg min-w-0 sm:text-2xl">{nom_complet ?? "En attente du client..."}</h5>
                 <BadgeLivraison type={data.status} />
             </div>
             <div className="flex flex-col gap-1">
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-wrap">
                     <Navigation className="text-[#004C6C]"/>
                     <p className="font-body font-medium text-neutral">{data.destination_lieu }</p>
                     <p className="font-body font-medium text-secondary">{data.destination_repere ?? "Donner le lien de cette livraison au client dédié"}</p>

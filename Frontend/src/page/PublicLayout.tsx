@@ -11,6 +11,7 @@ import { twMerge } from "tailwind-merge"
 import { ClientDetailMin } from "../components/client/client.min"
 import { Loading } from "../components/shared/loading"
 import { useGetPosition } from "../map/polling"
+import { Truck } from "lucide-react"
 
 const FormStep = lazy(()=> import("./Clients/livraisonAddons"))
 
@@ -37,11 +38,13 @@ export default function PublicLayout () {
         }
         <section className="container-custom py-4 flex flex-col justify-center gap-4 shadow-md rounded-b-xl ">
             <div className="flex items-center gap-2">
-              <img src={truck} alt="livraison-icon" className="bg-primary-300 p-3 rounded-full" />
-              <h3 className="font-heading text-2xl font-bold capitalize text-neutral font">Votre livraison</h3>
+              <div className="center bg-primary/10 p-2 rounded-full shrink-0">
+                <Truck className="text-primary"/>
+              </div>
+              <h3 className="font-heading text-xl sm:text-2xl font-bold capitalize text-neutral font">Votre livraison</h3>
             </div>
             <div className="p-4 bg-linear-to-tr from-gradient-left to-gradient-right h-27 flex flex-col justify-center gap-4 rounded-xl">
-                <h5 className="font-body font-bold text-tertiary text-lg">En route vers vous </h5>
+                <h5 className="font-body font-bold text-tertiary text-base sm:text-lg">En route vers vous </h5>
                 <div className="flex flex-col gap-2">
                   <div className="w-full h-1.5 bg-[#E2E8F8] rounded-xl">
                     <div className={twMerge("w-1/2 h-full bg-tertiary origin-left rounded-xl",
@@ -53,7 +56,7 @@ export default function PublicLayout () {
                   <div className="flex justify-between text-tertiary font-body font-bold text-[15px] tracking-[1px]">
                     <p>Préparée</p>
                     <p>En route</p>
-                    <p className="text-mist-500">Livrée</p>
+                    <p className={twMerge("text-mist-500", Livraison.status === 'livree' && "text-livree")}>Livrée</p>
                   </div>
                 </div>
             </div>
@@ -61,7 +64,7 @@ export default function PublicLayout () {
         <section className="flex flex-col gap-4">
           {<Carte data={Livraison}/>}
           <LivreurDetailMin data={Livraison}/>
-          { location.pathname.includes('delivery') &&
+          { (location.pathname.includes('delivery') || location.pathname.includes('admin')) &&
             <ClientDetailMin data={Livraison}/>
           }
           <DetailColis 

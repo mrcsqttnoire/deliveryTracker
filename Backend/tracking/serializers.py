@@ -124,12 +124,17 @@ class LivreurSerializer(serializers.ModelSerializer):
     password = serializers.CharField(source='user.password', write_only=True, required=False)
     photo = serializers.ImageField(source='user.photo', required=False, allow_null=True, validators=[validate_image_size])
     optimized_photo = serializers.SerializerMethodField(read_only=True)
+    livraison_count = serializers.SerializerMethodField(read_only=True)
 
 
     def get_optimized_photo(self, obj):
         return get_photo_url(obj.user, self.context.get('request'))
     # role = serializers.SerializerMethodField()
 
+    def get_livraison_count(self, obj):
+        request   = self.context['request']
+        livraison = Livraison.objects.filter(livreur=obj, status=Livraison.Status.LIVRE, proprietaire__user=request.user)
+        return livraison.count()
     # def get_role(self, obj):
     #     return 'Propriétaire' if obj.user.is_proprietaire else 'Livreur'
 
@@ -145,6 +150,7 @@ class LivreurSerializer(serializers.ModelSerializer):
             'status',
             'photo',
             'optimized_photo',
+            'livraison_count',
         ]
         read_only_fields = ["id"]
 

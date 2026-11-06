@@ -53,6 +53,7 @@ export type Livreur = {
     optimized_photo: string,
     photo: string,
     status: string
+    livraison_count: number
 } 
 
 export type UserLocation = {
