@@ -49,8 +49,9 @@ export function Dialog () {
                 <div className="flex flex-col gap-2">
                     <h4 className="font-heading text-neutral font-bold text-2xl">Confirmer la suppression</h4>
                     <p className="text-secondary font-body font-medium">
-                        Êtes-vous sûr de vouloir supprimer ce {showDialog.type} ? Cette action et irreversible et immédiate
+                        Êtes-vous sûr de vouloir supprimer ce {showDialog.type} ? Cette action et irreversible et immédiate 
                     </p>
+                    {showDialog.type === 'client' && <span className="text-primary"> et toutes ses livraisons seront supprimées </span>}
                 </div>
                 <div className="flex flex-col gap-2 bg-input p-4 rounded-xl">
                     <h5 className="uppercase font-body font-bold text-secondary">élément ciblé</h5>
@@ -61,9 +62,9 @@ export function Dialog () {
                         <div className="flex flex-col justify-center font-body">
                             <h4 className="text-neutral font-semibold text-xl">{showDialog.data.nom} {showDialog.data.prenom}</h4>
                             {showDialog.type === 'client' && 
-                            <p className="text-secondary">{showDialog.data.livraison_count} Livraisons commandées</p>}
+                            <p className="text-secondary">{showDialog.data.livraison_count} livraisons commandées</p>}
                             {showDialog.type === 'livreur' && 
-                            <p className="text-secondary">4 Livraisons terminées</p>}
+                            <p className="text-secondary">{showDialog.data.livraison_count} Livraisons terminées</p>}
                         </div>
                     </div>
                 </div>

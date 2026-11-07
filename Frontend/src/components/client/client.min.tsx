@@ -7,13 +7,13 @@ export interface ClientDetailMinProps {
 }
 
 export function ClientDetailMin ({data}: ClientDetailMinProps) {
-    const initials = `${data.client_nom.charAt(0)}${data.client_prenom.charAt(0)}`;
     const color_code =  {
         en_attente: "bg-en_attent-bg text-en_attente",
         en_route: "bg-en_route-bg text-en_route",
         livree: "bg-livree-bg text-livree",
     }[data.status]
     
+    const initials = `${data.client_nom.charAt(0)}${data.client_prenom.charAt(0)}`;
     return <>
         <div className="container-custom">
             <div className="bg-input px-4 py-2 rounded-t-xl">

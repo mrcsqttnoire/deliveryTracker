@@ -72,7 +72,7 @@ class Livraison(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     proprietaire = models.ForeignKey(Proprietaire, on_delete=models.CASCADE, related_name="livraisons", editable=False) 
     livreur = models.ForeignKey(Livreur, on_delete=models.SET_NULL, null=True, related_name="livraisons")
-    client = models.ForeignKey(Client, on_delete=models.SET_NULL, null=True, related_name="livraisons")
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, null=True, related_name="livraisons")
     destination = models.OneToOneField(Destination, on_delete=models.SET_NULL, null=True, related_name='livraison')
     designation = models.TextField()
     status = models.CharField(choices=Status.choices, default=Status.EN_ATTENTE, max_length=20)

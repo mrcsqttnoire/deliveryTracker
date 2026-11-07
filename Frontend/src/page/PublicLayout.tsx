@@ -26,7 +26,7 @@ export default function PublicLayout () {
   useEffect(()=>{
       getSelectedLivraison(id ?? '', navigate)
   }, [])
-  
+
   useGetPosition()
   if (!livraisonChargee) return <Loading/>
   if (!maLivraison) return <p>Livraison introuvable.</p>
@@ -65,7 +65,7 @@ export default function PublicLayout () {
         <section className="flex flex-col gap-4">
           {<Carte data={Livraison}/>}
           <LivreurDetailMin data={Livraison}/>
-          { (location.pathname.includes('delivery') || location.pathname.includes('admin')) &&
+          { (location.pathname.includes('delivery') || location.pathname.includes('admin')) && Livraison.client != null &&
             <ClientDetailMin data={Livraison}/>
           }
           <DetailColis 

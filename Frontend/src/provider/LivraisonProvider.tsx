@@ -166,7 +166,7 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
             if (!listRoute) return
             setIsLoading(true)
             if (!filter) nav(0)
-            const res = await api.get(listRoute?.concat(`?status__iexact=${filter}`))
+            const res = await api.get(listRoute.concat(`?status__iexact=${filter}`))
             const data = res.data
             setLivraisons(data)
         } catch (err) {
@@ -178,6 +178,21 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
         } finally {
             setIsLoading(false)
             setLivraisonChargee(true)
+        }
+    }
+
+    async function searchLivraison(search: string){
+        try{
+            if (!listRoute) return
+            const res = await api.get(listRoute.concat(`?search=${search}`))
+            const data = res.data
+            setLivraisons(data)
+        } catch (err) {
+            if (axios.isAxiosError(err)){
+                setMessage(err.response?.data.detail ?? "Erreur lors du chargement des données")
+            } else {
+                console.log(err)
+            }
         }
     }
 
@@ -246,6 +261,7 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
             viderChamp, maLivraison,
             livraisonChargee,
             filterLivraison,
+            searchLivraison,
             createLivraison, getLivraisons,
             getSelectedLivraison,
             demarrerUneCourse,

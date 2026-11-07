@@ -13,7 +13,9 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenRefreshView
 from rest_framework_simplejwt.exceptions import InvalidToken
 from rest_framework.exceptions import ValidationError
+from rest_framework import filters
 from .filters import LivraisonFilter
+from django_filters.rest_framework import DjangoFilterBackend
 from tracking.permissions import IsProprietaire
 from tracking.models import Client, Destination, Livraison, Position, Proprietaire, Livreur
 from tracking.serializers import DestinationSerializer, DetailLivraisonSerializer, LivraisonListSerializer, LivraisonSerializer, LivreurSerializer, PositionSerializer, ProprietaireInscriptionSerializer, ProprietaireSerializer, UserSerializer, ClientSerializer
@@ -78,9 +80,18 @@ class ClientAPIViewSet(ModelViewSet):
     queryset = Client.objects.select_related('proprietaire').prefetch_related('livraisons')
     serializer_class = ClientSerializer
     permission_classes = [IsAuthenticated, IsProprietaire]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['telephone', 'nom', 'prenom']
 
     def get_queryset(self):
         return super().get_queryset().filter(proprietaire__user = self.request.user).order_by('-created_at')
+
+    # def perform_destroy(self, instance):
+    #     with transaction.atomic():            
+    #         super().perform_destroy(instance)
+    #         if (destination):
+    #             super().perform_destroy(destination)
+    #     return Response(status=status.HTTP_204_NO_CONTENT)
 
 class DestinationAPIView(generics.CreateAPIView):
     model = Destination
@@ -114,6 +125,17 @@ class LivraisonListAPIView(generics.ListAPIView):
     serializer_class = LivraisonListSerializer
     permission_classes = [IsAuthenticated, IsProprietaire]
     filterset_class = LivraisonFilter
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    search_fields = [
+        'status',
+        'livreur__nom',
+        'livreur__prenom',
+        'client__nom',
+        'client__prenom',
+        'destination__lieu',
+        'destination__repere'
+    ]
+
     def get_queryset(self):
         return super().get_queryset().filter(proprietaire__user = self.request.user)
     

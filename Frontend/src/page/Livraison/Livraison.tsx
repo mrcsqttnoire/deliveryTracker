@@ -7,17 +7,31 @@ import { useEffect } from "react";
 import { Info } from "../../components/shared/info";
 import { Alert } from "../../components/shared/alert";
 import { twMerge } from "tailwind-merge";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 export default function Livraison () {
+    const [searchParams, setSearchParams] = useSearchParams()
     const location = useLocation()
-    const {livraisons, getLivraisons} = useLivraison()
+    const navigate = useNavigate()
+    const {livraisons, getLivraisons, searchLivraison, filterLivraison} = useLivraison()
     const {isCopied, message} = useUtilities()
     const {isProprietaire} = useUser()
 
     useEffect(()=>{
-        getLivraisons()
-    }, [])
+        const search = searchParams.get('search')
+        const status = searchParams.get('status')
+        if (search?.trim()){
+            const t = setTimeout(()=>{
+                searchLivraison(search)
+            }, 200)
+            console.log(search)
+            return () => clearTimeout(t)
+        } else if (status?.trim()){
+            filterLivraison(status, navigate)
+        } else {
+            getLivraisons()
+        }   
+    }, [searchParams, location])
     const historique = Boolean(location.pathname.includes("historiques"))
     return <>
         <section className="container-custom py-4 bg-bg-principale">
@@ -47,7 +61,13 @@ export default function Livraison () {
                 </div>
                 <div className="relative h-12 ">
                     <Search className="absolute top-1/2 -translate-y-1/2 left-4 z-10"/>
-                    <input type="text" name="livraison-search" className="absolute top-0 left-0 pl-14 h-12 bg-[#F0F3FF] w-full font-body font-medium rounded-xl inset-shadow-sm " placeholder="Rechercher une livraison"/>
+                    <input 
+                        onChange={(e)=>setSearchParams( e.target.value && `search=${e.target.value}`)}
+                        type="text" 
+                        value={searchParams.get('search') ?? ''}
+                        name="livraison-search" 
+                        className="absolute top-0 left-0 pl-14 h-12 bg-[#F0F3FF] w-full font-body font-medium rounded-xl inset-shadow-sm " 
+                        placeholder="Rechercher par client, livreur, status, destination ou repère"/>
                 </div>
                 {isProprietaire && <Filter />}
                 {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">

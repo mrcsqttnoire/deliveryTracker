@@ -24,12 +24,16 @@ export function Dashboard () {
     
     const HeadDashboard = HEADER_DASHBOARD[userLogedIn.role]
     
-    const lats = livraisons.filter((l)=>l.status !== "livree").map((l)=>Number(l.destination_lat))
-    const lngs = livraisons.filter((l)=>l.status !== "livree").map((l)=>Number(l.destination_long))
+    const destination = livraisons.filter((l)=>(
+        l.destination_lat ?? l.destination?.latitude != null
+    ))
     
-    console.log(lats, lngs)
     useEffect(() => {
-        if (!dashboard_map) return 
+        if (!dashboard_map || destination.length === 0) return
+        
+        const lats = destination.map((l)=>Number(l.destination_lat))
+        const lngs = destination.map((l)=>Number(l.destination_long))
+        
         dashboard_map.fitBounds(
             [
                 [Math.min(...lngs), Math.min(...lats)], 
@@ -41,7 +45,7 @@ export function Dashboard () {
                 duration: 3500,
             }
         )
-    }, [dashboard_map, lngs, lats])
+    }, [dashboard_map, destination])
 
     return <>
         <section className="container-custom py-4 bg-principale min-h-full">
@@ -124,7 +128,7 @@ export function Dashboard () {
                         <h4 className="font-heading font-bold text-xl sm:text-2xl text-neutral">Course recente</h4>
                         <a href="/livraison" className="text-primary font-body font-semibold">Tout voir</a>
                     </div> */}
-                    {isProprietaire && <div className="relative h-[400px] w-full">
+                    {isProprietaire &&  <div className="relative h-100 w-full">
                         <MapSuivi
                             id="dashboard_map"
                             rotate={true}

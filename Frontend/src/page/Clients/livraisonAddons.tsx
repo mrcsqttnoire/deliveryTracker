@@ -39,7 +39,7 @@ export default function AddDetailLivraison ({id}: AddDetailProps) {
         }
         const t = setTimeout(async () => {
             setSuggestions(await suggere(query))
-        }, 400)
+        }, 250)
         // console.log(suggestions)
         return () => clearTimeout(t) 
     }, [query])

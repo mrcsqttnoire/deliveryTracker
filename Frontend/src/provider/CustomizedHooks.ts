@@ -87,6 +87,7 @@ type LivraisonType = {
     createLivraison: (e: FormEvent<HTMLFormElement>, nav: NavigateFunction) => void
     getSelectedLivraison: (id: string, nav: NavigateFunction) => void
     filterLivraison: (filter: string, nav: NavigateFunction) => void
+    searchLivraison: (search: string) => void
     demarrerUneCourse: (uuid: string, nav: NavigateFunction) => void
     terminerUneCourse: (uuid: string, nav: NavigateFunction) => void
 
@@ -258,6 +259,7 @@ type ClientContextType = {
 
     getAllClients: () => void
     deleteClient: (uuid: string, nav: NavigateFunction) => Promise<any>
+    searchClient: (search: string) => void
 }
 
 export const ClientContext = createContext<ClientContextType | null>(null)

@@ -5,13 +5,27 @@ import { useClient, useLoading, useUtilities } from "../../provider/CustomizedHo
 import { ClientSkeleton } from "../../skeleton/client/ClientSkeleton";
 import { Info } from "../../components/shared/info";
 import { Alert } from "../../components/shared/alert";
+import { useSearchParams } from "react-router-dom";
 export default function Clients () {
-    const {clients, getAllClients} = useClient()
+    const [searchParams, setSearchParams] = useSearchParams()
+    const {clients, getAllClients, searchClient} = useClient()
     const {isLoading} = useLoading()
     const {message} = useUtilities()
+    // useEffect(()=>{
+    //   getAllClients()
+    // }, [])
+
     useEffect(()=>{
-      getAllClients()
-    }, [])
+      const search = searchParams.get('search')
+      if (search?.trim()){
+        const t = setTimeout(()=>{
+          searchClient(search)
+        }, 200)
+        return () => clearTimeout(t)
+      } else {
+        getAllClients()
+      }
+    }, [searchParams])
     return <>
     { !isLoading &&        
       <section className="container-custom py-4 bg-principale min-h-full">
@@ -27,7 +41,13 @@ export default function Clients () {
               </div>
               <div className="relative h-12 ">
                   <Search className="absolute top-1/2 -translate-y-1/2 left-4 z-10"/>
-                  <input type="text" name="livraison-search" className="absolute top-0 left-0 pl-14 h-12 bg-[#F0F3FF] w-full font-body font-medium rounded-xl inset-shadow-sm " placeholder="Rechercher une livraison"/>
+                  <input 
+                    onChange={(e)=>setSearchParams(e.target.value && `search=${e.target.value}`)}
+                    type="text" 
+                    name="livraison-search" 
+                    value={searchParams.get('search') ?? ''}
+                    className="absolute top-0 left-0 pl-14 h-12 bg-[#F0F3FF] w-full font-body font-medium rounded-xl inset-shadow-sm " 
+                    placeholder="Recherche par nom, prenom ou téléphone"/>
               </div>
               <div className="grid grid-cols-1 lg:grid lg:grid-cols-2 gap-4">
                 { clients && clients.map((c)=>(

@@ -1,24 +1,10 @@
-import { useEffect } from "react";
-import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
+
+import { NavLink, useSearchParams } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
-import { useLivraison } from "../../provider/CustomizedHooks";
 
 export function Filter () {
     const [searchParams] = useSearchParams()
-    const navigate = useNavigate()
-    const {getLivraisons} = useLivraison()
-    const {filterLivraison} = useLivraison()
-    
     const status = searchParams.get('status')
-    useEffect(()=>{
-        if (status){
-            filterLivraison(status, navigate)
-        } else {
-            getLivraisons()
-        }
-        
-        
-    }, [searchParams])
     return <>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
             <NavLink 

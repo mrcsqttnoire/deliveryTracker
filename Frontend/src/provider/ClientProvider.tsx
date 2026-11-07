@@ -7,6 +7,7 @@ export interface ClientProviderProps {
     children: ReactNode
 }
 
+const routes = "/tracking-api/client/"
 export function ClientProvider ({children}: ClientProviderProps) {
     const {setIsLoading} = useLoading()
     const {setMessage} = useUtilities()
@@ -14,7 +15,6 @@ export function ClientProvider ({children}: ClientProviderProps) {
 
     async function getAllClients() {
         setIsLoading(true)
-        const routes = "/tracking-api/client/"
         try {
             const res = await api.get(routes)
             if(res && res.status === 200){
@@ -57,11 +57,26 @@ export function ClientProvider ({children}: ClientProviderProps) {
 
     }
 
+    async function searchClient(search: string) {
+        try {
+            const res = await api.get(routes.concat(`?search=${search}`))
+            const data = res.data
+            setClients(data)
+        } catch (err) {
+            if (axios.isAxiosError(err)){
+                setMessage(err.response?.data.detail ?? "Erreur lors du chargement des données")
+            } else {
+                console.log(err)
+            }
+        }
+    }
+
     return <>
         <ClientContext.Provider value={{
             clients, setClients,
             getAllClients,
             deleteClient,
+            searchClient
         }}>
             {children}
         </ClientContext.Provider>

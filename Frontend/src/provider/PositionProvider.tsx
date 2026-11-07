@@ -57,7 +57,7 @@ export function PosiitonProvider ({children}:PosiitonProviderProps) {
         //         }
         //     }
         // })
-        const res = await api.get(rout_get)
+        const res = await api.get(rout_get, {skipAuth: true})
         if(res && res.status === 200){
             const data = res.data
             setLastPosition(data)
