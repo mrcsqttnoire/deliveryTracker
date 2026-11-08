@@ -1,14 +1,16 @@
 import { Bike, Box, CircleAlert, CircleCheckBig, ImagePlus, Trash, TruckElectric, X } from "lucide-react";
 import { useEffect } from "react";
 import { Button, SpinLoading } from "../../components/shared/button";
-import { useCompression, useLivraison, useLivreur, useUtilities } from "../../provider/CustomizedHooks";
+import { useClient, useCompression, useLivraison, useLivreur, useUtilities } from "../../provider/CustomizedHooks";
 import { twMerge } from "tailwind-merge";
 import { useNavigate } from "react-router-dom";
 import { Alert } from "../../components/shared/alert";
 import { format, isAfter, isBefore, parse } from "date-fns";
+import { ClientDetailMin } from "../../components/client/client.min";
 
 export default function NouvelleLivraison () {
     const navigate = useNavigate()
+    const {selected_client} = useClient()
     const {
         compressedImg,
         inCompressing,
@@ -38,9 +40,16 @@ export default function NouvelleLivraison () {
         getLivreurs
     } = useLivreur()
 
+    useEffect(() => {
+        if(livreurAssigne){
+            setLivreurAssigne(livreurAssigne.id)
+        }
+    }, [])
+
     useEffect(()=>{
         getLivreurs()
         viderChamp()
+        // return () => setSelectedClient(null)
     }, [])
 
     useEffect(()=>{
@@ -115,6 +124,7 @@ export default function NouvelleLivraison () {
                 </div>
             </div> 
         </div>
+            {selected_client && <ClientDetailMin data={selected_client} />}
         <div className="flex flex-col gap-4 px-4 py-6 rounded-xl shadow-xl bg-white text-neutral font-body">
             <div className="flex items-center gap-2">
                 <Bike className="text-primary"/>

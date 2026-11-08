@@ -250,12 +250,15 @@ export type Client = {
     nom: string
     prenom: string
     telephone: string
-    livraison_count: string
+    livraison_count?: string
 }
 
 type ClientContextType = {
     clients: Client[] | null
     setClients: (val: Client[] | null) => void
+
+    selected_client: Client | null
+    setSelectedClient: (val: Client  | null) => void
 
     getAllClients: () => void
     deleteClient: (uuid: string, nav: NavigateFunction) => Promise<any>

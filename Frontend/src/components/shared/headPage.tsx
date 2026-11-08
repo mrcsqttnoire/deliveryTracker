@@ -1,7 +1,7 @@
 import { Button } from "./button";
 import { useNavigate } from "react-router-dom";
 import type { ReactNode } from "react";
-import { useUser } from "../../provider/CustomizedHooks";
+import { useClient, useUser } from "../../provider/CustomizedHooks";
 
 interface HeadPageProps {
     children: ReactNode
@@ -12,8 +12,10 @@ interface HeadPageProps {
 
 export function HeadPage ({children,desc, title, btn_title}: HeadPageProps) {
     const {isProprietaire} = useUser()
+    const {setSelectedClient} = useClient()
     const navigate = useNavigate()
     function createPage(){
+        setSelectedClient(null)
         navigate("create")
     }
 

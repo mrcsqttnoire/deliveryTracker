@@ -12,6 +12,7 @@ export function ClientProvider ({children}: ClientProviderProps) {
     const {setIsLoading} = useLoading()
     const {setMessage} = useUtilities()
     const [clients, setClients] = useState<Client[] | null>(null)
+    const [selected_client, setSelectedClient] = useState<Client | null>(null)
 
     async function getAllClients() {
         setIsLoading(true)
@@ -74,6 +75,7 @@ export function ClientProvider ({children}: ClientProviderProps) {
     return <>
         <ClientContext.Provider value={{
             clients, setClients,
+            selected_client, setSelectedClient,
             getAllClients,
             deleteClient,
             searchClient

@@ -3,7 +3,7 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { Button } from "../../components/shared/button";
 import { twMerge } from "tailwind-merge";
-import { useDetail, useLoading, useUtilities } from "../../provider/CustomizedHooks";
+import { useDetail, useLoading, useUtilities, type Client } from "../../provider/CustomizedHooks";
 import { getDetailsPos, suggere, type Suggestion } from "../../map/nominatim";
 import { useMap } from "@vis.gl/react-maplibre";
 import { useNavigate } from "react-router-dom";
@@ -13,9 +13,10 @@ const Carte = lazy(()=>import("../../map/map_public"))
 
 interface AddDetailProps {
     id: string
+    data_client?: Client
 }
 
-export default function AddDetailLivraison ({id}: AddDetailProps) {
+export default function AddDetailLivraison ({id, data_client}: AddDetailProps) {
     const navigate = useNavigate()
     const {marker, message, setMessage} = useUtilities()
     const [step, setStep] = useState<number>(1)
@@ -43,6 +44,14 @@ export default function AddDetailLivraison ({id}: AddDetailProps) {
         // console.log(suggestions)
         return () => clearTimeout(t) 
     }, [query])
+
+    useEffect(()=>{
+        if (data_client){
+            setNomClient(data_client.nom)
+            setPrenomClient(data_client.prenom)
+            setTelephoneClient(data_client.telephone)
+        }
+    }, [data_client])
 
     const switchStep = async () => {
         setIsLoading(true)
@@ -108,7 +117,7 @@ export default function AddDetailLivraison ({id}: AddDetailProps) {
                     }
                 {/* </div> */}
                 { step === 1 &&
-                <div className="w-full h-100 h-[90vh] md:h-[90vh] relative overflow-hidden">
+                <div className="w-full h-[90vh] md:h-[90vh] relative overflow-hidden">
 
                     <div 
                         className="bg-linear-to-b from-transparent to-gradient-cart
@@ -130,11 +139,11 @@ export default function AddDetailLivraison ({id}: AddDetailProps) {
                                     onChange={(e)=>setQuery(e.target.value)}
                                     type="text" 
                                     name="recherche" 
-                                    className="absolute top-0 left-0 pl-[calc(32px+24px)] w-full h-12
+                                    className="absolute top-0 left-0 pl-14 w-full h-12
                                     bg-white/90 focus backdrop-blur-xl font-body font-medium rounded-xl inset-shadow-sm "                           value={query}
                                     placeholder="Rechercher un quartier"/>
                                     {suggestions.length > 0 && (
-                                        <ul className="absolute bottom-12 mb-2 font-heading  w-full bg-white/50 text-neutral rounded-xl shadow z-[999] backdrop-blur-md">              
+                                        <ul className="absolute bottom-12 mb-2 font-heading  w-full bg-white/50 text-neutral rounded-xl shadow z-999 backdrop-blur-md">              
                                         <div className="flex justify-between items-center px-4 bg-input py-2 rounded-tl-xl rounded-tr-xl text-secondary">
                                             <h5 className="">Suggéstions</h5>
                                             <div className="w-auto hover:bg-neutral/10 p-1 rounded-full duration-75">
@@ -174,9 +183,9 @@ export default function AddDetailLivraison ({id}: AddDetailProps) {
                                 <input 
                                     type="text" 
                                     id="nom" 
-                                    value={nom_client} 
+                                    value={data_client?.nom ?? nom_client} 
                                     className="w-full font-body bg-white shadow-sm/10 
-                                    h-full pl-[calc(32px+24px)] rounded-xl focus" 
+                                    h-full pl-14 rounded-xl focus" 
                                     name="nom" 
                                     placeholder="Entrez votre nom ici" 
                                     required 
@@ -187,7 +196,14 @@ export default function AddDetailLivraison ({id}: AddDetailProps) {
                             <label htmlFor="prenom" className="font-body font-semibold text-md">Prenom</label>
                             <div className="relative w-full h-12">
                                 <FaceSlightlySmiling  className={twMerge("absolute top-1/2 -translate-y-1/2 left-4 Text-Black text-secondary")}/>
-                                <input type="text" id="prenom" value={prenom_client} className={twMerge("w-full font-body bg-white shadow-sm/10 h-full pl-[calc(32px+24px)] rounded-xl focus")} name="prenom" placeholder="Entrez votre prénom ici" required onChange={(e)=>setPrenomClient(e.target.value)}/>
+                                <input 
+                                    type="text" 
+                                    id="prenom" 
+                                    value={data_client?.prenom ?? prenom_client} 
+                                    className={twMerge("w-full font-body bg-white shadow-sm/10 h-full pl-14 rounded-xl focus")} 
+                                    name="prenom" placeholder="Entrez votre prénom ici" 
+                                    required 
+                                    onChange={(e)=>setPrenomClient(e.target.value)}/>
                             </div>
                         </div>
                         <div className="flex flex-col gap-1.5 w-full text-neutral">
@@ -197,8 +213,8 @@ export default function AddDetailLivraison ({id}: AddDetailProps) {
                                 <input 
                                     type="text" 
                                     id="telephone" 
-                                    value={telephone_client} 
-                                    className={twMerge("w-full font-body bg-white shadow-sm/10 h-full pl-[calc(32px+24px)] rounded-xl focus")} 
+                                    value={data_client?.telephone ?? telephone_client} 
+                                    className={twMerge("w-full font-body bg-white shadow-sm/10 h-full pl-14 rounded-xl focus")} 
                                     name="telephone" 
                                     placeholder="Entrez votre prénom ici" 
                                     required 
@@ -214,7 +230,7 @@ export default function AddDetailLivraison ({id}: AddDetailProps) {
                                     id="username" 
                                     value={repere} 
                                     className="w-full font-body bg-white shadow-sm/10 h-full
-                                     pl-[calc(32px+24px)] rounded-xl focus" 
+                                     pl-14 rounded-xl focus" 
                                     name="repere" 
                                     placeholder="Donne nous un repère de position" 
                                     required 

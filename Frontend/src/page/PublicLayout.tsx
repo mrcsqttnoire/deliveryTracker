@@ -3,7 +3,7 @@ import  {Carte}  from "../components/Livraison/carte"
 import { LivreurDetailMin } from "../components/livreur/livreur.min"
 import { DetailColis } from "../components/Livraison/detailColis"
 import { MapProvider } from "@vis.gl/react-maplibre"
-import { useLivraison, type RouteParams } from "../provider/CustomizedHooks"
+import { useLivraison, type Client, type RouteParams } from "../provider/CustomizedHooks"
 import { lazy, useEffect } from "react"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
@@ -31,11 +31,20 @@ export default function PublicLayout () {
   if (!livraisonChargee) return <Loading/>
   if (!maLivraison) return <p>Livraison introuvable.</p>
   const Livraison = maLivraison[0]
+
+  const client: Client | undefined = Livraison.client
+    ? {
+      id: Livraison.client,
+      nom: Livraison.client_nom,
+      prenom: Livraison.client_prenom,
+      telephone: Livraison.client_telephone
+    }
+    : undefined
   return <>{
     <MapProvider>
       <main className="flex flex-col gap-4">
-        { !page.includes("admin") && Livraison && !Livraison.client &&
-          <FormStep id={id ?? ''}/>
+        { !page.includes("admin") && Livraison && (!Livraison.client || !Livraison.destination) && 
+          <FormStep data_client={client} id={id ?? ''}/>
         }
         <section className="container-custom py-4 flex flex-col justify-center gap-4 shadow-md rounded-b-xl ">
             <div className="flex items-center gap-2">

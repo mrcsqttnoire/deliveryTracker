@@ -23,13 +23,13 @@ function App() {
               <UserProvider>
                 <PosiitonProvider>
                   <LivreurProvider>
-                    <LivraisonProvider>
-                      <ClientProvider>     
-                          <AddDetailProvider>
-                            <RouterProvider router={routes} />
-                          </AddDetailProvider>
-                      </ClientProvider>
-                    </LivraisonProvider>
+                    <ClientProvider>     
+                      <LivraisonProvider>
+                        <AddDetailProvider>
+                          <RouterProvider router={routes} />
+                        </AddDetailProvider>
+                      </LivraisonProvider>
+                    </ClientProvider>
                   </LivreurProvider>
                 </PosiitonProvider>
               </UserProvider>

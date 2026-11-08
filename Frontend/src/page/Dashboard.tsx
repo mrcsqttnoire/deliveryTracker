@@ -1,6 +1,6 @@
 import { Bike, CheckCheck, CircleDot, Hourglass, UserGroup } from "lucide-react";
 import { useLivraison, useLivreur, useUser } from "../provider/CustomizedHooks";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { HEADER_DASHBOARD } from "../roles/control";
 import { twMerge } from "tailwind-merge";
 import MapSuivi from "../map/map_suivi";
@@ -24,16 +24,21 @@ export function Dashboard () {
     
     const HeadDashboard = HEADER_DASHBOARD[userLogedIn.role]
     
-    const destination = livraisons.filter((l)=>(
-        l.destination_lat ?? l.destination?.latitude != null
-    ))
-    
+    const destinations = useMemo(() => livraisons.flatMap((livraison) => {
+        const tabLatitude = livraison.destination_lat ?? livraison.destination?.latitude
+        const tabLongitude = livraison.destination_long ?? livraison.destination?.longitude
+        if (tabLatitude == null || tabLatitude === "" || tabLongitude == null || tabLongitude === "") return []
+        const latitude = Number(tabLatitude)
+        const longitude = Number(tabLongitude)
+        return Number.isFinite(latitude) && Number.isFinite(longitude)
+            ? [{ id: livraison.id, latitude, longitude }]
+            : []
+    }), [livraisons])
     useEffect(() => {
-        if (!dashboard_map || destination.length === 0) return
-        
-        const lats = destination.map((l)=>Number(l.destination_lat))
-        const lngs = destination.map((l)=>Number(l.destination_long))
-        
+        if (!dashboard_map || destinations.length === 0) return
+
+        const lats = destinations.map((destination) => destination.latitude)
+        const lngs = destinations.map((destination) => destination.longitude)
         dashboard_map.fitBounds(
             [
                 [Math.min(...lngs), Math.min(...lats)], 
@@ -45,7 +50,7 @@ export function Dashboard () {
                 duration: 3500,
             }
         )
-    }, [dashboard_map, destination])
+    }, [dashboard_map, destinations])
 
     return <>
         <section className="container-custom py-4 bg-principale min-h-full">
@@ -134,11 +139,18 @@ export function Dashboard () {
                             rotate={true}
                         >
                             {   livraisons &&
-                                livraisons.filter((l)=>l.status !== "livree").map((l)=>(
+                                livraisons.filter((l)=>l.status !== "livree").flatMap((l)=>{
+                                    const rawLatitude = l.destination_lat ?? l.destination?.latitude
+                                    const rawLongitude = l.destination_long ?? l.destination?.longitude
+                                    if (rawLatitude == null || rawLatitude === "" || rawLongitude == null || rawLongitude === "") return []
+                                    const latitude = Number(rawLatitude)
+                                    const longitude = Number(rawLongitude)
+                                    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return []
+                                    return [(
                                     <Marker
                                         key={l.id}
-                                        latitude={Number(l.destination_lat ?? l.destination?.latitude)}
-                                        longitude={(Number(l.destination_long ?? l.destination?.longitude))}
+                                        latitude={latitude}
+                                        longitude={longitude}
                                         anchor="bottom"
                                     >
                                         <div className="flex flex-col items-center">
@@ -148,7 +160,8 @@ export function Dashboard () {
                                             <BoxMarker />
                                         </div>
                                     </Marker>
-                                ))
+                                    )]
+                                })
                             }
                         </MapSuivi>
                     </div>}

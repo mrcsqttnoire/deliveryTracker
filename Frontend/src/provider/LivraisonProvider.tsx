@@ -1,6 +1,6 @@
 import { useState, type FormEvent, type ReactNode } from "react";
 import type { ClassNameValue } from "tailwind-merge";
-import { LivraisonContext, useCompression, useLoading, usePosition, useUser, useUtilities} from "./CustomizedHooks";
+import { LivraisonContext, useClient, useCompression, useLoading, usePosition, useUser, useUtilities} from "./CustomizedHooks";
 import api from "../api";
 import axios from "axios";
 import type { NavigateFunction } from "react-router-dom";
@@ -30,6 +30,7 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
     const [dateLivraison, setDateLivraison] = useState<string>("")
     const [heureLivraison, setHeureLivraison] = useState<string>("")
     const [livreurAssigne, setLivreurAssigne] = useState<string>("")
+    const {selected_client, setSelectedClient} = useClient()
     const {setMessage} = useUtilities()
     const {setIsLoading} = useLoading()
     const {compressedImg, setCompressedImg} = useCompression()
@@ -78,11 +79,14 @@ export function LivraisonProvider({children}: LivraisonProviderProps){
             compressedImg?.forEach((img)=>{
                 data.append('uploaded_photos', img)
             })
+            if (selected_client) data.append('client', selected_client.id)
+
             const res = await api.post(
                 route,
                 data
             )
             if (res.status === 201){
+                setSelectedClient(null)
                 setMessage("Livraison créée avec succès. Vous allez être redirigé!")
                 await new Promise(r => setTimeout(r, 2000))
                 viderChamp()

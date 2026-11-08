@@ -1,15 +1,24 @@
 import { Package, PackagePlus, Phone, PhoneCall, RotateCwClock, Trash } from "lucide-react"
 
 import { Button } from "../shared/button"
-import { useUtilities, type Client } from "../../provider/CustomizedHooks"
+import { useClient, useUtilities, type Client } from "../../provider/CustomizedHooks"
+import { useNavigate } from "react-router-dom"
 
 interface CardClientProps {
     data: Client
 }
 
 export function CardClient ({data}: CardClientProps) {
+    const navigate = useNavigate()
     const initials = `${data.nom.charAt(0)}${data.prenom.charAt(0)}`
     const {setShowDialog} = useUtilities<Client>()
+    const {setSelectedClient} = useClient()
+
+    const nouvelleCourse = (data: Client) => {
+        setSelectedClient(data)
+        navigate('/livraisons/create')
+    }
+
     return <>
         <div className="flex flex-col gap-3 bg-white h-auto rounded-xl shadow-xl p-4 hover:-translate-y-0.5 duration-300">
             <div className="flex justify-between items-center">
@@ -72,6 +81,7 @@ export function CardClient ({data}: CardClientProps) {
                     </Button>
                 </a>
                 <Button 
+                    fn={() => nouvelleCourse(data)}
                     noLoading={true}
                     className="bg-gradient-right flex-1 text-neutral hover:bg-gradient-right hover:opacity-85 duration-50">
                     <PackagePlus className="w-5 md:w-6 shrink-0 text-primary"/>
