@@ -32,16 +32,13 @@ export function Carte ({data}: CarteProps) {
   }, [map_suivi])
   
   useEffect(() => {
-    if (!location || !map_suivi) return 
-    if(!Number.isFinite(lat) || !Number.isFinite(lng)){
-      map_suivi.flyTo({
-        center: [location.longitude, location.latitude],
-        zoom: 17,
-        
-        duration: 1000,
-      })
-      return
-    }
+    if (!map_suivi) return 
+
+    setMarker({
+      lat: lat,
+      lng: lng
+    })
+
     if (lastPosition){
       const fitLat = [lat, lastPosition?.latitude]
       const fitLng = [lng, lastPosition?.longitude]
@@ -51,9 +48,9 @@ export function Carte ({data}: CarteProps) {
           [Math.max(...fitLng), Math.max(...fitLat)]
         ],
         {
-            padding: { top: 20, bottom: 100, left: 40, right: 40 },
-            maxZoom: 16.5,
-            duration: 3500,
+          padding: { top: 20, bottom: 100, left: 40, right: 40 },
+          maxZoom: 16.5,
+          duration: 3500,
         }
       )
     } else {
@@ -63,10 +60,18 @@ export function Carte ({data}: CarteProps) {
         pitch: 70, bearing: -20, duration: 2500,
       })
     }
-    setMarker({
-      lat: lat,
-      lng: lng
-    })
+
+    if (location){
+      if(!Number.isFinite(lat) || !Number.isFinite(lng)){
+        map_suivi.flyTo({
+          center: [location.longitude, location.latitude],
+          zoom: 17,
+          
+          duration: 1000,
+        })
+        return
+      }
+    }
   }, [location, map_suivi, lat, lng])
   return <>
     <div className="container-custom ">
