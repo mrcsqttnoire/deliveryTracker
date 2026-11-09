@@ -1,14 +1,16 @@
-import { LucideLogOut, User } from "lucide-react";
+import { BadgeInfo, LucideLogOut, User } from "lucide-react";
 import { twMerge, type ClassNameValue } from "tailwind-merge";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../constanst";
 import { useState } from "react";
 import { SpinLoading } from "./button";
 import { useLoading, useUtilities } from "../../provider/CustomizedHooks";
+import { useNavigate } from "react-router-dom";
 
 interface OptionsProps {
     className?: ClassNameValue
 }
 export function Options ({className}: OptionsProps) {
+    const navigate = useNavigate()
     const [isLoad, setIsLoad] = useState<boolean>(false)
     const {setIsOpen} = useUtilities()
     // const { coordonees ,getDetailsPos} = useMap()
@@ -36,6 +38,15 @@ export function Options ({className}: OptionsProps) {
                 {isLoading ? <SpinLoading className="text-primary"/> : "" }
                 <User className="text-secondary shrink-0"/>
                 Profile
+            </button>
+            <div className="w-full border-t border-secondary/50"></div>
+            <button 
+                onClick={()=>navigate('/about')}
+                className="place-content-start flex gap-2 text-neutral rounded-lg py-2 px-4 font-bod hover:bg-secondary/10"
+            >
+                {isLoading ? <SpinLoading className="text-primary"/> : "" }
+                <BadgeInfo className="text-secondary shrink-0"/>
+                A propos
             </button>
             <div className="w-full border-t border-secondary/50"></div>
             <button onClick={logout} className={twMerge("place-content-start flex gap-2 text-neutral rounded-lg py-2 px-4 font-body hover:bg-primary/10 disabled:opacity-50")} disabled={isLoad}>

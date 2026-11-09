@@ -14,6 +14,7 @@ const CartePageDemarre = lazy(() => import("./roles/delivery/cartePage"));
 const AppLayout = lazy(() => import('./page/Applayout'))
 const AuthLayout = lazy(() => import('./page/AuthLayout'))
 const PublicLayout = lazy(() => import('./page/PublicLayout'))
+const About = lazy(() => import('./page/About'))
 
 const Livraison = lazy(() => import('./page/Livraison/Livraison'))
 const NouvelleLivraison = lazy(() => import('./page/Livraison/nouvelleLivraison'))
@@ -151,6 +152,13 @@ export const routes = createBrowserRouter([
                 element: 
                 <SuspenseLayout fallback={<Skeleton className="w-11/12 h-90vh"/>}>
                     <Livraison/>
+                </SuspenseLayout>
+            },   
+            {
+                path: 'about/',
+                element: 
+                <SuspenseLayout fallback={<Skeleton className="w-11/12 h-90vh"/>}>
+                    <About/>
                 </SuspenseLayout>
             },   
         ]
