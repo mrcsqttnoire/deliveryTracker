@@ -1,4 +1,4 @@
-import { Bike, MapPinned, Package, Store, User } from "lucide-react";
+import { Bike, MapPinned, Package, Store, User, UserGroup } from "lucide-react";
 
 
 export default function About () {
@@ -14,43 +14,43 @@ export default function About () {
                     <p className="text-primary font-body font-normal">3 étapes</p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                    <div className="md:relative flex md:flex-col gap-4 justify-center md:justify-start items-center px-5 py-3 bg-input/50 overflow-hidden. backdrop-blur-xl rounded-xl ">
+                    <div className="md:relative flex md:flex-col gap-4 bg-en_attent-bg/50 justify-center md:justify-start items-center px-5 py-3 rounded-xl shadow-lg hover:-translate-y-0.5 duration-300">
                         <div className="
-                            md:absolute top-0 right-0 bg-en_attent-bg p-3 rounded-full md:rounded-tr-xl"
+                            md:absolute top-0 right-0 bg-en_attent-bg md:bg-transparent p-3 rounded-full md:rounded-tr-xl"
                         >
                             <Package className="text-en_attente shrink-0"/>
                         </div>
                         <div>
-                            <h4 className="md:pr-7 text-neutral/80 font-body font-bold text-lg sm:text-xl">
-                                1. La boutique prépare le colis
+                            <h4 className="md:pr-7 text-en_attente font-body font-bold text-lg sm:text-xl">
+                                La boutique prépare le colis
                             </h4>
                             <p className="md:tùext-center. text-secondary font-body font-normal text-sm sm:text-base">
                                 Elle le décrit, ajoute quelques photos, choisit qui le livre et quand, puis envoie un lien au client
                             </p>
                         </div>
                     </div>
-                    <div className="md:relative flex md:flex-col gap-4 justify-center md:justify-start items-center px-5 py-3 bg-input/50 backdrop-blur-xl rounded-xl">
+                    <div className="md:relative flex md:flex-col gap-4 justify-center md:justify-start items-center px-5 py-3 bg-en_route-bg/50 rounded-xl shadow-lg hover:-translate-y-0.5 duration-300">
     
-                        <div className="md:absolute top-0 right-0 bg-en_route-bg p-3 rounded-full md:rounded-tr-xl">
+                        <div className="md:absolute top-0 right-0 bg-en_route-bg md:bg-transparent p-3 rounded-full md:rounded-tr-xl">
                             <MapPinned className="text-en_route shrink-0"/>
                         </div>
                         <div>
-                            <h4 className="md:pr-7 text-neutral/80 font-body font-bold text-lg sm:text-xl">
-                                2. Le client choisit la destination
+                            <h4 className="md:pr-7 text-en_route font-body font-bold text-lg sm:text-xl">
+                                Le client choisit la destination
                             </h4>
                             <p className="text-secondary font-body font-normal text-sm sm:text-base">
                                 Il ouvre le lien, sans créer de compte, et pose un repère sur la carte. Un quartier à chercher, un point à ajuster du doigt, un mot pour aider le livreur à le trouver
                             </p>
                         </div>
                     </div>
-                    <div className="md:relative flex md:flex-col gap-4 justify-center md:justify-start items-center px-5 py-3 bg-input/50 backdrop-blur-xl rounded-xl">
+                    <div className="md:relative flex md:flex-col gap-4 justify-center md:justify-start items-center px-5 py-3 bg-livree-bg/50 rounded-xl shadow-lg hover:-translate-y-0.5 duration-300">
                     
-                        <div className="md:absolute top-0 right-0 bg-livree-bg p-3 rounded-full md:rounded-tr-xl">
+                        <div className="md:absolute top-0 right-0 bg-livree-bg md:bg-transparent p-3 rounded-full md:rounded-tr-xl">
                             <Bike className="text-livree shrink-0"/>
                         </div>
                         <div>
-                            <h4 className="md:pr-7 text-neutral/80 font-body font-bold text-lg sm:text-xl">
-                                3. Le livreur livre les colis
+                            <h4 className="md:pr-7 text-livree font-body font-bold text-lg sm:text-xl">
+                                Le livreur livre les colis
                             </h4>
                             <p className="text-secondary font-body font-normal text-sm sm:text-base">
                                 Quand il démarre, sa position s’actualise toutes les quelques secondes. Le client regarde son colis se rapprocher sur la carte.
@@ -60,9 +60,12 @@ export default function About () {
                 </div>
             </div>
             <div className="w-full flex flex-col gap-4 px-4 py-6">
-                <h3 className="font-heading font-semibold text-neutral text-xl sm:text-2xl">Pour qui ?</h3>
-                <div className="flex flex-col md:flex-row gap-3">
-                    <div className="flex flex-col gap-2.5 p-4 bg-white rounded-xl shadow-lg">
+                <div className="flex items-center gap-4 text-neutral">
+                    <UserGroup/>
+                    <h3 className="font-heading font-semibold  text-xl sm:text-2xl">Pour qui ?</h3>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div className="flex flex-col gap-2.5 p-4 bg-white rounded-xl shadow-lg hover:-translate-y-0.5 duration-300">
                         <div className="flex items-center gap-2.5">
                             <div className="bg-input/80 p-2.5 rounded-xl">
                                 <Store className="text-primary"/>
@@ -73,26 +76,26 @@ export default function About () {
                             Si vous tenez une boutique, vous gardez tout au même endroit : vos livreurs, vos clients, vos livraisons. Plus besoin de jongler entre les messages et les appels
                         </p>
                     </div>
-                    <div className="flex flex-col gap-2.5 p-4 bg-white rounded-xl shadow-lg">
+                    <div className="flex flex-col gap-2.5 p-4 bg-white rounded-xl shadow-lg hover:-translate-y-0.5 duration-300">
                         <div className="flex items-center gap-2.5">
                             <div className="bg-input/80 p-2.5 rounded-xl">
                                 <Bike className="text-en_route"/>
                             </div>
-                            <h4 className="font-body font-semibold text-neutral text-lg sm:text-xl">Boutique</h4>
+                            <h4 className="font-body font-semibold text-neutral text-lg sm:text-xl">Livreur</h4>
                         </div>
                         <p className="font-body font-normal text-secondary ">
-                            Si vous tenez une boutique, vous gardez tout au même endroit : vos livreurs, vos clients, vos livraisons. Plus besoin de jongler entre les messages et les appels
+                            Si vous livrez, vous retrouvez vos courses du jour, vous démarrez d’un geste, et vous appelez le client d’un seul appui si vous êtes perdu
                         </p>
                     </div>
-                    <div className="flex flex-col gap-2.5 p-4 bg-white rounded-xl shadow-lg">
+                    <div className="flex flex-col gap-2.5 p-4 bg-white rounded-xl shadow-lg hover:-translate-y-0.5 duration-300">
                         <div className="flex items-center gap-2.5">
                             <div className="bg-input/80 p-2.5 rounded-xl">
                                 <User className="text-livree"/>
                             </div>
-                            <h4 className="font-body font-semibold text-neutral text-lg sm:text-xl">Boutique</h4>
+                            <h4 className="font-body font-semibold text-neutral text-lg sm:text-xl">Client</h4>
                         </div>
                         <p className="font-body font-normal text-secondary ">
-                            Si vous tenez une boutique, vous gardez tout au même endroit : vos livreurs, vos clients, vos livraisons. Plus besoin de jongler entre les messages et les appels
+                            Si vous attendez un colis, un lien suffit. Pas d’application à télécharger, pas de compte à créer
                         </p>
                     </div>
                 </div>
