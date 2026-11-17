@@ -14,48 +14,40 @@ export default function About () {
                     <p className="text-primary font-body font-normal">3 étapes</p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                    <div className="md:relative flex md:flex-col gap-4 bg-en_attent-bg/50 justify-center md:justify-start items-center px-5 py-3 rounded-xl shadow-lg hover:-translate-y-0.5 duration-300">
-                        <div className="
-                            md:absolute top-0 right-0 bg-en_attent-bg md:bg-transparent p-3 rounded-full md:rounded-tr-xl"
-                        >
-                            <Package className="text-en_attente shrink-0"/>
-                        </div>
-                        <div>
+                    <div className="flex flex-col gap-2 bg-en_attent-bg/50 justify-center md:justify-start px-5 py-3 rounded-xl shadow-lg hover:-translate-y-0.5 duration-300">
+                        <div className="flex justify-between items-center">
                             <h4 className="md:pr-7 text-en_attente font-body font-bold text-lg sm:text-xl">
                                 La boutique prépare le colis
                             </h4>
-                            <p className="md:tùext-center. text-secondary font-body font-normal text-sm sm:text-base">
-                                Elle le décrit, ajoute quelques photos, choisit qui le livre et quand, puis envoie un lien au client
-                            </p>
+                            <Package className="text-en_attente shrink-0"/>
                         </div>
+                        <p className="md:tùext-center. text-secondary font-body font-normal text-sm sm:text-base">
+                            Elle le décrit, ajoute quelques photos, choisit qui le livre et quand, puis envoie un lien au client
+                        </p>
                     </div>
-                    <div className="md:relative flex md:flex-col gap-4 justify-center md:justify-start items-center px-5 py-3 bg-en_route-bg/50 rounded-xl shadow-lg hover:-translate-y-0.5 duration-300">
+                    <div className="flex flex-col gap-2 bg-en_route-bg/50 justify-center md:justify-start px-5 py-3 rounded-xl shadow-lg hover:-translate-y-0.5 duration-300">
     
-                        <div className="md:absolute top-0 right-0 bg-en_route-bg md:bg-transparent p-3 rounded-full md:rounded-tr-xl">
-                            <MapPinned className="text-en_route shrink-0"/>
-                        </div>
-                        <div>
+                        <div className="flex justify-between items-center">
                             <h4 className="md:pr-7 text-en_route font-body font-bold text-lg sm:text-xl">
                                 Le client choisit la destination
                             </h4>
-                            <p className="text-secondary font-body font-normal text-sm sm:text-base">
-                                Il ouvre le lien, sans créer de compte, et pose un repère sur la carte. Un quartier à chercher, un point à ajuster du doigt, un mot pour aider le livreur à le trouver
-                            </p>
+                            <MapPinned className="text-en_route shrink-0"/>
                         </div>
+                        <p className="text-secondary font-body font-normal text-sm sm:text-base">
+                            Il ouvre le lien, sans créer de compte, et pose un repère sur la carte. Un quartier à chercher, un point à ajuster du doigt, un mot pour aider le livreur à le trouver
+                        </p>
                     </div>
-                    <div className="md:relative flex md:flex-col gap-4 justify-center md:justify-start items-center px-5 py-3 bg-livree-bg/50 rounded-xl shadow-lg hover:-translate-y-0.5 duration-300">
+                    <div className="flex flex-col gap-2 bg-livree-bg/50 justify-center md:justify-start px-5 py-3 rounded-xl shadow-lg hover:-translate-y-0.5 duration-300">
                     
-                        <div className="md:absolute top-0 right-0 bg-livree-bg md:bg-transparent p-3 rounded-full md:rounded-tr-xl">
-                            <Bike className="text-livree shrink-0"/>
-                        </div>
-                        <div>
+                        <div className="flex justify-between items-center">
                             <h4 className="md:pr-7 text-livree font-body font-bold text-lg sm:text-xl">
                                 Le livreur livre les colis
                             </h4>
-                            <p className="text-secondary font-body font-normal text-sm sm:text-base">
-                                Quand il démarre, sa position s’actualise toutes les quelques secondes. Le client regarde son colis se rapprocher sur la carte.
-                            </p>
+                            <Bike className="text-livree shrink-0"/>
                         </div>
+                        <p className="text-secondary font-body font-normal text-sm sm:text-base">
+                            Quand il démarre, sa position s’actualise toutes les quelques secondes. Le client regarde son colis se rapprocher sur la carte
+                        </p>
                     </div>
                 </div>
             </div>
