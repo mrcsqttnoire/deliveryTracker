@@ -53,7 +53,7 @@ export function Carte ({data}: CarteProps) {
           duration: 3500,
         }
       )
-    } else {
+    } else if (lat && lng) {
       map_suivi.flyTo({
         center: [lng, lat],
         zoom: 17,
